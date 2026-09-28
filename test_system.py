@@ -36,7 +36,7 @@ if hasattr(sys.stderr, "reconfigure"):
 import app as backend_app
 from main_controller import MainSafetyController
 from fall_detector import FallDetector
-from location_module import OfflineLocationEngine, GeofenceManager
+from location_module import OfflineLocationEngine
 from prediction_module import LSTMTrajectoryPredictor
 from sync_manager import SyncManager
 from android_telephony_module import AndroidTelephonyManager

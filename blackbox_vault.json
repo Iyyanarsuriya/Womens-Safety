@@ -2651,5 +2651,47 @@
     "longitude": 79.7466,
     "event": "RECORDING_STARTED",
     "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-28T18:38:53.360902",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "FALL_CONFIRMED_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-28T18:38:53.426688",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-28T18:39:51.135984",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "FALL_CONFIRMED_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-28T18:39:51.161667",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-28T18:40:50.342203",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "FALL_CONFIRMED_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-28T18:40:50.359618",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED"
   }
 ]

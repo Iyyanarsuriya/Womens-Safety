@@ -4,12 +4,8 @@ import re
 import time
 import threading
 import subprocess
-import platform
-import math
 import tkinter as tk
-from tkinter import ttk, messagebox
-import pygame
-from PIL import Image, ImageTk
+from tkinter import messagebox
 from acoustic_module import OfflineAcousticEngine
 import map_simulator
 import map_config

@@ -15,7 +15,6 @@ Handles:
 """
 
 import subprocess
-import threading
 import time
 import logging
 from macrodroid_dispatch_module import trigger_aura_sos

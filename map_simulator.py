@@ -22,7 +22,6 @@ Features:
 
 import math
 import time
-import threading
 import tkinter as tk
 from tkinter import ttk
 

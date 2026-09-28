@@ -3,8 +3,6 @@ import json
 import time
 import asyncio
 import threading
-import subprocess
-import tkinter as tk
 from datetime import datetime
 from cryptography.fernet import Fernet
 from bleak import BleakScanner, BleakClient

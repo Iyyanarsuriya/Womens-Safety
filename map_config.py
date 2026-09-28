@@ -1,7 +1,6 @@
 import os
 import json
 import random
-import math
 
 # Dynamic Map Center and Zoom Span
 CENTER_LAT = 11.4615
