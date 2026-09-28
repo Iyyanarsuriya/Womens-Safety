@@ -138,8 +138,28 @@ def trigger_aura_sos(
 
 # ── Standalone test ──────────────────────────────────────────────────────────
 if __name__ == "__main__":
-    print("=== MacroDroid Dispatch Module - Standalone Webhook Test ===")
-    trigger_aura_sos("9994569481", "9791017243", 11.4939, 79.7612)
-    # Keep the process alive long enough for the daemon thread to finish.
-    time.sleep(15)
+    import os
+    import json
+    import sys
+    print("=== MacroDroid Dispatch Module - Dynamic Webhook Dispatch ===")
+    p1 = "9876543210"
+    p2 = "9123456780"
+    lat, lon = 0.0, 0.0
+    prof_path = os.path.join("data", "user_profile.json")
+    if os.path.exists(prof_path):
+        try:
+            with open(prof_path, "r", encoding="utf-8") as f:
+                prof = json.load(f)
+                cts = prof.get("contacts", [])
+                if len(cts) > 0:
+                    p1 = cts[0].get("phone", p1)
+                if len(cts) > 1:
+                    p2 = cts[1].get("phone", p2)
+        except Exception:
+            pass
+    if len(sys.argv) >= 3:
+        p1, p2 = sys.argv[1], sys.argv[2]
+    print(f"Dispatching SOS to P1: {p1}, P2: {p2} (lat: {lat}, lon: {lon})...")
+    trigger_aura_sos(p1, p2, lat, lon)
+    time.sleep(5)
     print("Test complete.")

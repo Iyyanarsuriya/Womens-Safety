@@ -99,12 +99,7 @@ class LSTMTrajectoryPredictor:
                 pass
 
         if not pts:
-            # Default known reference cluster zones if no history
-            self.clusters = [
-                {"name": "Parangipettai Bus Stand Zone", "lat": 11.48896, "lon": 79.75388, "count": 20},
-                {"name": "Keezhamoongiladi Zone", "lat": 11.43615, "lon": 79.70151, "count": 15},
-                {"name": "College Campus Zone", "lat": 11.43392, "lon": 79.70039, "count": 18}
-            ]
+            self.clusters = []
             return
 
         # Simple grid-based centroid clustering (~100m grid)
@@ -129,9 +124,7 @@ class LSTMTrajectoryPredictor:
                 })
 
         clusters.sort(key=lambda c: c["count"], reverse=True)
-        self.clusters = clusters[:10] if clusters else [
-            {"name": "Parangipettai Primary Zone", "lat": 11.48896, "lon": 79.75388, "count": 10}
-        ]
+        self.clusters = clusters[:10]
 
     # ── History management with battery/storage efficiency ────────────────────
 

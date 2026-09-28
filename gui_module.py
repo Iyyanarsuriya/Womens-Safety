@@ -76,6 +76,9 @@ class ModernSafetyApp:
 
         self.is_fake_shutdown = False
         self.root.bind("<F8>", lambda event: self.trigger_fake_shutdown())
+        self.root.bind("<F12>", lambda event: self.trigger_threat("🚨 MANUAL EMERGENCY (F12 HOTKEY)"))
+        self.root.bind("<Control-s>", lambda event: self.trigger_threat("🚨 MANUAL EMERGENCY (HOTKEY)"))
+        self.root.bind("<Control-S>", lambda event: self.trigger_threat("🚨 MANUAL EMERGENCY (HOTKEY)"))
 
         os.makedirs(os.path.join("recordings", "audio"), exist_ok=True)
         os.makedirs(os.path.join("recordings", "video"), exist_ok=True)
@@ -91,7 +94,9 @@ class ModernSafetyApp:
         self.user_name   = ""
         self.user_phone  = ""
         self.contacts    = []    # [{name, phone}, …] — index 0 = P1
-        self.safe_locations = ["Home", "Office/College"]
+        self.safe_locations = []
+        self.real_pin    = "1234"
+        self.fake_pin    = "9999"
         self.delay_timer = tk.IntVar(value=15)
         self.enable_macrodroid = tk.BooleanVar(value=True)
         self.contact_rows = []
@@ -145,7 +150,7 @@ class ModernSafetyApp:
     # ═══════════════════════════════════════════════════════════════════════════
 
     def load_user_profile(self):
-        """Restores user profile and contacts across application restarts."""
+        """Restores user profile, contacts, and custom PINs across application restarts."""
         if os.path.exists(self.profile_path):
             try:
                 import json
@@ -154,18 +159,21 @@ class ModernSafetyApp:
                     self.user_name = p.get("user_name", "")
                     self.user_phone = p.get("user_phone", "")
                     self.contacts = p.get("contacts", [])
+                    self.real_pin = p.get("real_pin", getattr(self, "real_pin", "1234"))
+                    self.fake_pin = p.get("fake_pin", getattr(self, "fake_pin", "9999"))
                     dt = p.get("delay_timer", 15)
                     self.delay_timer.set(dt if dt in (15, 30) else 15)
                     if self.contacts and self.user_name:
                         self.is_protection_active = True
                         if self.controller:
                             self.controller.set_emergency_contacts([c["phone"] for c in self.contacts])
+                            self.controller.set_pins(self.real_pin, self.fake_pin)
                 print(f"✅ [Profile] Loaded profile for '{self.user_name}' with {len(self.contacts)} emergency contacts.")
             except Exception as e:
                 print(f"[Profile Load Warning] {e}")
 
     def save_user_profile(self):
-        """Saves current user profile and contacts to disk."""
+        """Saves current user profile, contacts, and custom PINs to disk."""
         try:
             import json
             data = {
@@ -173,6 +181,8 @@ class ModernSafetyApp:
                 "user_phone": self.user_phone,
                 "contacts": self.contacts,
                 "delay_timer": self.delay_timer.get(),
+                "real_pin": getattr(self, "real_pin", "1234"),
+                "fake_pin": getattr(self, "fake_pin", "9999"),
                 "is_protection_active": self.is_protection_active
             }
             with open(self.profile_path, "w", encoding="utf-8") as f:
@@ -1055,26 +1065,72 @@ class ModernSafetyApp:
         frm = tk.Frame(dlg, bg=_P["bg_panel"], padx=22)
         frm.pack(fill="both", expand=True)
 
-        tk.Label(frm, text="REGISTERED USER NAME",
+        usr_row = tk.Frame(frm, bg=_P["bg_panel"])
+        usr_row.pack(fill="x", pady=(2, 8))
+
+        # User Name col
+        u_col = tk.Frame(usr_row, bg=_P["bg_panel"])
+        u_col.pack(side="left", fill="x", expand=True, padx=(0, 6))
+        tk.Label(u_col, text="REGISTERED USER NAME",
                  font=("Segoe UI", 8, "bold"),
                  fg=_P["accent2"], bg=_P["bg_panel"]).pack(anchor="w")
-        e_name = tk.Entry(frm, font=("Segoe UI", 10),
+        e_name = tk.Entry(u_col, font=("Segoe UI", 10),
                           bg=_P["bg_input"], fg=_P["text_hi"], bd=0)
         e_name.insert(0, self.user_name)
-        e_name.pack(fill="x", ipady=5, pady=(2, 12))
+        e_name.pack(fill="x", ipady=5, pady=(2, 0))
 
-        tk.Label(frm, text="SOS COUNTDOWN DELAY (SECONDS)",
+        # User Phone col
+        p_col = tk.Frame(usr_row, bg=_P["bg_panel"])
+        p_col.pack(side="right", fill="x", expand=True, padx=(6, 0))
+        tk.Label(p_col, text="USER PHONE (10-DIGIT)",
+                 font=("Segoe UI", 8, "bold"),
+                 fg=_P["accent2"], bg=_P["bg_panel"]).pack(anchor="w")
+        e_phone = tk.Entry(p_col, font=("Segoe UI", 10),
+                           bg=_P["bg_input"], fg=_P["text_hi"], bd=0)
+        e_phone.insert(0, self.user_phone)
+        e_phone.pack(fill="x", ipady=5, pady=(2, 0))
+
+        # PINs & Timer row
+        sec_row = tk.Frame(frm, bg=_P["bg_panel"])
+        sec_row.pack(fill="x", pady=(2, 10))
+
+        # Real PIN col
+        rpin_col = tk.Frame(sec_row, bg=_P["bg_panel"])
+        rpin_col.pack(side="left", fill="x", expand=True, padx=(0, 4))
+        tk.Label(rpin_col, text="REAL DISARM PIN",
+                 font=("Segoe UI", 8, "bold"),
+                 fg=_P["green"], bg=_P["bg_panel"]).pack(anchor="w")
+        e_real_pin = tk.Entry(rpin_col, font=("Segoe UI", 10),
+                              bg=_P["bg_input"], fg=_P["text_hi"], bd=0)
+        e_real_pin.insert(0, getattr(self, "real_pin", "1234"))
+        e_real_pin.pack(fill="x", ipady=5, pady=(2, 0))
+
+        # Duress Fake PIN col
+        fpin_col = tk.Frame(sec_row, bg=_P["bg_panel"])
+        fpin_col.pack(side="left", fill="x", expand=True, padx=4)
+        tk.Label(fpin_col, text="DURESS FAKE PIN",
+                 font=("Segoe UI", 8, "bold"),
+                 fg=_P["red"], bg=_P["bg_panel"]).pack(anchor="w")
+        e_fake_pin = tk.Entry(fpin_col, font=("Segoe UI", 10),
+                              bg=_P["bg_input"], fg=_P["text_hi"], bd=0)
+        e_fake_pin.insert(0, getattr(self, "fake_pin", "9999"))
+        e_fake_pin.pack(fill="x", ipady=5, pady=(2, 0))
+
+        # Timer col
+        tmr_col = tk.Frame(sec_row, bg=_P["bg_panel"])
+        tmr_col.pack(side="right", fill="x", expand=True, padx=(4, 0))
+        tk.Label(tmr_col, text="SOS COUNTDOWN",
                  font=("Segoe UI", 8, "bold"),
                  fg=_P["amber"], bg=_P["bg_panel"]).pack(anchor="w")
-        spin = tk.Spinbox(frm, from_=5, to=60, increment=5,
+        spin = tk.Spinbox(tmr_col, from_=5, to=60, increment=5,
                           textvariable=self.delay_timer,
                           font=("Segoe UI", 10, "bold"),
                           bg=_P["bg_input"], fg=_P["amber"], bd=0)
-        spin.pack(fill="x", ipady=5, pady=(2, 16))
+        spin.pack(fill="x", ipady=5, pady=(2, 0))
 
         # Contacts
         contacts_hdr = tk.Frame(frm, bg=_P["bg_panel"])
-        contacts_hdr.pack(fill="x", pady=(0, 6))
+        contacts_hdr.pack(fill="x", pady=(6, 6))
         tk.Label(contacts_hdr,
                  text="EMERGENCY CONTACTS  (top = highest priority)",
                  font=("Segoe UI", 8, "bold"),
@@ -1252,11 +1308,27 @@ class ModernSafetyApp:
             if not self.contacts:
                 messagebox.showerror("Error", "Keep at least one contact.")
                 return
+
+            phone_val = e_phone.get().strip()
+            if phone_val and not self.is_valid_phone(phone_val):
+                messagebox.showerror("Validation Error", "User phone must be a valid 10-digit number.")
+                return
+
+            r_pin = e_real_pin.get().strip()
+            f_pin = e_fake_pin.get().strip()
+            if not r_pin or not f_pin or r_pin == f_pin:
+                messagebox.showerror("PIN Error", "Real PIN and Duress Fake PIN must both be set and must not be identical.")
+                return
+
             self.user_name = e_name.get().strip()
+            self.user_phone = phone_val
+            self.real_pin = r_pin
+            self.fake_pin = f_pin
             self.save_user_profile()
             if self.controller:
                 self.controller.set_emergency_contacts(
                     [c["phone"] for c in self.contacts])
+                self.controller.set_pins(self.real_pin, self.fake_pin)
             dlg.destroy()
             self.build_modern_dashboard(
                 pending_notification="⚙️ Settings Updated Successfully!")
@@ -1386,8 +1458,8 @@ class ModernSafetyApp:
         if self.timer_job:
             self.root.after_cancel(self.timer_job)
 
-        # --- Gather location ---
-        current_loc = {"latitude": 11.4939, "longitude": 79.7612}
+        # --- Gather location dynamically ---
+        current_loc = {}
         if self.controller:
             try:
                 current_loc = self.controller.location_engine.get_current_location()
@@ -1396,8 +1468,15 @@ class ModernSafetyApp:
             except Exception as e:
                 print(f"[SOS Dispatch Error] {e}")
 
-        lat = current_loc.get("latitude",  11.4939)
-        lon = current_loc.get("longitude", 79.7612)
+        lat = current_loc.get("latitude")
+        lon = current_loc.get("longitude")
+        if lat is None or lon is None:
+            if self.controller and hasattr(self.controller, "predictor"):
+                summary = self.controller.predictor.get_history_summary()
+                lat = summary.get("last_known_lat", 0.0)
+                lon = summary.get("last_known_lon", 0.0)
+            else:
+                lat, lon = 0.0, 0.0
 
         # --- Resolve P1 / P2 dynamically from UI entries ---
         def _read_entry(entry_widget, fallback=""):
@@ -1507,8 +1586,9 @@ class ModernSafetyApp:
         for i in range(0, h, step):
             self.map_canvas.create_line(0, i, w, i,
                                         fill="#0f1d33", tags="grid")
-        # Landmarks on the mini-map
-        for label, (llat, llon) in map_config.LANDMARKS.items():
+        # Landmarks on the mini-map dynamically retrieved from safe zones
+        dynamic_landmarks = map_config.get_dynamic_landmarks(self.controller)
+        for label, (llat, llon) in dynamic_landmarks.items():
             lx, ly = map_config.latlon_to_pixel(llat, llon, w)
             self.map_canvas.create_oval(lx - 5, ly - 5, lx + 5, ly + 5,
                                         fill=_P["green"], outline="",
@@ -1526,6 +1606,11 @@ class ModernSafetyApp:
         """
         if not hasattr(self, "map_canvas") or not self.map_canvas.winfo_exists():
             return
+
+        if lat and lon and not (lat == 0.0 and lon == 0.0):
+            if abs(lat - map_config.CENTER_LAT) > map_config.ZOOM_SPAN_DEGREES * 0.45 or \
+               abs(lon - map_config.CENTER_LON) > map_config.ZOOM_SPAN_DEGREES * 0.45:
+                map_config.set_map_center(lat, lon)
 
         w  = self.map_canvas.winfo_width()  or 460
         h  = self.map_canvas.winfo_height() or 240

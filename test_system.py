@@ -239,31 +239,45 @@ class TestWomenSafetySystem(unittest.TestCase):
         controller.stop_all()
 
     def test_09_user_profile_persistence(self):
-        """Validates that user profile and emergency contacts persist across restarts."""
+        """Validates that user profile, emergency contacts, and PINs persist across restarts."""
         print("\n[TEST 9] Testing Profile Persistence across Restarts...")
         profile_file = os.path.join("data", "user_profile.json")
-        sample_profile = {
-            "user_name": "Priya Sharma",
-            "user_phone": "9876543210",
-            "contacts": [
-                {"name": "Mother", "phone": "9876543211"},
-                {"name": "Sister", "phone": "9876543212"}
-            ],
-            "delay_timer": 30,
-            "is_protection_active": True
-        }
-        with open(profile_file, "w", encoding="utf-8") as f:
-            json.dump(sample_profile, f, indent=2)
+        backup_content = None
+        if os.path.exists(profile_file):
+            with open(profile_file, "r", encoding="utf-8") as f:
+                backup_content = f.read()
 
-        # Read back to simulate app startup
-        with open(profile_file, "r", encoding="utf-8") as f:
-            loaded = json.load(f)
+        try:
+            sample_profile = {
+                "user_name": "Dynamic User",
+                "user_phone": "9876543210",
+                "contacts": [
+                    {"name": "Guardian 1", "phone": "9876543211"},
+                    {"name": "Guardian 2", "phone": "9876543212"}
+                ],
+                "delay_timer": 30,
+                "real_pin": "5678",
+                "fake_pin": "1111",
+                "is_protection_active": True
+            }
+            with open(profile_file, "w", encoding="utf-8") as f:
+                json.dump(sample_profile, f, indent=2)
 
-        self.assertEqual(loaded["user_name"], "Priya Sharma")
-        self.assertEqual(len(loaded["contacts"]), 2)
-        self.assertEqual(loaded["delay_timer"], 30)
-        self.assertTrue(loaded["is_protection_active"])
-        print(f"  ✅ Profile persisted and reloaded successfully: Name='{loaded['user_name']}', Contacts={len(loaded['contacts'])}, Timer={loaded['delay_timer']}s")
+            # Read back to simulate app startup
+            with open(profile_file, "r", encoding="utf-8") as f:
+                loaded = json.load(f)
+
+            self.assertEqual(loaded["user_name"], "Dynamic User")
+            self.assertEqual(len(loaded["contacts"]), 2)
+            self.assertEqual(loaded["delay_timer"], 30)
+            self.assertEqual(loaded["real_pin"], "5678")
+            self.assertEqual(loaded["fake_pin"], "1111")
+            self.assertTrue(loaded["is_protection_active"])
+            print(f"  ✅ Profile persisted and reloaded successfully: Name='{loaded['user_name']}', Contacts={len(loaded['contacts'])}, Timer={loaded['delay_timer']}s, PINs={loaded['real_pin']}/{loaded['fake_pin']}")
+        finally:
+            if backup_content is not None:
+                with open(profile_file, "w", encoding="utf-8") as f:
+                    f.write(backup_content)
 
 
 if __name__ == "__main__":

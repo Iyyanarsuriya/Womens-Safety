@@ -28,12 +28,8 @@ class GeofenceManager:
                 return
             except Exception:
                 pass
-        # Default starting safe zones if none exist
-        self.safe_zones = [
-            {"name": "Home (Parangipettai)", "latitude": 11.48896, "longitude": 79.75388, "radius_km": 0.5},
-            {"name": "College Campus", "latitude": 11.43392, "longitude": 79.70039, "radius_km": 0.8}
-        ]
-        self.save_zones()
+        # Dynamic safe zones initialized empty - configured by user in Settings or loaded from disk
+        self.safe_zones = []
 
     def save_zones(self):
         try:
@@ -118,15 +114,30 @@ class GeofenceManager:
 
 
 class OfflineLocationEngine:
-    def __init__(self, default_lat=11.48896, default_lon=79.75388, auto_simulate=False):
-        self.current_lat = default_lat
-        self.current_lon = default_lon
+    def __init__(self, default_lat=None, default_lon=None, auto_simulate=False):
+        recovered_lat, recovered_lon = self._recover_last_known_coords()
+        self.current_lat = default_lat if default_lat is not None else recovered_lat
+        self.current_lon = default_lon if default_lon is not None else recovered_lon
         self.last_timestamp = time.time()
         self.location_history = []
         self.auto_simulate = auto_simulate
 
         # Stateful Geofence Manager
         self.geofence_manager = GeofenceManager(self.haversine_distance)
+
+    def _recover_last_known_coords(self):
+        """Dynamically retrieves the most recent real coordinate from history logs without hardcoding."""
+        hist_file = os.path.join(DATA_DIR, "location_history.json")
+        if os.path.exists(hist_file):
+            try:
+                with open(hist_file, "r", encoding="utf-8") as f:
+                    entries = json.load(f)
+                    if entries:
+                        last = entries[-1]
+                        return float(last["latitude"]), float(last["longitude"])
+            except Exception:
+                pass
+        return 0.0, 0.0
 
     def haversine_distance(self, lat1, lon1, lat2, lon2):
         """Calculates distance in KM using pure Haversine Math."""

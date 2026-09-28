@@ -89,78 +89,167 @@ Safety_System/
 
 ---
 
-## ⚙️ Installation & Prerequisites
+## ⚙️ Installation & Setup Commands
 
-### 1. Requirements
-- Python 3.10, 3.11, 3.12, or 3.13
-- Windows 10/11 (with Tkinter and audio support)
+### 1. Prerequisites
+- **Python**: Version 3.10, 3.11, 3.12, or 3.13 installed.
+- **Operating System**: Windows 10 or 11 (fully supported with Tkinter, audio mixer, and camera support).
 
-### 2. Install Python Dependencies
-Open PowerShell or Command Prompt in the project folder and run:
+### 2. Environment Setup & Dependency Installation
+
+Open PowerShell or Command Prompt in the project directory:
+
 ```powershell
+# Optional: Create and activate a clean virtual environment
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+
+# Install all required dependencies
 pip install -r requirements.txt
 ```
 
 ---
 
-## 🚀 Running the System
+## 🚀 Commands to Run the System
 
-### Step 1: Start the Backend Server
-In the first terminal window, start the Flask REST API and SQLite database engine:
+To run the complete safety system, you will use two terminal windows:
+
+### Terminal 1 — Start the Backend Server
 ```powershell
 python app.py
 ```
-*Runs on `http://127.0.0.1:5000` and creates `data/backend_safety.db`.*
+> **What this does**:
+> - Launches the Flask REST API on `http://127.0.0.1:5000`.
+> - Creates and connects the SQLite database (`data/backend_safety.db`).
+> - Listens for emergency events, audio evidence uploads, geofence breaches, and route telemetry.
 
-### Step 2: Start the Safety Application
-In a second terminal window, launch the master safety dashboard:
+### Terminal 2 — Start the Master Application & Dashboard
 ```powershell
 python main.py
 ```
-*Launches the GUI dashboard, loads your profile, and begins active safety monitoring.*
+> **What this does**:
+> - Launches the Tkinter Dark-Mode Safety Dashboard.
+> - Initializes the master safety controller, fall detector, network monitor, GPS bridge, and offline sync manager.
+> - Restores your saved profile and safe zones automatically.
 
 ---
 
-## 🧪 Automated Testing
+## 🧪 Command to Run Automated Verification Tests
 
-A test suite covers the entire safety pipeline:
+To verify all system features end-to-end without physical hardware:
+
 ```powershell
 python test_system.py
 ```
+> **Runs all 9 automated test suites in ~8.6 seconds**:
+> 1. `test_01`: Backend API & SQLite DB initialization
+> 2. `test_02`: Dual-sensor Phone Fall Detection algorithm
+> 3. `test_03`: GPS acquisition & Google Maps link generation
+> 4. `test_04`: Stateful Geofencing (`ENTRY` & `EXIT` boundary transitions)
+> 5. `test_05`: LSTM trajectory extrapolation & cluster zone fallback
+> 6. `test_06`: Android telephony, CALL/DIAL fallback & SMS dispatch
+> 7. `test_07`: Offline-first vault queue & backend SQLite sync
+> 8. `test_08`: Master emergency execution sequence
+> 9. `test_09`: Profile persistence across restarts
 
-### Verified Test Cases:
-| Test ID | Component Verified | Expected Outcome |
-| :--- | :--- | :--- |
-| `test_01` | Backend Health & SQLite DB | HTTP 200, database tables initialized |
-| `test_02` | Phone Fall Detection | Freefall + Gyro Tumble + Impact fires emergency callback |
-| `test_03` | GPS & Maps Link | Generates valid GPS coordinate maps link |
-| `test_04` | Stateful Geofencing | Detects discrete `EXIT` breach and `ENTRY` safe events |
-| `test_05` | LSTM & Cluster Prediction | Generates trajectory extrapolation + cluster zone fallback |
-| `test_06` | Android Telephony & Permissions | Priority call escalation (P1 $\rightarrow$ P2), CALL/DIAL fallback, SMS |
-| `test_07` | Offline Storage & Sync | Queues locally, syncs to backend SQLite, marks `SYNCED` |
-| `test_08` | Master Emergency Sequence | Siren + GPS + SMS + Calls + Audio + Sync execution |
-| `test_09` | Profile Persistence | Settings restored across application restarts |
+---
+
+## 🛠️ Setup Functionality & User Guide
+
+### 1. Initial Setup Screen (First-Time User)
+When launching `main.py` for the first time without an existing profile:
+1. **FULL NAME**: Enter the user's name (e.g., `Priya Sharma`).
+2. **MOBILE NUMBER**: Enter the user's 10-digit mobile number.
+3. **EMERGENCY CONTACTS**:
+   - Click **`+ Add`** to add one or more contacts.
+   - Enter **Contact Name** and a valid **10-digit Mobile Number**.
+   - Contact at position **P1** is treated as highest priority (called and texted first), followed by **P2**.
+4. Click **`ACTIVATE SYSTEM PROTECTION ➔`**:
+   - Automatically initializes the speech engine, background listeners, and monitoring loop.
+   - **Saves your profile to `data/user_profile.json`**.
+   - **On future launches, the app automatically loads your saved profile and opens directly into the active dashboard!**
+
+---
+
+### 2. Settings Configuration Dialog (`⚙️` Button)
+Click the **`⚙️ Settings`** icon in the top-right bar of the dashboard:
+- **Change Registered Name / Mobile**: Update your personal details.
+- **SOS Countdown Delay**: Choose between **15 seconds** or **30 seconds** for the emergency confirmation window.
+- **Manage Contacts**:
+   - Reorder priority using **`↑`** and **`↓`** buttons.
+   - Delete contacts with **`✖`**.
+   - Add new contacts with **`+ Add Emergency Contact`**.
+- **Safe Zones / Geofences**:
+   - View active safe zones and their radius.
+   - Click **`+ Add Current Location as Safe Zone`** to register your current position (Home, College, Office) with a custom radius in kilometers.
+   - Delete safe zones using **`✖`**.
+- Click **`SAVE CHANGES`** to instantly apply and persist updates to disk.
+
+---
+
+### 3. Disarm & Stealth Duress PIN Dialog (`🔒` Button)
+Click the **`🔒 Disarm`** icon in the top-right bar:
+- **Real PIN (`1234`)**: Disarms the system gracefully and deactivates emergency monitoring.
+- **Duress Fake PIN (`9999`)**: If forced by an attacker to turn off the app, entering the fake PIN triggers **Stealth Lock Mode**:
+  - The screen turns completely black with hidden cursor (mimicking a shut down / crashed PC).
+  - Silently dispatches the full emergency sequence (retrieves GPS, logs map link, calls guardians, sends SMS, and alerts the backend).
+
+---
+
+### 4. Interactive Route Map & Deviation Testing
+On the dashboard center column:
+1. Click **`🗺️ Open Interactive Map Simulator`**.
+2. Select a preset route:
+   - **Normal Route: Bus Stand to College** (Safe navigation).
+   - **Deviated Route: High-Risk Area** (Simulates leaving route and tests alerts).
+   - **Custom Route**: Click directly on the map to define waypoints.
+3. **Simulator Hotkeys**:
+   - `Space`: Start / Pause simulation playback.
+   - `D`: Trigger an instant $\pm 250\text{ m}$ route deviation.
+   - `S`: Boost speed multiplier ($1\times \rightarrow 2\times \rightarrow 4\times \rightarrow 8\times$).
+   - `R`: Reset position back to route start.
+   - `↑ ↓ ← →`: Manually nudge position step-by-step.
 
 ---
 
 ## 📱 Connecting a Physical Android Phone (Optional)
 
-To connect an Android phone for physical hardware sensor streaming and calling:
+To stream real-time accelerometer, gyroscope, and GPS data from an Android smartphone:
 
-1. **Enable Developer Options & USB Debugging** on the phone.
-2. **Connect Phone via USB** and run port forwarding:
-   ```powershell
-   adb forward tcp:8080 tcp:8080
-   adb forward tcp:8082 tcp:8082
-   ```
-3. **Sensor Streaming**:
-   - Stream accelerometer and gyroscope JSON telemetry to port `8080` (via Termux, Sensor Node, or IP Webcam).
-   - Stream GPS NMEA/JSON telemetry to port `8082`.
-4. **Emergency Calling & SMS**:
-   - Calls execute via Android Intent (`CALL`, falling back to `DIAL` if unprivileged).
-   - Emergency SMS dispatches via local SIM (Termux API) or the MacroDroid webhook.
+### Step 1: Enable USB Debugging
+1. Go to **Settings $\rightarrow$ About Phone** and tap **Build Number** 7 times.
+2. Go to **Developer Options** and enable **USB Debugging**.
+
+### Step 2: Establish Port Forwarding
+Connect your phone via USB cable and run in PowerShell:
+```powershell
+# Verify device is detected
+adb devices
+
+# Forward phone sensor stream (Accelerometer + Gyroscope)
+adb forward tcp:8080 tcp:8080
+
+# Forward phone GPS stream (Location coordinates)
+adb forward tcp:8082 tcp:8082
+```
+
+### Step 3: Stream Sensors from Phone
+- **Sensors (Port 8080)**: Run Termux or any Sensor Streamer app broadcasting sensor JSON payloads (`accelerometer`, `gyroscope`).
+- **GPS (Port 8082)**: Stream GPS location packets (`{"latitude": ..., "longitude": ...}`).
+- **Calling & SMS**:
+  - Phone calls initiate automatically via Android Intents (`CALL` intent, with fallback to `DIAL`).
+  - SMS dispatches via local SIM (Termux API) or the MacroDroid webhook.
 
 ---
+
+## 📦 Git Commands to Commit & Push Updates
+
+To save all changes to your GitHub repository:
+```powershell
+git add .
+git commit -m "Complete Women Safety System with setup guide, automated tests, and offline sync"
+git push origin main
+```
 
 ## 📡 REST API Reference
 

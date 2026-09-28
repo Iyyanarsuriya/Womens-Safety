@@ -18,11 +18,20 @@ PAST_LOCATIONS_FILE = os.path.join(DATA_DIR, "past_locations.json")
 os.makedirs(DATA_DIR, exist_ok=True)
 os.makedirs(BACKEND_AUDIO_DIR, exist_ok=True)
 
-PLANNED_ROUTE = [
-    [11.48896, 79.75388],  # Bus Stand
-    [11.43615, 79.70151],  # Keezhamoongiladi
-    [11.43392, 79.70039]   # College
-]
+ROUTE_FILE = os.path.join(DATA_DIR, "planned_route.json")
+
+
+def load_planned_route():
+    if os.path.exists(ROUTE_FILE):
+        try:
+            with open(ROUTE_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return []
+
+
+PLANNED_ROUTE = load_planned_route()
 
 
 # ── Database Initialization ──────────────────────────────────────────────────
@@ -176,6 +185,8 @@ def predict_next_location():
 
 
 def check_route_deviation(current_lat, current_lon, max_dev_km=1.5):
+    if not PLANNED_ROUTE:
+        return False, 0.0
     min_dist = float('inf')
     for point in PLANNED_ROUTE:
         dist = calculate_distance(current_lat, current_lon, point[0], point[1])
@@ -188,6 +199,29 @@ def check_route_deviation(current_lat, current_lon, max_dev_km=1.5):
 
 
 # ── REST API Endpoints ────────────────────────────────────────────────────────
+
+@app.route('/api/route', methods=['GET', 'POST'])
+def api_manage_route():
+    """Dynamically get or update the planned corridor."""
+    global PLANNED_ROUTE
+    if request.method == 'POST':
+        data = request.json or {}
+        route = data.get("route", [])
+        if isinstance(route, list):
+            PLANNED_ROUTE = route
+            try:
+                with open(ROUTE_FILE, "w", encoding="utf-8") as f:
+                    json.dump(PLANNED_ROUTE, f, indent=2)
+            except Exception as e:
+                return jsonify({"status": "error", "message": str(e)}), 500
+            return jsonify({
+                "status": "success",
+                "message": f"Planned route updated with {len(PLANNED_ROUTE)} waypoints.",
+                "route": PLANNED_ROUTE
+            })
+        return jsonify({"status": "error", "message": "Expected list of [lat, lon] waypoints"}), 400
+
+    return jsonify({"status": "success", "route": PLANNED_ROUTE})
 
 @app.route('/api/status', methods=['GET'])
 def get_status():

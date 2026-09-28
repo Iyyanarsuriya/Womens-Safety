@@ -1,16 +1,9 @@
 {
-  "user_name": "Priya Sharma",
-  "user_phone": "9876543210",
-  "contacts": [
-    {
-      "name": "Mother",
-      "phone": "9876543211"
-    },
-    {
-      "name": "Sister",
-      "phone": "9876543212"
-    }
-  ],
-  "delay_timer": 30,
-  "is_protection_active": true
+  "user_name": "",
+  "user_phone": "",
+  "contacts": [],
+  "delay_timer": 15,
+  "real_pin": "1234",
+  "fake_pin": "9999",
+  "is_protection_active": false
 }

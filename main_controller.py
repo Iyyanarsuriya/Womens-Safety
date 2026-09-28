@@ -27,6 +27,7 @@ class MainSafetyController:
         self.emergency_contacts = emergency_contacts if emergency_contacts else []
         self.real_pin = real_pin
         self.fake_pin = fake_pin
+        self._load_dynamic_profile()
 
         # System Core Engines
         self.location_engine = OfflineLocationEngine()
@@ -197,6 +198,27 @@ class MainSafetyController:
             root_window.config(cursor="none")
             for widget in root_window.winfo_children():
                 widget.pack_forget() if hasattr(widget, 'pack_forget') else widget.grid_forget()
+
+    def _load_dynamic_profile(self):
+        profile_path = os.path.join("data", "user_profile.json")
+        if os.path.exists(profile_path):
+            try:
+                with open(profile_path, "r", encoding="utf-8") as f:
+                    p = json.load(f)
+                    if not self.emergency_contacts:
+                        self.emergency_contacts = [c["phone"] for c in p.get("contacts", []) if "phone" in c]
+                    if "real_pin" in p and p["real_pin"]:
+                        self.real_pin = str(p["real_pin"]).strip()
+                    if "fake_pin" in p and p["fake_pin"]:
+                        self.fake_pin = str(p["fake_pin"]).strip()
+            except Exception as e:
+                print(f"[MainController Profile Load Notice] {e}")
+
+    def set_pins(self, real_pin, fake_pin):
+        if real_pin:
+            self.real_pin = str(real_pin).strip()
+        if fake_pin:
+            self.fake_pin = str(fake_pin).strip()
 
     def set_emergency_contacts(self, contacts_list):
         if isinstance(contacts_list, list):

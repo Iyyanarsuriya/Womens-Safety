@@ -154,7 +154,7 @@ class MapSimulatorWindow:
         tk.Label(ctrl, text="ROUTE", font=("Segoe UI", 8, "bold"),
                  fg="#818cf8", bg=C_PANEL).pack(side="left", padx=(0, 6))
 
-        route_options = list(map_config.ROUTES.keys()) + [CUSTOM_ROUTE_LABEL]
+        route_options = list(map_config.get_dynamic_routes(self.controller).keys()) + [CUSTOM_ROUTE_LABEL]
         self.route_var = tk.StringVar(value=route_options[0])
         route_dd = ttk.Combobox(ctrl, textvariable=self.route_var,
                                 values=route_options, state="readonly",
@@ -345,7 +345,8 @@ class MapSimulatorWindow:
     def _draw_landmarks(self):
         if self.route_var.get() == CUSTOM_ROUTE_LABEL:
             return
-        for label, (llat, llon) in map_config.LANDMARKS.items():
+        dynamic_landmarks = map_config.get_dynamic_landmarks(self.controller)
+        for label, (llat, llon) in dynamic_landmarks.items():
             lx, ly = map_config.latlon_to_pixel(llat, llon, CANVAS_W)
             self.canvas.create_oval(lx - 7, ly - 7, lx + 7, ly + 7,
                                      fill=C_LANDMARK, outline=C_TEXT_HI,
@@ -468,7 +469,9 @@ class MapSimulatorWindow:
             self.route_points = []
             self._update_status("Custom mode: click map or use arrow keys to move.")
         else:
-            self.route_points = list(map_config.ROUTES[self.route_var.get()])
+            self.route_points = list(map_config.get_dynamic_routes(self.controller).get(self.route_var.get(), []))
+            if self.route_points:
+                map_config.auto_center_for_points(self.route_points)
             self._update_status("Route loaded. Press ▶ or hotkeys to begin.")
         self.current_index   = 0
         self.simulated_clock = time.time()

@@ -42,25 +42,29 @@ class NetworkMonitor:
             time.sleep(self.poll_interval)
 
     def _get_default_gateway(self):
-
         try:
+            import socket
             startupinfo = subprocess.STARTUPINFO()
             startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
             res = subprocess.run(["ipconfig"], capture_output=True, text=True, startupinfo=startupinfo)
 
-            gateways = []
             for line in res.stdout.splitlines():
-                if "Default Gateway" in line or "10." in line or "192.168." in line or "172." in line:
+                if "Default Gateway" in line:
                     parts = line.split(":")
-                    if len(parts) > 1 and parts[1].strip():
+                    if len(parts) > 1:
                         val = parts[1].strip()
-                        if not val.startswith("fe80"):
+                        if val and not val.startswith("fe80") and val != "::":
                             return val
-                        gateways.append(val)
-        except Exception:
-            pass
 
-        return "10.140.109.180"
+            # Dynamic fallback: check local interface routing dynamically
+            with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+                s.connect(("8.8.8.8", 80))
+                ip = s.getsockname()[0]
+                # Return the subnet gateway (e.g. 192.168.1.1)
+                sub = ip.rsplit(".", 1)[0]
+                return f"{sub}.1"
+        except Exception:
+            return "127.0.0.1"
 
     def _check_phone_network(self):
         try:
