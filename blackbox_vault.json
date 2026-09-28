@@ -1,0 +1,2536 @@
+[
+  {
+    "timestamp": "2026-09-14T00:03:49.053877",
+    "latitude": 13.081013,
+    "longitude": 80.27108,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-15T20:49:44.921021",
+    "latitude": 13.0823,
+    "longitude": 80.269442,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-15T20:54:46.729256",
+    "latitude": 13.083631,
+    "longitude": 80.268859,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-15T21:00:43.764399",
+    "latitude": 13.079764,
+    "longitude": 80.269231,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-15T21:06:17.828741",
+    "latitude": 13.083439,
+    "longitude": 80.262257,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-15T21:08:06.732374",
+    "latitude": 13.08537,
+    "longitude": 80.26344,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-15T21:09:55.638773",
+    "latitude": 13.086152,
+    "longitude": 80.264481,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-15T21:13:36.626285",
+    "latitude": 13.084291,
+    "longitude": 80.261959,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-15T21:14:56.736181",
+    "latitude": 13.085167,
+    "longitude": 80.263849,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-15T21:19:57.717651",
+    "latitude": 13.086698,
+    "longitude": 80.257382,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-15T21:20:20.179388",
+    "latitude": 13.085804,
+    "longitude": 80.257311,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-15T21:23:54.749576",
+    "latitude": 13.087321,
+    "longitude": 80.253841,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-16T21:38:59.093946",
+    "latitude": 13.08278,
+    "longitude": 80.269587,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-16T21:42:37.006031",
+    "latitude": 13.081895,
+    "longitude": 80.272121,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-16T21:43:09.070320",
+    "latitude": 13.082288,
+    "longitude": 80.271483,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-16T21:48:42.292553",
+    "latitude": 13.085229,
+    "longitude": 80.269189,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-16T21:49:30.352533",
+    "latitude": 13.088421,
+    "longitude": 80.269827,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-17T23:41:56.680043",
+    "latitude": 13.083769,
+    "longitude": 80.269334,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-17T23:44:33.660755",
+    "latitude": 13.083966,
+    "longitude": 80.269029,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-18T10:15:38.567918",
+    "latitude": 13.081508,
+    "longitude": 80.27084,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-18T10:20:01.253463",
+    "latitude": 13.082459,
+    "longitude": 80.272348,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-18T10:30:16.667058",
+    "latitude": 13.081476,
+    "longitude": 80.272859,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-18T10:31:46.337110",
+    "latitude": 13.080774,
+    "longitude": 80.270092,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-18T10:37:42.036624",
+    "latitude": 13.083438,
+    "longitude": 80.270004,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-18T10:42:07.858703",
+    "latitude": 13.088395,
+    "longitude": 80.268788,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-19T12:54:04.366883",
+    "latitude": 13.084061,
+    "longitude": 80.269275,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-19T12:54:55.646870",
+    "latitude": 13.084339,
+    "longitude": 80.269058,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-19T12:57:07.401634",
+    "latitude": 13.083389,
+    "longitude": 80.26664,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-19T12:57:17.068675",
+    "latitude": 13.083181,
+    "longitude": 80.267345,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-19T12:59:21.950514",
+    "latitude": 13.084824,
+    "longitude": 80.268266,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-19T13:12:28.727573",
+    "latitude": 13.080451,
+    "longitude": 80.271214,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-19T13:22:48.187750",
+    "latitude": 13.081859,
+    "longitude": 80.270398,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-19T13:24:05.248738",
+    "latitude": 13.082021,
+    "longitude": 80.270354,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-19T13:24:40.506781",
+    "latitude": 13.082765,
+    "longitude": 80.269444,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-19T13:25:12.577506",
+    "latitude": 13.082784,
+    "longitude": 80.269124,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-19T13:34:20.890855",
+    "latitude": 13.081547,
+    "longitude": 80.269659,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-19T13:37:29.844073",
+    "latitude": 13.081706,
+    "longitude": 80.266673,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-19T13:38:11.504197",
+    "latitude": 13.07997,
+    "longitude": 80.267046,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-19T13:38:49.955178",
+    "latitude": 13.080552,
+    "longitude": 80.267579,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-20T17:26:00.535687",
+    "latitude": 13.081708,
+    "longitude": 80.270194,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:34:14.933711",
+    "latitude": 13.079698547997541,
+    "longitude": 80.2677131114982,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:34:16.394027",
+    "latitude": 13.081897,
+    "longitude": 80.271708,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:34:16.745205",
+    "latitude": 13.079848039873294,
+    "longitude": 80.2678400272697,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:34:18.464028",
+    "latitude": 13.079968089997765,
+    "longitude": 80.2680095090996,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:34:19.626834",
+    "latitude": 13.082298,
+    "longitude": 80.27169,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:34:20.191903",
+    "latitude": 13.08015531205628,
+    "longitude": 80.26814859420496,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:34:21.911603",
+    "latitude": 13.080282767728912,
+    "longitude": 80.26833956020587,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:34:22.848877",
+    "latitude": 13.08263,
+    "longitude": 80.272464,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:34:23.636550",
+    "latitude": 13.0804583010681,
+    "longitude": 80.2684595943828,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:34:25.373903",
+    "latitude": 13.080570207769846,
+    "longitude": 80.26862004092284,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:34:26.074731",
+    "latitude": 13.082375,
+    "longitude": 80.272244,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:34:26.796218",
+    "latitude": 13.080715201281535,
+    "longitude": 80.26876070352107,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:34:27.637029",
+    "latitude": 13.08092091787285,
+    "longitude": 80.26892781676301,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:34:28.289974",
+    "latitude": 13.081010565996039,
+    "longitude": 80.26907628669589,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:34:28.996834",
+    "latitude": 13.0811772280716,
+    "longitude": 80.2691674187221,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:34:29.305722",
+    "latitude": 13.082352,
+    "longitude": 80.271903,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:34:29.652957",
+    "latitude": 13.081388866829558,
+    "longitude": 80.26936427504143,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:34:30.304608",
+    "latitude": 13.081528049153171,
+    "longitude": 80.26947226801327,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:34:32.535255",
+    "latitude": 13.083002,
+    "longitude": 80.271855,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:34:34.819165",
+    "latitude": 13.081618085172847,
+    "longitude": 80.26964147688003,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:34:35.766260",
+    "latitude": 13.083065,
+    "longitude": 80.272768,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:34:36.044143",
+    "latitude": 13.081817366329586,
+    "longitude": 80.26978033163161,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:34:38.993734",
+    "latitude": 13.083116,
+    "longitude": 80.273109,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:38:39.853110",
+    "latitude": 13.079688293608639,
+    "longitude": 80.26770148718848,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:38:42.470508",
+    "latitude": 13.085322,
+    "longitude": 80.270256,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:38:45.693089",
+    "latitude": 13.085072,
+    "longitude": 80.270229,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:38:47.800142",
+    "latitude": 13.079818421823944,
+    "longitude": 80.2678290645863,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:38:48.905769",
+    "latitude": 13.084769,
+    "longitude": 80.270698,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:38:52.129850",
+    "latitude": 13.085059,
+    "longitude": 80.270827,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:39:17.768775",
+    "latitude": 13.08356,
+    "longitude": 80.269967,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:40:53.851681",
+    "latitude": 13.086593,
+    "longitude": 80.270115,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:41:14.714219",
+    "latitude": 13.079688293608639,
+    "longitude": 80.26770148718848,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:41:16.291586",
+    "latitude": 13.08636,
+    "longitude": 80.269874,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:41:19.515868",
+    "latitude": 13.086351,
+    "longitude": 80.269918,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:41:38.776165",
+    "latitude": 13.08728,
+    "longitude": 80.268721,
+    "event": "GEOFENCE_BREACH",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:41:45.201267",
+    "latitude": 13.086797,
+    "longitude": 80.268363,
+    "event": "GEOFENCE_BREACH",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:41:48.439644",
+    "latitude": 13.087016,
+    "longitude": 80.268398,
+    "event": "GEOFENCE_BREACH",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:41:51.674159",
+    "latitude": 13.087052,
+    "longitude": 80.268114,
+    "event": "GEOFENCE_BREACH",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:41:54.901252",
+    "latitude": 13.087075,
+    "longitude": 80.267907,
+    "event": "GEOFENCE_BREACH",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:41:58.125166",
+    "latitude": 13.087013,
+    "longitude": 80.26754,
+    "event": "GEOFENCE_BREACH",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:42:01.375308",
+    "latitude": 13.086819,
+    "longitude": 80.267577,
+    "event": "GEOFENCE_BREACH",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:42:04.599969",
+    "latitude": 13.086969,
+    "longitude": 80.267514,
+    "event": "GEOFENCE_BREACH",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:42:07.866362",
+    "latitude": 13.087384,
+    "longitude": 80.267056,
+    "event": "GEOFENCE_BREACH",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:42:11.101223",
+    "latitude": 13.087089,
+    "longitude": 80.267539,
+    "event": "GEOFENCE_BREACH",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:42:43.163223",
+    "latitude": 13.085994,
+    "longitude": 80.266922,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:43:05.591321",
+    "latitude": 13.086044,
+    "longitude": 80.265783,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:43:31.233345",
+    "latitude": 13.084958,
+    "longitude": 80.265603,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:44:16.093248",
+    "latitude": 13.087561,
+    "longitude": 80.265094,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:45:15.511428",
+    "latitude": 13.079688293608639,
+    "longitude": 80.26770148718848,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:45:16.979155",
+    "latitude": 13.087387,
+    "longitude": 80.26482,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:45:18.269756",
+    "latitude": 13.079818421823944,
+    "longitude": 80.2678290645863,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:45:19.999072",
+    "latitude": 13.080020285027999,
+    "longitude": 80.26798401383196,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:45:20.242835",
+    "latitude": 13.088071,
+    "longitude": 80.264711,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:45:21.742191",
+    "latitude": 13.08014909590965,
+    "longitude": 80.2681167257991,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:45:23.461504",
+    "latitude": 13.088507,
+    "longitude": 80.264173,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:45:26.706211",
+    "latitude": 13.088464,
+    "longitude": 80.264651,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T00:50:05.388265",
+    "latitude": 13.086752,
+    "longitude": 80.266051,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T01:06:47.860837",
+    "latitude": 13.084733,
+    "longitude": 80.271042,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T01:06:51.076426",
+    "latitude": 13.085211,
+    "longitude": 80.270558,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T09:47:17.652900",
+    "latitude": 13.079719619979187,
+    "longitude": 80.26768912175902,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T09:47:18.147869",
+    "latitude": 13.079818690609331,
+    "longitude": 80.26787723774035,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T09:47:18.609221",
+    "latitude": 13.079978887564979,
+    "longitude": 80.26802192319394,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T09:47:19.069407",
+    "latitude": 13.080130295751545,
+    "longitude": 80.26816616328436,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T09:47:19.531626",
+    "latitude": 13.080338160912726,
+    "longitude": 80.26826416033303,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T09:47:19.994434",
+    "latitude": 13.080470467285853,
+    "longitude": 80.26841288353683,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T09:47:20.234903",
+    "latitude": 13.082019,
+    "longitude": 80.268764,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T09:57:00.086988",
+    "latitude": 13.081169,
+    "longitude": 80.271124,
+    "event": "GEOFENCE_BREACH",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T09:57:03.357792",
+    "latitude": 13.081277,
+    "longitude": 80.271217,
+    "event": "GEOFENCE_BREACH",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:04.705666",
+    "latitude": 13.079716286768308,
+    "longitude": 80.26766913072761,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:05.797802",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:09.052202",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:17.764285",
+    "latitude": 13.079716286768308,
+    "longitude": 80.26766913072761,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:18.712250",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:21.947244",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:22.306390",
+    "latitude": 13.079828944255912,
+    "longitude": 80.26782134665768,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:24.534165",
+    "latitude": 13.079983170272335,
+    "longitude": 80.26800957286879,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:25.172854",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:26.757966",
+    "latitude": 13.08016037574139,
+    "longitude": 80.268146215766,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:27.468106",
+    "latitude": 13.0802912296128,
+    "longitude": 80.26831389478956,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:28.194284",
+    "latitude": 13.08043109624278,
+    "longitude": 80.26846542042044,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:28.428593",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:28.927207",
+    "latitude": 13.080590005282856,
+    "longitude": 80.2686047518661,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:29.684886",
+    "latitude": 13.080747296763487,
+    "longitude": 80.26878364641009,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:30.412057",
+    "latitude": 13.080920388587359,
+    "longitude": 80.26891591147897,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:31.658165",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:32.658302",
+    "latitude": 13.081087919817007,
+    "longitude": 80.26902414455914,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:34.891038",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:35.116608",
+    "latitude": 13.081183989230585,
+    "longitude": 80.26922213402749,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:38.115172",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:46.741111",
+    "latitude": 13.079705466383405,
+    "longitude": 80.26767949667838,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:47.254275",
+    "latitude": 13.079847776636479,
+    "longitude": 80.26784804157653,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:47.747851",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:47.969834",
+    "latitude": 13.080013479250985,
+    "longitude": 80.26803465733236,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:48.455034",
+    "latitude": 13.080147530854202,
+    "longitude": 80.2681705757252,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:48.943242",
+    "latitude": 13.080311544716656,
+    "longitude": 80.26827687423842,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:49.429455",
+    "latitude": 13.080469284176674,
+    "longitude": 80.26843444398055,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:49.915580",
+    "latitude": 13.080636351079196,
+    "longitude": 80.26863921628504,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:50.406497",
+    "latitude": 13.080730767864821,
+    "longitude": 80.26874258144946,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:50.902159",
+    "latitude": 13.080893030786585,
+    "longitude": 80.2688605019797,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:51.142938",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:51.403021",
+    "latitude": 13.081049861963855,
+    "longitude": 80.26907727077291,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:51.890880",
+    "latitude": 13.081233820598298,
+    "longitude": 80.26922528101497,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:52.377937",
+    "latitude": 13.08132533197648,
+    "longitude": 80.26931653401053,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:52.873300",
+    "latitude": 13.081496267588824,
+    "longitude": 80.26951213726599,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:53.380114",
+    "latitude": 13.081670953774537,
+    "longitude": 80.26966956835832,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:53.923604",
+    "latitude": 13.08180839653284,
+    "longitude": 80.26982317666153,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:54.377065",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:54.635065",
+    "latitude": 13.081978903614223,
+    "longitude": 80.26991911317542,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:55.134138",
+    "latitude": 13.082089357438617,
+    "longitude": 80.27013032259157,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:55.653218",
+    "latitude": 13.082284780770228,
+    "longitude": 80.27022475841252,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:56.155132",
+    "latitude": 13.084662114112033,
+    "longitude": 80.27264895017049,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:56.674105",
+    "latitude": 13.084768388801352,
+    "longitude": 80.27283188824244,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:57.178482",
+    "latitude": 13.084912866104228,
+    "longitude": 80.27296641681399,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:57.633988",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:57.879670",
+    "latitude": 13.085100889877124,
+    "longitude": 80.27308898375682,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:58.366819",
+    "latitude": 13.085272147088578,
+    "longitude": 80.27327025298645,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:58.866471",
+    "latitude": 13.083172266027002,
+    "longitude": 80.27117490435872,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:59.369698",
+    "latitude": 13.08332616140367,
+    "longitude": 80.27130345822893,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:00:59.868653",
+    "latitude": 13.083444464030773,
+    "longitude": 80.2714671308001,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:01:00.370113",
+    "latitude": 13.083601849256345,
+    "longitude": 80.27161273909486,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:01:00.879947",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:01:01.125122",
+    "latitude": 13.083710523646614,
+    "longitude": 80.27171030502029,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:01:01.636969",
+    "latitude": 13.0838915625081,
+    "longitude": 80.27193967919345,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:01:02.177096",
+    "latitude": 13.084084133809936,
+    "longitude": 80.27205093786019,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:01:02.674935",
+    "latitude": 13.084176982752235,
+    "longitude": 80.2722230445174,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:01:03.173286",
+    "latitude": 13.084338418722696,
+    "longitude": 80.27233821062676,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:01:03.674560",
+    "latitude": 13.084472048871296,
+    "longitude": 80.27251996020196,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:01:04.118502",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:01:04.347023",
+    "latitude": 13.084613531312982,
+    "longitude": 80.2726250629454,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:01:04.865195",
+    "latitude": 13.084790931145113,
+    "longitude": 80.27276283748705,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:01:05.358461",
+    "latitude": 13.08493771816609,
+    "longitude": 80.27296156709372,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:01:05.845729",
+    "latitude": 13.085068091728035,
+    "longitude": 80.27312090595123,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:01:06.339443",
+    "latitude": 13.085222958458097,
+    "longitude": 80.2732609519278,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:01:06.829708",
+    "latitude": 13.085406701367038,
+    "longitude": 80.27342575424264,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:01:07.321299",
+    "latitude": 13.085524825739494,
+    "longitude": 80.27352245268276,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:01:07.572235",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:01:10.821212",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:41:47.192827",
+    "latitude": 13.079721991842518,
+    "longitude": 80.26771000595423,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:41:47.782789",
+    "latitude": 13.079869701872957,
+    "longitude": 80.26787681483194,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:41:48.314731",
+    "latitude": 13.079977298716663,
+    "longitude": 80.26796522674961,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:41:48.543090",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:41:48.841085",
+    "latitude": 13.080150981742074,
+    "longitude": 80.26814121380167,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:41:49.377574",
+    "latitude": 13.080291693342765,
+    "longitude": 80.26829060069907,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:41:49.917980",
+    "latitude": 13.080476558495468,
+    "longitude": 80.26845096978603,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:41:50.458462",
+    "latitude": 13.080615341202579,
+    "longitude": 80.26859900048116,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:41:51.032636",
+    "latitude": 13.080722477113133,
+    "longitude": 80.26874644010377,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:41:51.570823",
+    "latitude": 13.080913156483499,
+    "longitude": 80.2688858627197,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:41:51.820945",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:41:52.119943",
+    "latitude": 13.081065238789366,
+    "longitude": 80.26906834203957,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:41:52.655021",
+    "latitude": 13.081160359797781,
+    "longitude": 80.26919466642883,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:41:53.190046",
+    "latitude": 13.08131945368732,
+    "longitude": 80.26934481466186,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:41:53.730849",
+    "latitude": 13.081506345627647,
+    "longitude": 80.26951950104413,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:41:54.260968",
+    "latitude": 13.081662074067504,
+    "longitude": 80.26968695341994,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:41:54.785809",
+    "latitude": 13.08183773385968,
+    "longitude": 80.26983767072309,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:41:55.048382",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:41:55.311143",
+    "latitude": 13.081918081837866,
+    "longitude": 80.26993752424357,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:41:55.839869",
+    "latitude": 13.082135465287806,
+    "longitude": 80.27006437348363,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:41:56.368375",
+    "latitude": 13.082228604843113,
+    "longitude": 80.27025949943244,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:41:56.897034",
+    "latitude": 13.082417487303802,
+    "longitude": 80.27036260196883,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:41:57.430877",
+    "latitude": 13.082516210164556,
+    "longitude": 80.27057366192453,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:41:57.969616",
+    "latitude": 13.082663373454752,
+    "longitude": 80.2707263307134,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:41:58.498559",
+    "latitude": 13.082854559410316,
+    "longitude": 80.27081058778576,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:41:59.033090",
+    "latitude": 13.082984524214892,
+    "longitude": 80.27098519708504,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:41:59.569650",
+    "latitude": 13.083186800197563,
+    "longitude": 80.27117736284318,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:42:00.119738",
+    "latitude": 13.083326178771419,
+    "longitude": 80.27129252846139,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:42:00.654377",
+    "latitude": 13.083469169638764,
+    "longitude": 80.27144719005774,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:42:01.184833",
+    "latitude": 13.08362960479057,
+    "longitude": 80.27163996521482,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:42:01.482807",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:42:01.720031",
+    "latitude": 13.083786806961747,
+    "longitude": 80.27178943040924,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:42:02.250032",
+    "latitude": 13.083862117351634,
+    "longitude": 80.27192861065994,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:42:02.781583",
+    "latitude": 13.084041622110702,
+    "longitude": 80.27205021630952,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:42:03.323592",
+    "latitude": 13.08418889373153,
+    "longitude": 80.27222220972169,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:42:03.850094",
+    "latitude": 13.08436336296084,
+    "longitude": 80.2723608978035,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:42:04.371797",
+    "latitude": 13.084496276427068,
+    "longitude": 80.27250410114301,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:42:04.713793",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:42:04.936743",
+    "latitude": 13.084686326993321,
+    "longitude": 80.27261979562982,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:42:05.472952",
+    "latitude": 13.08478194286509,
+    "longitude": 80.27282192089915,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:42:05.996650",
+    "latitude": 13.084985224979361,
+    "longitude": 80.27292431653815,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:42:06.531363",
+    "latitude": 13.08511369779248,
+    "longitude": 80.2730949031774,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:42:07.086231",
+    "latitude": 13.085237841025622,
+    "longitude": 80.27321248320622,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:42:07.631803",
+    "latitude": 13.085415810088142,
+    "longitude": 80.27338135251478,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:42:07.937792",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:42:08.198227",
+    "latitude": 13.085569167474317,
+    "longitude": 80.27354478887533,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:42:11.196795",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-21T10:42:14.429615",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-23T18:56:33.565669",
+    "latitude": 13.079671096230316,
+    "longitude": 80.26772336893941,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-23T18:56:35.291708",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-23T18:56:36.385528",
+    "latitude": 13.079841923724484,
+    "longitude": 80.26783023204808,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-23T18:56:36.946920",
+    "latitude": 13.080022604480662,
+    "longitude": 80.26803842620491,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-23T18:56:37.496767",
+    "latitude": 13.080172437371708,
+    "longitude": 80.26812320546732,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-23T18:56:38.523712",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-23T18:56:53.963414",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "MANUAL_SOS_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-23T19:10:14.894967",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "MANUAL_SOS_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:43:12.242645",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "MANUAL_SOS_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:43:27.847860",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "MANUAL_SOS_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:47:28.357100",
+    "latitude": 13.079699208726623,
+    "longitude": 80.26769955372112,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:47:29.381709",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:47:32.608562",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:47:35.034444",
+    "latitude": 13.079699208726623,
+    "longitude": 80.26769955372112,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:47:35.842842",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:47:39.074282",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:47:40.085700",
+    "latitude": 13.079699208726623,
+    "longitude": 80.26769955372112,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:47:41.022427",
+    "latitude": 13.079699208726623,
+    "longitude": 80.26769955372112,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:47:41.517175",
+    "latitude": 13.079833995271544,
+    "longitude": 80.26783307023548,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:47:42.302560",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:47:45.531709",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:47:56.176929",
+    "latitude": 13.079833995271544,
+    "longitude": 80.26783307023548,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:47:58.351885",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:48:01.588798",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:48:07.601287",
+    "latitude": 13.079699208726623,
+    "longitude": 80.26769955372112,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:48:08.027110",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:48:11.260702",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:48:13.717131",
+    "latitude": 13.079699208726623,
+    "longitude": 80.26769955372112,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:48:14.493432",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:48:17.715384",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:48:19.212619",
+    "latitude": 13.079699208726623,
+    "longitude": 80.26769955372112,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:48:20.963736",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:48:24.194404",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:48:24.697948",
+    "latitude": 13.079699208726623,
+    "longitude": 80.26769955372112,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:48:27.421713",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:48:30.651645",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:48:38.012185",
+    "latitude": 13.079699208726623,
+    "longitude": 80.26769955372112,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:48:40.275560",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:48:43.503013",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:48:44.291380",
+    "latitude": 13.079699208726623,
+    "longitude": 80.26769955372112,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:48:46.741503",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:48:49.463709",
+    "latitude": 13.079699208726623,
+    "longitude": 80.26769955372112,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:48:49.957869",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:48:53.191217",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:49:20.372556",
+    "latitude": 13.079699208726623,
+    "longitude": 80.26769955372112,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:49:22.051370",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:49:25.281887",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:49:25.813693",
+    "latitude": 13.079699208726623,
+    "longitude": 80.26769955372112,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:49:28.518927",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:49:31.762715",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:49:35.180596",
+    "latitude": 13.079707660362232,
+    "longitude": 80.2676755177823,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:49:38.180439",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:49:38.751871",
+    "latitude": 13.079707660362232,
+    "longitude": 80.2676755177823,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:49:41.411637",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:49:44.642834",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:51:12.328927",
+    "latitude": 13.079699208726623,
+    "longitude": 80.26769955372112,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:51:14.323483",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:51:17.559503",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:53:56.315059",
+    "latitude": 13.079699208726623,
+    "longitude": 80.26769955372112,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:53:58.699412",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:54:01.929796",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:54:04.459607",
+    "latitude": 13.079699208726623,
+    "longitude": 80.26769955372112,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:54:05.157838",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T09:54:08.404615",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T14:26:45.724531",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "MANUAL_SOS_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T21:59:36.612218",
+    "latitude": 13.079704313814988,
+    "longitude": 80.26773813253355,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T21:59:36.844857",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T21:59:40.106285",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T21:59:42.723975",
+    "latitude": 13.079704313814988,
+    "longitude": 80.26773813253355,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T21:59:43.334689",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T21:59:46.576016",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T21:59:49.053053",
+    "latitude": 13.079704313814988,
+    "longitude": 80.26773813253355,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T21:59:49.806716",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T21:59:50.045870",
+    "latitude": 13.079704313814988,
+    "longitude": 80.26773813253355,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T21:59:50.793980",
+    "latitude": 13.079704313814988,
+    "longitude": 80.26773813253355,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T21:59:51.273220",
+    "latitude": 13.07982193791049,
+    "longitude": 80.26787379718265,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T21:59:51.725093",
+    "latitude": 13.079980413274692,
+    "longitude": 80.26797201966015,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T21:59:52.168319",
+    "latitude": 13.080129844573367,
+    "longitude": 80.26815875398464,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T21:59:52.621824",
+    "latitude": 13.080321060810716,
+    "longitude": 80.26830035056732,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T21:59:53.055972",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T21:59:53.299580",
+    "latitude": 13.080448297545535,
+    "longitude": 80.26846884184853,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T21:59:53.741025",
+    "latitude": 13.080621635683372,
+    "longitude": 80.2685757997857,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T21:59:54.197955",
+    "latitude": 13.080757115591553,
+    "longitude": 80.26876761427971,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T21:59:54.655846",
+    "latitude": 13.080869270893439,
+    "longitude": 80.26886139674232,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T21:59:55.111113",
+    "latitude": 13.081035547138093,
+    "longitude": 80.2690269492153,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T21:59:55.575779",
+    "latitude": 13.081231738884103,
+    "longitude": 80.26918306819123,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T21:59:56.023968",
+    "latitude": 13.08136635460289,
+    "longitude": 80.26935893256442,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T21:59:56.465925",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T21:59:56.709436",
+    "latitude": 13.081496209046701,
+    "longitude": 80.26949073258211,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T21:59:57.167018",
+    "latitude": 13.08162604031576,
+    "longitude": 80.2696123120261,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T21:59:57.627948",
+    "latitude": 13.08177625557254,
+    "longitude": 80.26977873561016,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T21:59:58.076990",
+    "latitude": 13.081983953130717,
+    "longitude": 80.26994639229797,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T21:59:58.538103",
+    "latitude": 13.08206943559179,
+    "longitude": 80.27010395330326,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T21:59:58.977704",
+    "latitude": 13.082233361461569,
+    "longitude": 80.27027548041598,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T21:59:59.441126",
+    "latitude": 13.082438374167776,
+    "longitude": 80.27042690929066,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T21:59:59.883192",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T22:00:00.128786",
+    "latitude": 13.082547560435156,
+    "longitude": 80.2705262780202,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T22:00:00.611949",
+    "latitude": 13.082731065574912,
+    "longitude": 80.27070193763052,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T22:00:01.070920",
+    "latitude": 13.082827894303215,
+    "longitude": 80.27088498706829,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T22:00:01.543348",
+    "latitude": 13.083005648377188,
+    "longitude": 80.27102825566243,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T22:00:01.986769",
+    "latitude": 13.083155680479681,
+    "longitude": 80.27114540930684,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T22:00:03.126157",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T22:00:07.789439",
+    "latitude": 13.083155680479681,
+    "longitude": 80.27114540930684,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T22:00:08.248675",
+    "latitude": 13.083334676662894,
+    "longitude": 80.2712680546268,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T22:00:08.708792",
+    "latitude": 13.083421920285657,
+    "longitude": 80.27142776385058,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T22:00:09.162166",
+    "latitude": 13.08362034219811,
+    "longitude": 80.27156674239981,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T22:00:09.606929",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T22:00:09.840476",
+    "latitude": 13.083713082160143,
+    "longitude": 80.27174616317578,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T22:00:10.285748",
+    "latitude": 13.08388674188071,
+    "longitude": 80.27187647281637,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T22:00:10.743963",
+    "latitude": 13.084057386286739,
+    "longitude": 80.27204552556603,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T22:00:11.183263",
+    "latitude": 13.08417461443687,
+    "longitude": 80.27219175343485,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T22:00:11.646916",
+    "latitude": 13.08435073197135,
+    "longitude": 80.27231406727883,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T22:00:12.091013",
+    "latitude": 13.084530337320386,
+    "longitude": 80.27247219050642,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T22:00:12.548008",
+    "latitude": 13.084619915895344,
+    "longitude": 80.27266766245188,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T22:00:13.006760",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T22:00:13.238210",
+    "latitude": 13.084834136025853,
+    "longitude": 80.27281708771483,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T22:00:13.678843",
+    "latitude": 13.084978518803213,
+    "longitude": 80.272986420372,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T22:00:14.132401",
+    "latitude": 13.085116183834874,
+    "longitude": 80.27313928688534,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T22:00:14.587855",
+    "latitude": 13.085255592823717,
+    "longitude": 80.27325520702318,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T22:00:15.036016",
+    "latitude": 13.085438821874442,
+    "longitude": 80.27342436261094,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T22:00:15.489494",
+    "latitude": 13.085564343197989,
+    "longitude": 80.27355760492317,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T22:00:15.943843",
+    "latitude": 13.085680204036693,
+    "longitude": 80.27370253937019,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T22:00:16.398330",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "HIGH_SPEED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T22:00:19.634927",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "ROUTE_DEVIATION",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T22:00:23.671991",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "MANUAL_SOS_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T22:00:31.257763",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "MANUAL_SOS_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-25T22:24:37.116237",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "CRITICAL_BATTERY",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-26T17:04:24.131496",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "MANUAL_SOS_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-26T19:54:34.847566",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING"
+  },
+  {
+    "timestamp": "2026-09-26T19:54:51.039078",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "MANUAL_SOS_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-26T19:55:18.756069",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-26T19:55:34.881029",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "MANUAL_SOS_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-26T19:55:45.910172",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-27T17:35:27.532204",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING"
+  },
+  {
+    "timestamp": "2026-09-27T18:11:47.864956",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING"
+  },
+  {
+    "timestamp": "2026-09-27T18:12:03.037715",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "MANUAL_SOS_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-27T18:58:34.867263",
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED"
+  }
+]
