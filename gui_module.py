@@ -134,20 +134,73 @@ class ModernSafetyApp:
 
         self.map_trail_points = []
 
+        self.profile_path = os.path.join("data", "user_profile.json")
+        self.load_user_profile()
+
         threading.Thread(target=self.monitor_battery_status, daemon=True).start()
         self.show_splash_screen()
+
+    # ═══════════════════════════════════════════════════════════════════════════
+    # Profile Persistence
+    # ═══════════════════════════════════════════════════════════════════════════
+
+    def load_user_profile(self):
+        """Restores user profile and contacts across application restarts."""
+        if os.path.exists(self.profile_path):
+            try:
+                import json
+                with open(self.profile_path, "r", encoding="utf-8") as f:
+                    p = json.load(f)
+                    self.user_name = p.get("user_name", "")
+                    self.user_phone = p.get("user_phone", "")
+                    self.contacts = p.get("contacts", [])
+                    dt = p.get("delay_timer", 15)
+                    self.delay_timer.set(dt if dt in (15, 30) else 15)
+                    if self.contacts and self.user_name:
+                        self.is_protection_active = True
+                        if self.controller:
+                            self.controller.set_emergency_contacts([c["phone"] for c in self.contacts])
+                print(f"✅ [Profile] Loaded profile for '{self.user_name}' with {len(self.contacts)} emergency contacts.")
+            except Exception as e:
+                print(f"[Profile Load Warning] {e}")
+
+    def save_user_profile(self):
+        """Saves current user profile and contacts to disk."""
+        try:
+            import json
+            data = {
+                "user_name": self.user_name,
+                "user_phone": self.user_phone,
+                "contacts": self.contacts,
+                "delay_timer": self.delay_timer.get(),
+                "is_protection_active": self.is_protection_active
+            }
+            with open(self.profile_path, "w", encoding="utf-8") as f:
+                json.dump(data, f, indent=2)
+            print("💾 [Profile] User profile saved successfully.")
+        except Exception as e:
+            print(f"[Profile Save Warning] {e}")
 
     # ═══════════════════════════════════════════════════════════════════════════
     # Helpers
     # ═══════════════════════════════════════════════════════════════════════════
 
     def send_desktop_popup(self, title, message):
+        """Dispatches an audible alert and an OS desktop notification toast."""
+        def _beep():
+            try:
+                import winsound
+                winsound.MessageBeep(winsound.MB_ICONEXCLAMATION)
+            except Exception:
+                pass
+        threading.Thread(target=_beep, daemon=True).start()
+
         if PLYER_AVAILABLE:
             try:
                 notification.notify(title=title, message=message,
-                                    app_name="AURA Safety Engine", timeout=4)
-            except Exception:
-                pass
+                                    app_name="AURA Safety Engine", timeout=5)
+            except Exception as e:
+                print(f"[Notification Notice] {e}")
 
     def clear_container(self):
         for w in self.main_container.winfo_children():
@@ -305,9 +358,13 @@ class ModernSafetyApp:
         _spin()
 
         def _launch():
-            time.sleep(2.4)
+            time.sleep(2.0)
             self._spinner_active = False
-            self.root.after(0, self.build_setup_screen)
+            if self.is_protection_active and self.contacts:
+                self.start_safety_monitoring_loop()
+                self.root.after(0, lambda: self.build_modern_dashboard(pending_notification="✅ System Armed (Restored from Profile)"))
+            else:
+                self.root.after(0, self.build_setup_screen)
 
         threading.Thread(target=_launch, daemon=True).start()
 
@@ -451,6 +508,7 @@ class ModernSafetyApp:
             self.user_phone = p
             self.contacts   = parsed
             self.is_protection_active = True
+            self.save_user_profile()
 
             if self.controller:
                 self.controller.set_emergency_contacts(
@@ -1195,6 +1253,7 @@ class ModernSafetyApp:
                 messagebox.showerror("Error", "Keep at least one contact.")
                 return
             self.user_name = e_name.get().strip()
+            self.save_user_profile()
             if self.controller:
                 self.controller.set_emergency_contacts(
                     [c["phone"] for c in self.contacts])
@@ -1212,8 +1271,10 @@ class ModernSafetyApp:
     # ═══════════════════════════════════════════════════════════════════════════
 
     def trigger_threat(self, reason_msg="⚠️ CRITICAL THREAT DETECTED ⚠️"):
-        if not self.is_protection_active or self.is_threat_active:
+        if self.is_threat_active:
             return
+        if not self.is_protection_active:
+            self.is_protection_active = True
 
         def _beep():
             try:

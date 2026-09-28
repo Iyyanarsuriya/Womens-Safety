@@ -25,15 +25,19 @@ class NetworkMonitor:
             if self.controller:
                 self.controller.phone_has_signal = status
 
-            if self.gui_app:
-                if hasattr(self.gui_app, "signal_status_str"):
-                    self.gui_app.root.after(
-                        0, lambda s=status_text: self.gui_app.signal_status_str.set(s)
-                    )
-                if hasattr(self.gui_app, "update_signal_label"):
-                    self.gui_app.root.after(
-                        0, lambda s=status_text, c=color: self.gui_app.update_signal_label(s, c)
-                    )
+            if self.gui_app and self.is_running:
+                try:
+                    if hasattr(self.gui_app, "root") and self.gui_app.root.winfo_exists():
+                        if hasattr(self.gui_app, "signal_status_str"):
+                            self.gui_app.root.after(
+                                0, lambda s=status_text: self.gui_app.signal_status_str.set(s)
+                            )
+                        if hasattr(self.gui_app, "update_signal_label"):
+                            self.gui_app.root.after(
+                                0, lambda s=status_text, c=color: self.gui_app.update_signal_label(s, c)
+                            )
+                except Exception:
+                    pass
 
             time.sleep(self.poll_interval)
 

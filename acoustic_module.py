@@ -1,3 +1,4 @@
+import sys
 import json
 import os
 import queue
@@ -9,6 +10,11 @@ import winsound
 import cv2
 import pyaudio
 from vosk import KaldiRecognizer, Model
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 
 class OfflineAcousticEngine:

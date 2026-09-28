@@ -14,9 +14,11 @@ from prediction_module import LSTMTrajectoryPredictor
 from anomaly_engine import TrajectoryAnomalyEngine
 from sensor_module import SystemSensorDiagnostics
 from acoustic_module import OfflineAcousticEngine
-from gui_module import ModernSafetyApp
 from network_monitor_module import NetworkMonitor
 from fall_detector import start_detection
+from gps_bridge_module import GPSBridge
+from sync_manager import SyncManager
+from android_telephony_module import AndroidTelephonyManager
 from macrodroid_dispatch_module import trigger_aura_sos
 
 
@@ -28,14 +30,24 @@ class MainSafetyController:
 
         # System Core Engines
         self.location_engine = OfflineLocationEngine()
-        self.predictor = LSTMTrajectoryPredictor(sequence_length=5)
+        self.predictor = LSTMTrajectoryPredictor(sequence_length=8)
         self.anomaly_engine = TrajectoryAnomalyEngine()
         self.sensor_diagnostics = SystemSensorDiagnostics(battery_threshold=15)
         self.acoustic_engine = OfflineAcousticEngine(trigger_callback=self.voice_trigger_callback)
+        self.telephony_manager = AndroidTelephonyManager()
 
-        # 🔧 FIX: NetworkMonitor needs a `controller` reference to report back
-        # to (it was being constructed with no arguments before, which crashes
-        # immediately). gui_app is attached later in attach_gui().
+        # Offline Synchronization Manager
+        self.sync_manager = SyncManager()
+        self.sync_manager.start()
+
+        # GPS Bridge for real mobile phone location stream over TCP (port 8082)
+        self.gps_bridge = GPSBridge(self)
+        try:
+            self.gps_bridge.start()
+        except Exception as e:
+            print(f"[GPS Bridge] Startup notice: {e}")
+
+        # Network Monitor
         self.network_monitor = NetworkMonitor(self)
 
         # GUI Reference Link
@@ -45,31 +57,21 @@ class MainSafetyController:
         self.system_status = "ACTIVE_MONITORING"
         self.stealth_active = False
         self.previous_loc = self.location_engine.get_current_location()
-
-        # 🔧 Phone's real cellular signal status (updated by NetworkMonitor).
         self.phone_has_signal = True
 
-        # 🔧 FIX: This was accidentally set to a list of PLACE NAMES
-        # (["Home", "Office/College"]) - that's the old GUI-only display
-        # list. Geofencing needs a list of ZONE DICTS with coordinates and
-        # radius, built via add_safe_zone(). Starts empty = geofencing off
-        # until the user adds a zone from Settings.
-        self.safe_zones = []
+        # Safe Zones (synchronized with location_engine's geofence manager)
+        self.safe_zones = self.location_engine.geofence_manager.safe_zones
 
         # Encryption & Local Vault
         self.vault_key_path = "vault.key"
         self.cipher = self._init_encryption_key()
         self.blackbox_file = "blackbox_vault.json"
 
-        # Start Fall Detector automatically - works even before the GUI
-        # exists, thanks to the None-check inside on_fall_detected().
+        # Fall Detector Engine
         self.fall_detector = start_detection(callback_function=self.on_fall_detected)
 
     def attach_gui(self, gui_app):
         self.gui_app = gui_app
-
-        # Now that the GUI exists, give the network monitor a reference to
-        # it (so it can update the live signal label) and start polling.
         if hasattr(self, 'network_monitor') and self.network_monitor:
             self.network_monitor.gui_app = gui_app
             self.network_monitor.start()
@@ -84,7 +86,7 @@ class MainSafetyController:
             self.execute_emergency_sequence("FALL_DETECTED", loc)
 
     def start_emergency_recording(self):
-        """Called by GUI the moment a threat is triggered."""
+        """Called by GUI or threat activation to record 15s audio & video."""
         current_loc = self.location_engine.get_current_location()
         try:
             self.acoustic_engine.record_emergency_audio(duration_seconds=15)
@@ -92,6 +94,22 @@ class MainSafetyController:
         except Exception as e:
             print(f"[Recording Error] {e}")
         self.log_blackbox_event(current_loc["latitude"], current_loc["longitude"], "RECORDING_STARTED")
+
+        # Schedule check to queue recorded audio in SyncManager once finished
+        def _queue_audio_when_ready():
+            time.sleep(16)
+            audio_dir = self.acoustic_engine.audio_dir
+            if os.path.exists(audio_dir):
+                files = sorted(
+                    [os.path.join(audio_dir, f) for f in os.listdir(audio_dir) if f.endswith(".wav")],
+                    key=os.path.getmtime,
+                    reverse=True
+                )
+                if files:
+                    latest = files[0]
+                    self.sync_manager.queue_audio_file(latest, event_id=f"EV_{int(time.time())}")
+
+        threading.Thread(target=_queue_audio_when_ready, daemon=True).start()
 
     # --- BLEAK ASYNC DISPATCHER ---
     def send_bluetooth_alert(self, contact_number, maps_link):
@@ -123,7 +141,6 @@ class MainSafetyController:
         is_fall = bluetooth_packet.get("fall_detected", False)
 
         self.sensor_diagnostics.update_mobile_sensor_telemetry(phone_bat, accel_data, is_fall)
-
         if is_fall:
             current_loc = self.location_engine.get_current_location()
             self.execute_emergency_sequence("MOBILE_FALL_DETECTED", current_loc)
@@ -138,20 +155,6 @@ class MainSafetyController:
             with open(self.vault_key_path, "rb") as kf:
                 key = kf.read()
         return Fernet(key)
-
-    def encrypt_vault_evidence(self, file_path):
-        if os.path.exists(file_path) and not file_path.endswith(".enc"):
-            try:
-                with open(file_path, "rb") as f:
-                    raw_data = f.read()
-                encrypted_data = self.cipher.encrypt(raw_data)
-                enc_path = file_path + ".enc"
-                with open(enc_path, "wb") as ef:
-                    ef.write(encrypted_data)
-                os.remove(file_path)
-                print(f"[Evidence Vault] Encrypted: {enc_path}")
-            except Exception as e:
-                print(f"[Vault Error] Encryption failed: {e}")
 
     def log_blackbox_event(self, lat, lon, event_type):
         entry = {
@@ -195,54 +198,25 @@ class MainSafetyController:
             for widget in root_window.winfo_children():
                 widget.pack_forget() if hasattr(widget, 'pack_forget') else widget.grid_forget()
 
-    # --- DISPATCH & TELEMETRY ---
-    def trigger_auto_call(self, contact_number):
-        def call_worker():
-            time.sleep(2)
-            try:
-                cmd = f"adb shell am start -a android.intent.action.CALL -d tel:{contact_number}"
-                subprocess.run(cmd, shell=True, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-            except Exception as e:
-                print(f"[AutoCall Error] {e}")
-
-        threading.Thread(target=call_worker, daemon=True).start()
-
     def set_emergency_contacts(self, contacts_list):
         if isinstance(contacts_list, list):
             self.emergency_contacts = contacts_list
 
     # --- GEOFENCING: Safe Zone Management ---
     def add_safe_zone(self, name, latitude, longitude, radius_km=0.5):
-        self.safe_zones.append({
-            "name": name, "latitude": latitude, "longitude": longitude, "radius_km": radius_km
-        })
+        self.location_engine.geofence_manager.add_safe_zone(name, latitude, longitude, radius_km)
+        self.safe_zones = self.location_engine.geofence_manager.safe_zones
 
     def remove_safe_zone(self, index):
-        if 0 <= index < len(self.safe_zones):
-            self.safe_zones.pop(index)
+        self.location_engine.geofence_manager.remove_safe_zone(index)
+        self.safe_zones = self.location_engine.geofence_manager.safe_zones
 
     def check_geofence(self, current_loc):
-        """Returns True if current_loc is OUTSIDE every defined safe zone.
-        Empty self.safe_zones = geofencing disabled (always returns False)."""
-        if not self.safe_zones:
-            return False
-        for zone in self.safe_zones:
-            distance_km = self.location_engine.haversine_distance(
-                current_loc["latitude"], current_loc["longitude"],
-                zone["latitude"], zone["longitude"]
-            )
-            if distance_km <= zone["radius_km"]:
-                return False
-        return True
+        return self.location_engine.geofence_manager.is_outside_all_zones(
+            current_loc["latitude"], current_loc["longitude"]
+        )
 
     def send_low_battery_notice(self, percent, location_data):
-        """
-        🔧 Lightweight battery-low handler: sends ONE informational SMS
-        (battery % + location link) to the primary contact. Deliberately
-        does NOT call execute_emergency_sequence() - no siren, no auto-call,
-        no full threat escalation. A low battery is a precaution to flag,
-        not a confirmed emergency.
-        """
         lat = location_data.get("latitude", 0.0)
         lon = location_data.get("longitude", 0.0)
         maps_link = f"https://maps.google.com/?q={lat},{lon}"
@@ -261,7 +235,19 @@ class MainSafetyController:
                 current_loc = self.location_engine.get_current_location()
                 self.execute_emergency_sequence(f"VOICE_EMERGENCY_{word.upper()}", current_loc)
 
+    # ── COMPLETE EMERGENCY EXECUTION ─────────────────────────────────────────
+
     def execute_emergency_sequence(self, threat_type, location_data):
+        """
+        Executes full offline-first emergency sequence:
+          1. Activates emergency state & blackbox record.
+          2. Sounds loud audible alarm/siren.
+          3. Obtains verified GPS / last-known location & builds Google Maps link.
+          4. Dispatches SMS to configured guardians.
+          5. Handles priority-based emergency calls (P1 then P2) according to Android restrictions.
+          6. Records audio evidence.
+          7. Queues event in SyncManager for offline storage & backend synchronization.
+        """
         self.system_status = "EMERGENCY_TRIGGERED"
         lat = location_data.get("latitude", 0.0)
         lon = location_data.get("longitude", 0.0)
@@ -269,72 +255,90 @@ class MainSafetyController:
 
         self.log_blackbox_event(lat, lon, threat_type)
 
+        # 1. Loud Siren / Alarm
         if not self.stealth_active:
-            # If the connected phone has NO cellular signal, force the
-            # high-decibel siren regardless of the laptop's own network.
             force_siren = not self.phone_has_signal
             self.acoustic_engine.play_emergency_siren(duration_cycles=3, force=force_siren)
 
-        if self.emergency_contacts:
-            primary_contact = self.emergency_contacts[0]
-            secondary_contact = self.emergency_contacts[1] if len(self.emergency_contacts) > 1 else None
+        # 2. Audio recording
+        self.start_emergency_recording()
+
+        primary_contact = self.emergency_contacts[0] if self.emergency_contacts else ""
+        secondary_contact = self.emergency_contacts[1] if len(self.emergency_contacts) > 1 else ""
+
+        # 3. Priority-based calling adhering to Android restrictions
+        call_results = self.telephony_manager.place_priority_emergency_call(primary_contact, secondary_contact)
+
+        # 4. SMS Dispatch
+        sms_msg = f"EMERGENCY SOS ALERT! Threat: {threat_type}. Location: {maps_link}"
+        sms_results = self.telephony_manager.dispatch_emergency_sms(
+            primary_contact, secondary_contact, sms_msg, lat, lon
+        )
+
+        # 5. Bluetooth broadcast
+        if primary_contact:
             self.send_bluetooth_alert(primary_contact, maps_link)
 
-            # 🔧 Real SMS + escalating calls (P1 -> wait -> call P1 ->
-            # if unanswered -> call P2) via the MacroDroid macro. This
-            # replaces the separate Termux-SMS and adb-call paths so the
-            # demo doesn't fire duplicate/conflicting real-world actions.
-            trigger_aura_sos(primary_contact, secondary_contact, lat, lon)
+        # 6. Queue in offline-first SyncManager for backend persistence
+        event_payload = {
+            "event_id": f"EV_{int(time.time() * 1000)}",
+            "timestamp": datetime.now().isoformat(),
+            "threat_type": threat_type,
+            "latitude": lat,
+            "longitude": lon,
+            "maps_link": maps_link,
+            "contacts_notified": self.emergency_contacts,
+            "call_status": f"P1:{call_results.get('p1_status')}, P2:{call_results.get('p2_status')}",
+            "sms_status": str(sms_results)
+        }
+        self.sync_manager.queue_emergency_event(event_payload)
+
+        return event_payload
 
     def run_live_safety_cycle(self, simulated_lat=None, simulated_lon=None, simulated_timestamp=None):
+        """Performs a periodic safety inspection cycle."""
         current_loc = self.location_engine.get_current_location()
         if simulated_lat is not None and simulated_lon is not None:
-            current_loc = {"latitude": simulated_lat, "longitude": simulated_lon,
-                           "timestamp": simulated_timestamp if simulated_timestamp is not None else current_loc.get("timestamp")}
+            current_loc = {
+                "latitude": simulated_lat,
+                "longitude": simulated_lon,
+                "timestamp": simulated_timestamp if simulated_timestamp is not None else current_loc.get("timestamp")
+            }
 
         current_lat = current_loc["latitude"]
         current_lon = current_loc["longitude"]
 
+        # LSTM / Cluster prediction update
         self.predictor.update_history(current_lat, current_lon)
         predicted_point = self.predictor.predict_next_coordinate()
 
+        # Route & Anomaly evaluation
         anomaly_res = self.anomaly_engine.evaluate_telemetry(current_loc, self.previous_loc)
-
         if isinstance(anomaly_res, tuple):
             is_threat, threat_type = anomaly_res[0], anomaly_res[1] if len(anomaly_res) > 1 else "ANOMALY_DETECTED"
-        elif isinstance(anomaly_res, dict):
-            is_threat = anomaly_res.get("is_threat", False)
-            threat_type = anomaly_res.get("threat_type", "ANOMALY_DETECTED")
         else:
             is_threat, threat_type = False, "NORMAL"
 
-        # Live speed (km/h) - computed BEFORE previous_loc is overwritten,
-        # so the dashboard's map display can show it in real time.
         speed_kmh = self.location_engine.calculate_speed(self.previous_loc, current_loc)
-
         self.previous_loc = current_loc
 
-        # GEOFENCING: outside every defined safe zone = breach.
-        if self.check_geofence(current_loc) and not is_threat:
-            is_threat, threat_type = True, "GEOFENCE_BREACH"
+        # Geofence Transitions Check (Entry & Exit events)
+        transitions = self.location_engine.geofence_manager.evaluate_transitions(current_lat, current_lon)
+        for t in transitions:
+            self.sync_manager.queue_geofence_event(t["zone_name"], t["event"], t["latitude"], t["longitude"])
+            if t["event"] == "EXIT":
+                is_threat, threat_type = True, f"GEOFENCE_BREACH ({t['zone_name']})"
+            elif t["event"] == "ENTRY" and self.gui_app:
+                self.gui_app.send_desktop_popup("✅ Safe Zone Entered", f"Entered {t['zone_name']}")
 
         diag = self.sensor_diagnostics.run_full_diagnostics()
 
         if is_threat:
             if self.gui_app:
-                # 🔧 FIX: Show the interactive "are you safe?" countdown
-                # FIRST, matching Feature #4's spec, instead of dispatching
-                # SMS/calls/siren immediately on every anomaly. Real
-                # dispatch now only happens if the countdown is not
-                # dismissed in time (handled by gui_app.dispatch_sos()).
                 self.gui_app.root.after(0, lambda: self.gui_app.trigger_threat(f"⚠️ {threat_type}"))
             else:
-                # No GUI attached (headless/testing) - dispatch immediately.
                 self.execute_emergency_sequence(threat_type, current_loc)
 
-        # Push this reading to the dashboard's persistent map display
-        # (red dot + path + predicted point + speed) without blocking or
-        # freezing the GUI.
         if self.gui_app and hasattr(self.gui_app, "update_map_canvas"):
             self.gui_app.root.after(
                 0,
@@ -351,31 +355,18 @@ class MainSafetyController:
             "system_health": diag["diagnostic_status"]
         }
 
-
-# --- SYSTEM LAUNCHER ---
-if __name__ == "__main__":
-    controller = MainSafetyController(real_pin="1234", fake_pin="9999")
-
-    root = tk.Tk()
-    app = ModernSafetyApp(root, controller=controller)
-    controller.attach_gui(app)
-
-    try:
-        controller.acoustic_engine.start_listening()
-        controller.acoustic_engine.set_setup_complete(True)
-    except Exception as e:
-        print(f"Acoustic startup warning: {e}")
-
-    def on_closing():
+    def stop_all(self):
+        """Clean shutdown of all engines and threads."""
         try:
-            if hasattr(controller, 'fall_detector'):
-                controller.fall_detector.stop()
-            if hasattr(controller, 'network_monitor'):
-                controller.network_monitor.stop()
-            controller.acoustic_engine.stop_listening()
-        except Exception:
-            pass
-        root.destroy()
-
-    root.protocol("WM_DELETE_WINDOW", on_closing)
-    root.mainloop()
+            if hasattr(self, 'fall_detector'):
+                self.fall_detector.stop()
+            if hasattr(self, 'network_monitor'):
+                self.network_monitor.stop()
+            if hasattr(self, 'gps_bridge'):
+                self.gps_bridge.stop()
+            if hasattr(self, 'sync_manager'):
+                self.sync_manager.stop()
+            if hasattr(self, 'acoustic_engine'):
+                self.acoustic_engine.stop_listening()
+        except Exception as e:
+            print(f"[Shutdown Notice]: {e}")

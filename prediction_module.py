@@ -2,16 +2,20 @@ import os
 import json
 import math
 import time
+import csv
 import numpy as np
 from datetime import datetime
 
-# ── Persistence path ──────────────────────────────────────────────────────────
+# ── Persistence paths ─────────────────────────────────────────────────────────
 _DATA_DIR          = "data"
 _HISTORY_FILE      = os.path.join(_DATA_DIR, "location_history.json")
+_LOCATION_LOG_CSV  = os.path.join(_DATA_DIR, "location_log.csv")
 _MAX_PERSISTED     = 1000   # keep last N entries in the JSON file
 
+# Battery/Storage optimization thresholds
+_MIN_SAMPLING_DIST_M = 3.0    # skip recording if moved less than 3m
+_MAX_STATIONARY_GAP_S = 30.0   # force record if stationary for > 30s
 
-# ── Haversine (pure NumPy for batch use) ─────────────────────────────────────
 
 def _haversine_m(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
     """Returns distance in metres between two WGS-84 coordinate pairs."""
@@ -24,10 +28,7 @@ def _haversine_m(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
 
 
 def _haversine_batch_m(lats: np.ndarray, lons: np.ndarray) -> np.ndarray:
-    """
-    Vectorised Haversine for consecutive waypoint pairs.
-    Given N-point arrays, returns (N-1,) distances in metres.
-    """
+    """Vectorised Haversine for consecutive waypoint pairs."""
     R = 6_371_000.0
     lat1, lat2 = np.radians(lats[:-1]), np.radians(lats[1:])
     lon1, lon2 = np.radians(lons[:-1]), np.radians(lons[1:])
@@ -37,20 +38,16 @@ def _haversine_batch_m(lats: np.ndarray, lons: np.ndarray) -> np.ndarray:
     return R * 2 * np.arctan2(np.sqrt(a), np.sqrt(1.0 - a))
 
 
-# ── Main predictor class ──────────────────────────────────────────────────────
-
 class LSTMTrajectoryPredictor:
     """
-    Stateful exponentially-weighted sequence extrapolator.
+    LSTM & Cluster-Augmented Trajectory Predictor with Practical Fallback.
 
-    The model maintains a history ring-buffer of GPS coordinates.  On
-    every call to predict_next_coordinate() it:
-      1. Computes per-step displacement vectors (Δlat, Δlon).
-      2. Applies exponentially-increasing weights (most-recent step
-         gets the highest weight) — equivalent to LSTM's recency bias.
-      3. Extrapolates the weighted mean velocity by one time-step.
-      4. Returns the predicted coordinate together with confidence,
-         segment distance, and cumulative trip distance.
+    Features:
+      1. Stateful recency-weighted velocity extrapolation (LSTM sequence approximation).
+      2. Location clustering: Mines frequent location clusters/zones from historical logs.
+      3. Practical fallback: If history is insufficient (<2 points) or velocity
+         extrapolation is noisy, falls back to the nearest location cluster zone centroid.
+      4. Battery and storage efficiency: Filters duplicate/jitter coordinates when stationary.
     """
 
     def __init__(self, sequence_length: int = 10):
@@ -60,99 +57,221 @@ class LSTMTrajectoryPredictor:
         self._timestamps: list[float] = []
         self._cumulative_dist_km: float = 0.0
         self._last_segment_m: float     = 0.0
+        self._last_saved_time: float    = 0.0
 
-        # Load persisted history so the predictor "remembers" across restarts.
+        # Cluster zones mined from historical data
+        self.clusters: list[dict] = []
+
         os.makedirs(_DATA_DIR, exist_ok=True)
         self._load_history()
+        self._mine_clusters_from_history()
 
-    # ── History management ────────────────────────────────────────────────────
+    # ── Mining historical clusters for fallback ───────────────────────────────
 
-    def update_history(self, lat: float, lon: float, timestamp: float = None) -> None:
+    def _mine_clusters_from_history(self):
+        """Discovers spatial clusters/zones from historical CSV and JSON data."""
+        pts = []
+
+        # From CSV
+        if os.path.exists(_LOCATION_LOG_CSV):
+            try:
+                with open(_LOCATION_LOG_CSV, mode="r", encoding="utf-8") as f:
+                    reader = csv.DictReader(f)
+                    for row in reader:
+                        lat = float(row.get("latitude", 0))
+                        lon = float(row.get("longitude", 0))
+                        if lat and lon:
+                            pts.append((lat, lon))
+            except Exception:
+                pass
+
+        # From JSON history
+        if os.path.exists(_HISTORY_FILE):
+            try:
+                with open(_HISTORY_FILE, "r", encoding="utf-8") as fh:
+                    items = json.load(fh)
+                    for item in items:
+                        lat = float(item.get("latitude", 0))
+                        lon = float(item.get("longitude", 0))
+                        if lat and lon:
+                            pts.append((lat, lon))
+            except Exception:
+                pass
+
+        if not pts:
+            # Default known reference cluster zones if no history
+            self.clusters = [
+                {"name": "Parangipettai Bus Stand Zone", "lat": 11.48896, "lon": 79.75388, "count": 20},
+                {"name": "Keezhamoongiladi Zone", "lat": 11.43615, "lon": 79.70151, "count": 15},
+                {"name": "College Campus Zone", "lat": 11.43392, "lon": 79.70039, "count": 18}
+            ]
+            return
+
+        # Simple grid-based centroid clustering (~100m grid)
+        bins = {}
+        for lat, lon in pts:
+            grid_key = (round(lat, 3), round(lon, 3))
+            if grid_key not in bins:
+                bins[grid_key] = {"lats": [], "lons": []}
+            bins[grid_key]["lats"].append(lat)
+            bins[grid_key]["lons"].append(lon)
+
+        clusters = []
+        for idx, (k, v) in enumerate(bins.items(), start=1):
+            if len(v["lats"]) >= 2:
+                c_lat = float(np.mean(v["lats"]))
+                c_lon = float(np.mean(v["lons"]))
+                clusters.append({
+                    "name": f"Location Cluster #{idx}",
+                    "lat": round(c_lat, 6),
+                    "lon": round(c_lon, 6),
+                    "count": len(v["lats"])
+                })
+
+        clusters.sort(key=lambda c: c["count"], reverse=True)
+        self.clusters = clusters[:10] if clusters else [
+            {"name": "Parangipettai Primary Zone", "lat": 11.48896, "lon": 79.75388, "count": 10}
+        ]
+
+    # ── History management with battery/storage efficiency ────────────────────
+
+    def update_history(self, lat: float, lon: float, timestamp: float = None) -> bool:
         """
-        Push a new GPS fix into the history buffer.
-        Automatically trims to `sequence_length` and persists to disk.
+        Pushes a new GPS fix into the buffer with adaptive sampling.
+        Returns True if the point was recorded, False if skipped to save battery/storage.
         """
         ts = timestamp if timestamp is not None else time.time()
 
-        # Compute segment distance before appending (need previous point).
         if self._lats:
             seg_m = _haversine_m(self._lats[-1], self._lons[-1], lat, lon)
-            self._last_segment_m   = seg_m
+            time_gap = ts - self._last_saved_time
+
+            # Filter stationary jitter to conserve battery & storage
+            if seg_m < _MIN_SAMPLING_DIST_M and time_gap < _MAX_STATIONARY_GAP_S:
+                return False
+
+            self._last_segment_m = seg_m
             self._cumulative_dist_km += seg_m / 1000.0
         else:
             self._last_segment_m = 0.0
 
+        self._last_saved_time = ts
         self._lats.append(float(lat))
         self._lons.append(float(lon))
         self._timestamps.append(float(ts))
 
-        # Keep only the last `sequence_length` points in RAM.
         if len(self._lats) > self.sequence_length:
             self._lats.pop(0)
             self._lons.pop(0)
             self._timestamps.pop(0)
 
         self._persist_entry(lat, lon, ts)
+        return True
+
+    # ── Prediction with practical fallback ────────────────────────────────────
 
     def predict_next_coordinate(self) -> dict | None:
         """
-        Returns a prediction dict or None if insufficient history.
-
-        Return keys:
-            predicted_latitude    : float
-            predicted_longitude   : float
-            confidence            : float  (0.0 – 1.0)
-            segment_distance_m    : float  (last step distance in metres)
-            cumulative_distance_km: float  (total trip distance in km)
+        Predicts the next location. If sequence extrapolation is unreliable
+        or history is insufficient, falls back to the nearest cluster/zone.
         """
         n = len(self._lats)
+
+        # Insufficient history fallback
         if n < 2:
+            if n == 1:
+                cur_lat, cur_lon = self._lats[0], self._lons[0]
+                cluster = self._find_nearest_cluster(cur_lat, cur_lon)
+                return {
+                    "predicted_latitude":     cluster["lat"],
+                    "predicted_longitude":    cluster["lon"],
+                    "confidence":             0.40,
+                    "prediction_mode":        "CLUSTER_FALLBACK_INSUFFICIENT_HISTORY",
+                    "cluster_name":           cluster["name"],
+                    "segment_distance_m":     round(self._last_segment_m, 2),
+                    "cumulative_distance_km": round(self._cumulative_dist_km, 4),
+                }
+            elif self.clusters:
+                # Absolute fallback when empty
+                c = self.clusters[0]
+                return {
+                    "predicted_latitude":     c["lat"],
+                    "predicted_longitude":    c["lon"],
+                    "confidence":             0.25,
+                    "prediction_mode":        "GLOBAL_CLUSTER_FALLBACK",
+                    "cluster_name":           c["name"],
+                    "segment_distance_m":     0.0,
+                    "cumulative_distance_km": 0.0
+                }
             return None
 
         lats = np.array(self._lats, dtype=np.float64)
         lons = np.array(self._lons, dtype=np.float64)
 
-        # Exponential weights — weight[i] grows toward the most recent step.
+        # Exponential recency weights
         weights = np.exp(np.linspace(-2.0, 0.0, n - 1))
         weights /= weights.sum()
 
-        # Displacement vectors between consecutive waypoints.
         diff_lats = np.diff(lats)
         diff_lons = np.diff(lons)
+        seg_dists_m = _haversine_batch_m(lats, lons)
 
-        # Haversine-corrected segment distances for confidence scoring.
-        seg_dists_m = _haversine_batch_m(lats, lons)      # shape (n-1,)
-
-        # Weighted mean velocity (degrees per step).
         pred_dlat = float(np.dot(diff_lats, weights))
         pred_dlon = float(np.dot(diff_lons, weights))
 
         predicted_lat = round(lats[-1] + pred_dlat, 7)
         predicted_lon = round(lons[-1] + pred_dlon, 7)
 
-        # Confidence: rises with history depth; penalised by high variance
-        # in segment distances (erratic movement = less certain prediction).
+        # Confidence assessment
         depth_score = min(n / self.sequence_length, 1.0)
-        if len(seg_dists_m) > 1:
-            cv = float(np.std(seg_dists_m) / (np.mean(seg_dists_m) + 1e-9))
-            variance_penalty = max(0.0, 1.0 - cv * 0.3)
+        mean_seg = float(np.mean(seg_dists_m)) if len(seg_dists_m) > 0 else 0.0
+
+        if len(seg_dists_m) > 1 and mean_seg > 1.0:
+            cv = float(np.std(seg_dists_m) / (mean_seg + 1e-9))
+            variance_penalty = max(0.2, 1.0 - cv * 0.3)
         else:
-            variance_penalty = 1.0
+            variance_penalty = 0.95
+
         confidence = round(depth_score * variance_penalty, 3)
+
+        # If variance is extreme / GPS erratic, augment with cluster anchor
+        prediction_mode = "LSTM_SEQUENCE_EXTRAPOLATION"
+        cluster_name = None
+        if confidence < 0.35 and self.clusters:
+            nearest = self._find_nearest_cluster(lats[-1], lons[-1])
+            # Blend 50% sequence + 50% cluster vector
+            predicted_lat = round((predicted_lat + nearest["lat"]) / 2.0, 7)
+            predicted_lon = round((predicted_lon + nearest["lon"]) / 2.0, 7)
+            prediction_mode = "LSTM_CLUSTER_BLENDED_FALLBACK"
+            cluster_name = nearest["name"]
+            confidence = max(confidence, 0.50)
 
         return {
             "predicted_latitude":     predicted_lat,
             "predicted_longitude":    predicted_lon,
             "confidence":             confidence,
+            "prediction_mode":        prediction_mode,
+            "cluster_name":           cluster_name,
             "segment_distance_m":     round(self._last_segment_m, 2),
             "cumulative_distance_km": round(self._cumulative_dist_km, 4),
         }
 
+    def _find_nearest_cluster(self, lat: float, lon: float) -> dict:
+        """Finds closest location cluster zone."""
+        if not self.clusters:
+            return {"name": "Default Anchor", "lat": lat, "lon": lon}
+        best = self.clusters[0]
+        min_d = float('inf')
+        for c in self.clusters:
+            d = _haversine_m(lat, lon, c["lat"], c["lon"])
+            if d < min_d:
+                min_d = d
+                best = c
+        return best
+
     # ── Persistence helpers ───────────────────────────────────────────────────
 
     def _persist_entry(self, lat: float, lon: float, ts: float) -> None:
-        """Appends a single entry to the on-disk history file (non-blocking
-        and exception-safe so a disk error never crashes the safety system)."""
         try:
             existing: list = []
             if os.path.exists(_HISTORY_FILE):
@@ -165,7 +284,6 @@ class LSTMTrajectoryPredictor:
                 "longitude": round(lon, 7),
             })
 
-            # Trim to avoid unbounded file growth.
             if len(existing) > _MAX_PERSISTED:
                 existing = existing[-_MAX_PERSISTED:]
 
@@ -175,71 +293,39 @@ class LSTMTrajectoryPredictor:
             print(f"[Predictor] Persist warning: {exc}")
 
     def _load_history(self) -> None:
-        """Seeds the in-memory buffer from the persisted history file on
-        startup so the model benefits from prior trajectory context."""
         if not os.path.exists(_HISTORY_FILE):
             return
         try:
             with open(_HISTORY_FILE, "r", encoding="utf-8") as fh:
                 entries: list = json.load(fh)
-            # Take only the last `sequence_length` entries.
             recent = entries[-self.sequence_length:]
             for e in recent:
-                ts = time.mktime(datetime.fromisoformat(e["timestamp"]).timetuple())
+                try:
+                    ts = time.mktime(datetime.fromisoformat(e["timestamp"]).timetuple())
+                except Exception:
+                    ts = time.time()
                 self._lats.append(float(e["latitude"]))
                 self._lons.append(float(e["longitude"]))
                 self._timestamps.append(float(ts))
-            print(f"[Predictor] Loaded {len(recent)} historical waypoints from disk.")
+            if recent:
+                print(f"[Predictor] Loaded {len(recent)} historical waypoints from disk.")
         except Exception as exc:
             print(f"[Predictor] History load warning: {exc}")
 
-    # ── Utility ───────────────────────────────────────────────────────────────
-
     def get_history_summary(self) -> dict:
-        """Returns a snapshot of the current in-memory trajectory state."""
         return {
             "buffer_depth":           len(self._lats),
             "sequence_length":        self.sequence_length,
             "cumulative_distance_km": round(self._cumulative_dist_km, 4),
             "last_segment_m":         round(self._last_segment_m, 2),
+            "clusters_count":         len(self.clusters),
             "last_known_lat":         self._lats[-1] if self._lats else None,
             "last_known_lon":         self._lons[-1] if self._lons else None,
         }
 
     def reset(self) -> None:
-        """Clears the in-memory buffer (does not delete the persisted file)."""
         self._lats.clear()
         self._lons.clear()
         self._timestamps.clear()
         self._cumulative_dist_km = 0.0
         self._last_segment_m     = 0.0
-
-
-# ── Standalone smoke-test ─────────────────────────────────────────────────────
-if __name__ == "__main__":
-    print("[LSTM Predictor] Running standalone smoke-test …")
-    predictor = LSTMTrajectoryPredictor(sequence_length=8)
-
-    # Simulate a walk along a real street in Parangipettai area.
-    sample_route = [
-        (11.4889, 79.7538),
-        (11.4875, 79.7520),
-        (11.4861, 79.7502),
-        (11.4847, 79.7484),
-        (11.4833, 79.7466),
-        (11.4819, 79.7448),
-        (11.4805, 79.7430),
-        (11.4791, 79.7412),
-    ]
-
-    for lat, lon in sample_route:
-        predictor.update_history(lat, lon)
-
-    result = predictor.predict_next_coordinate()
-    print(f"  Last GPS:         {sample_route[-1]}")
-    print(f"  Predicted Next:   Lat {result['predicted_latitude']}, "
-          f"Lon {result['predicted_longitude']}")
-    print(f"  Confidence:       {result['confidence'] * 100:.1f}%")
-    print(f"  Segment dist:     {result['segment_distance_m']:.1f} m")
-    print(f"  Trip distance:    {result['cumulative_distance_km']:.4f} km")
-    print(f"  Summary: {predictor.get_history_summary()}")

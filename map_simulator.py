@@ -525,7 +525,9 @@ class MapSimulatorWindow:
             self._tele_vars["cum_dist"].set(f"{cum_km:.3f} km")
 
         status_text = ("⚠️ " + threat_type) if is_threat else "✅ Normal — No Threat"
-        self._update_status(status_text)
+        self._update_status(status_text, is_threat=is_threat)
+        if is_threat and self.controller and getattr(self.controller, "gui_app", None):
+            self.controller.gui_app.send_desktop_popup("⚠️ Map Alert", f"Threat detected: {threat_type}")
 
     def _advance_simulated_clock(self, lat: float, lon: float) -> float:
         prev_idx = self.current_index - 1
@@ -592,9 +594,13 @@ class MapSimulatorWindow:
 
     # ── Status / labels ───────────────────────────────────────────────────────
 
-    def _update_status(self, extra: str = ""):
+    def _update_status(self, extra: str = "", is_threat: bool = False):
         total = max(len(self.route_points) - 1, 0)
         self.status_var.set(f"WP {self.current_index}/{total}  |  {extra}")
+        if is_threat:
+            self.status_lbl.configure(fg=C_THREAT)
+        else:
+            self.status_lbl.configure(fg=C_TEXT_MID)
         self._update_wp_label()
 
     def _update_wp_label(self):

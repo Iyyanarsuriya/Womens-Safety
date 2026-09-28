@@ -1,35 +1,59 @@
+"""
+main.py
+────────────────────────────────────────────────────────────────────────────
+AURA — AI-Powered Women Safety System Launcher.
+Initializes the master controller, Tkinter GUI, sensor engines, and sync daemons.
+"""
+
+import sys
 import tkinter as tk
-from fall_detector import start_detection
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 from gui_module import ModernSafetyApp
 from main_controller import MainSafetyController
-from network_monitor_module import NetworkMonitor
+
 
 def main():
-    print("1. Initializing Master Controller...")
+    print("=" * 60)
+    print("🛡️  AURA — AI Women Safety System Starting Up...")
+    print("=" * 60)
+
+    print("1. Initializing Master Safety Controller & Engines...")
     controller = MainSafetyController()
 
-    print("2. Launching Tkinter GUI Window...")
+    print("2. Launching Modern Dashboard Interface...")
     root = tk.Tk()
     app = ModernSafetyApp(root, controller=controller)
     controller.attach_gui(app)
 
-    def on_fall_detected():
-        print("\n🚨 FALL DETECTED! Triggering Safety Alert! 🚨\n")
-        root.after(0, lambda: app.trigger_threat("💥 HARDWARE FALL DETECTED (Phone Sensor)"))
+    def on_closing():
+        print("\n🛑 Shutting down AURA Safety System cleanly...")
+        try:
+            controller.stop_all()
+        except (Exception, KeyboardInterrupt):
+            pass
+        try:
+            root.destroy()
+        except Exception:
+            pass
+        sys.exit(0)
 
-    print("3. Starting Fall Detector Thread...")
-    detector = start_detection(callback_function=on_fall_detected)
-
-    print("4. Starting Network Monitor Thread...")
-    net_monitor = NetworkMonitor(controller, gui_app=app)
-    net_monitor.start()
+    root.protocol("WM_DELETE_WINDOW", on_closing)
 
     try:
+        print("✅ System Ready & Monitoring! Running Mainloop...\n")
         root.mainloop()
+    except KeyboardInterrupt:
+        on_closing()
     finally:
-        detector.stop()
-        net_monitor.stop()
-        gps_bridge.stop()
+        try:
+            controller.stop_all()
+        except Exception:
+            pass
 
 
 if __name__ == "__main__":

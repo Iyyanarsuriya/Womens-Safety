@@ -1,36 +1,151 @@
+import os
+import json
 import time
 import math
 import random
 
+DATA_DIR = "data"
+ZONES_FILE = os.path.join(DATA_DIR, "safe_zones.json")
+
+
+class GeofenceManager:
+    """
+    Stateful Safe-Location & Geofencing Engine.
+    Tracks entry and exit transitions for each predefined zone.
+    """
+    def __init__(self, haversine_fn):
+        self.haversine_distance = haversine_fn
+        self.safe_zones = []
+        self._zone_states = {}  # {zone_index: "INSIDE" | "OUTSIDE"}
+        os.makedirs(DATA_DIR, exist_ok=True)
+        self.load_zones()
+
+    def load_zones(self):
+        if os.path.exists(ZONES_FILE):
+            try:
+                with open(ZONES_FILE, "r", encoding="utf-8") as f:
+                    self.safe_zones = json.load(f)
+                return
+            except Exception:
+                pass
+        # Default starting safe zones if none exist
+        self.safe_zones = [
+            {"name": "Home (Parangipettai)", "latitude": 11.48896, "longitude": 79.75388, "radius_km": 0.5},
+            {"name": "College Campus", "latitude": 11.43392, "longitude": 79.70039, "radius_km": 0.8}
+        ]
+        self.save_zones()
+
+    def save_zones(self):
+        try:
+            with open(ZONES_FILE, "w", encoding="utf-8") as f:
+                json.dump(self.safe_zones, f, indent=2)
+        except Exception as exc:
+            print(f"[GeofenceManager] Save warning: {exc}")
+
+    def add_safe_zone(self, name: str, latitude: float, longitude: float, radius_km: float = 0.5):
+        self.safe_zones.append({
+            "name": name,
+            "latitude": float(latitude),
+            "longitude": float(longitude),
+            "radius_km": float(radius_km)
+        })
+        self.save_zones()
+
+    def remove_safe_zone(self, index: int):
+        if 0 <= index < len(self.safe_zones):
+            removed = self.safe_zones.pop(index)
+            self._zone_states.pop(index, None)
+            self.save_zones()
+            return removed
+        return None
+
+    def evaluate_transitions(self, current_lat: float, current_lon: float) -> list:
+        """
+        Evaluates current coordinates against all safe zones.
+        Returns list of transition events (e.g. EXIT, ENTRY).
+        """
+        transitions = []
+        for idx, zone in enumerate(self.safe_zones):
+            dist_km = self.haversine_distance(
+                current_lat, current_lon,
+                zone["latitude"], zone["longitude"]
+            )
+            is_inside = dist_km <= zone["radius_km"]
+            prev_state = self._zone_states.get(idx)
+
+            if prev_state is None:
+                # Initialize starting state
+                self._zone_states[idx] = "INSIDE" if is_inside else "OUTSIDE"
+            elif prev_state == "INSIDE" and not is_inside:
+                # Trigger EXIT
+                self._zone_states[idx] = "OUTSIDE"
+                transitions.append({
+                    "event": "EXIT",
+                    "zone_name": zone["name"],
+                    "latitude": current_lat,
+                    "longitude": current_lon,
+                    "distance_km": round(dist_km, 3),
+                    "radius_km": zone["radius_km"],
+                    "message": f"⚠️ Geofence Breach: Left safe zone '{zone['name']}'"
+                })
+            elif prev_state == "OUTSIDE" and is_inside:
+                # Trigger ENTRY
+                self._zone_states[idx] = "INSIDE"
+                transitions.append({
+                    "event": "ENTRY",
+                    "zone_name": zone["name"],
+                    "latitude": current_lat,
+                    "longitude": current_lon,
+                    "distance_km": round(dist_km, 3),
+                    "radius_km": zone["radius_km"],
+                    "message": f"✅ Entered safe zone '{zone['name']}'"
+                })
+
+        return transitions
+
+    def is_outside_all_zones(self, current_lat: float, current_lon: float) -> bool:
+        """Returns True if user is outside every safe zone. False if inside at least one zone or no zones set."""
+        if not self.safe_zones:
+            return False
+        for zone in self.safe_zones:
+            dist_km = self.haversine_distance(
+                current_lat, current_lon,
+                zone["latitude"], zone["longitude"]
+            )
+            if dist_km <= zone["radius_km"]:
+                return False
+        return True
+
+
 class OfflineLocationEngine:
-    def __init__(self, default_lat=13.0827, default_lon=80.2707, auto_simulate=False):
+    def __init__(self, default_lat=11.48896, default_lon=79.75388, auto_simulate=False):
         self.current_lat = default_lat
         self.current_lon = default_lon
         self.last_timestamp = time.time()
         self.location_history = []
-
         self.auto_simulate = auto_simulate
 
-    def haversine_distance(self, lat1, lon1, lat2, lon2):
-        """ Calculates distance in KM using pure Haversine Math """
-        R = 6371.0  # Earth radius in KM
+        # Stateful Geofence Manager
+        self.geofence_manager = GeofenceManager(self.haversine_distance)
 
+    def haversine_distance(self, lat1, lon1, lat2, lon2):
+        """Calculates distance in KM using pure Haversine Math."""
+        R = 6371.0  # Earth radius in KM
         dlat = math.radians(lat2 - lat1)
         dlon = math.radians(lon2 - lon1)
-
         a = (math.sin(dlat / 2) ** 2 +
              math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) *
              math.sin(dlon / 2) ** 2)
-
         c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
         return R * c
 
     def get_current_location(self):
+        """Returns current GPS telemetry or last known valid GPS."""
         current_time = time.time()
 
         if self.auto_simulate:
-            self.current_lat += random.uniform(-0.0005, 0.0005)
-            self.current_lon += random.uniform(-0.0005, 0.0005)
+            self.current_lat += random.uniform(-0.0003, 0.0003)
+            self.current_lon += random.uniform(-0.0003, 0.0003)
 
         location_data = {
             "latitude": round(self.current_lat, 6),
@@ -40,36 +155,21 @@ class OfflineLocationEngine:
         }
 
         self.location_history.append(location_data)
-        if len(self.location_history) > 50:
+        if len(self.location_history) > 100:
             self.location_history.pop(0)
 
         self.last_timestamp = current_time
         return location_data
 
     def calculate_speed(self, prev_loc, curr_loc):
+        """Computes instantaneous velocity in km/h."""
+        if not prev_loc or not curr_loc:
+            return 0.0
         dist_km = self.haversine_distance(
             prev_loc["latitude"], prev_loc["longitude"],
             curr_loc["latitude"], curr_loc["longitude"]
         )
-        time_hours = (curr_loc["timestamp"] - prev_loc["timestamp"]) / 3600.0
-
+        time_hours = (curr_loc.get("timestamp", time.time()) - prev_loc.get("timestamp", time.time())) / 3600.0
         if time_hours <= 0:
             return 0.0
-
         return round(dist_km / time_hours, 2)
-
-
-if __name__ == "__main__":
-    print("[Location Engine] Testing Offline GPS Acquisition (auto_simulate=True for this test only)...")
-    gps = OfflineLocationEngine(auto_simulate=True)
-
-    loc1 = gps.get_current_location()
-    print(f"📍 GPS Point 1: Lat {loc1['latitude']}, Lon {loc1['longitude']}")
-
-    time.sleep(2)
-    loc2 = gps.get_current_location()
-    print(f"📍 GPS Point 2: Lat {loc2['latitude']}, Lon {loc2['longitude']}")
-
-    speed = gps.calculate_speed(loc1, loc2)
-    print(f"🚗 Calculated Speed: {speed} km/h")
-    print(f"🔗 Google Maps Link: {loc2['maps_url']}")

@@ -1,0 +1,175 @@
+{
+  "emergency_events": [
+    {
+      "event_id": "TEST_SOS_1790598384070",
+      "timestamp": "2026-09-28 17:56:24",
+      "threat_type": "HARDWARE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.48896,79.75388",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:CALL_INITIATED_SUCCESS",
+      "sms_status": "SENT",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-28T17:56:24.150557"
+    },
+    {
+      "event_id": "EV_1790598386216",
+      "timestamp": "2026-09-28T17:56:26.216912",
+      "threat_type": "FALL_CONFIRMED_TIMEOUT",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.48896,79.75388",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:FAILED_NO_ADB_CONNECTION, P2:NOT_ATTEMPTED",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-28T17:56:26.250736"
+    },
+    {
+      "event_id": "TEST_SOS_1790598467701",
+      "timestamp": "2026-09-28 17:57:47",
+      "threat_type": "HARDWARE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.48896,79.75388",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:CALL_INITIATED_SUCCESS",
+      "sms_status": "SENT",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-28T17:57:47.816067"
+    },
+    {
+      "event_id": "EV_1790598469886",
+      "timestamp": "2026-09-28T17:57:49.886218",
+      "threat_type": "FALL_CONFIRMED_TIMEOUT",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.48896,79.75388",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:FAILED_NO_ADB_CONNECTION, P2:NOT_ATTEMPTED",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-28T17:57:49.927315"
+    },
+    {
+      "event_id": "TEST_SOS_1790598482431",
+      "timestamp": "2026-09-28 17:58:02",
+      "threat_type": "HARDWARE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.48896,79.75388",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:CALL_INITIATED_SUCCESS",
+      "sms_status": "SENT",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-28T17:58:02.470222"
+    },
+    {
+      "event_id": "EV_1790598484425",
+      "timestamp": "2026-09-28T17:58:04.425190",
+      "threat_type": "FALL_CONFIRMED_TIMEOUT",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.48896,79.75388",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:FAILED_NO_ADB_CONNECTION, P2:NOT_ATTEMPTED",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-28T17:58:04.470949"
+    },
+    {
+      "event_id": "EV_1790598563408",
+      "timestamp": "2026-09-28T17:59:23.408677",
+      "threat_type": "HIGH_SPEED",
+      "latitude": 11.486800979821252,
+      "longitude": 79.7518082034287,
+      "maps_link": "https://maps.google.com/?q=11.486800979821252,79.7518082034287",
+      "audio_filename": "",
+      "contacts_notified": [],
+      "call_status": "P1:ABORTED_NO_CONTACTS, P2:NOT_ATTEMPTED",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-28T18:06:01.697654"
+    },
+    {
+      "event_id": "TEST_SOS_1790598961657",
+      "timestamp": "2026-09-28 18:06:01",
+      "threat_type": "HARDWARE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.48896,79.75388",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:CALL_INITIATED_SUCCESS",
+      "sms_status": "SENT",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-28T18:06:01.763016"
+    },
+    {
+      "event_id": "EV_1790598963730",
+      "timestamp": "2026-09-28T18:06:03.730682",
+      "threat_type": "FALL_CONFIRMED_TIMEOUT",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.48896,79.75388",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:FAILED_NO_ADB_CONNECTION, P2:NOT_ATTEMPTED",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-28T18:06:03.780880"
+    }
+  ],
+  "audio_queue": [
+    {
+      "file_path": "C:\\Users\\iyyan\\Downloads\\Safety_System (2)\\Safety_System\\recordings\\audio\\TEST_Audio.wav",
+      "filename": "TEST_Audio.wav",
+      "event_id": "TEST_SOS_1790598384070",
+      "queued_at": "2026-09-28T17:56:24.080866",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-28T17:56:24.203584"
+    }
+  ],
+  "geofence_events": []
+}
