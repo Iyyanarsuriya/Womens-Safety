@@ -2693,5 +2693,75 @@
     "longitude": 79.7466,
     "event": "RECORDING_STARTED",
     "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-28T18:41:50.703631",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "FALL_CONFIRMED_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-28T18:41:50.726932",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-28T18:42:08.586305",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "FALL_CONFIRMED_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-28T18:42:08.608844",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-28T18:43:08.264956",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "FALL_CONFIRMED_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-28T18:43:08.290911",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-28T18:43:30.344209",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "FALL_CONFIRMED_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-28T18:43:30.366256",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-28T18:47:19.166868",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "FALL_CONFIRMED_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED"
+  },
+  {
+    "timestamp": "2026-09-28T18:47:19.181664",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED"
   }
 ]

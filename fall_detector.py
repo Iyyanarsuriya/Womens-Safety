@@ -62,7 +62,7 @@ class FallDetector:
     def stop(self):
         self._stop_event.set()
         if self._thread.is_alive():
-            self._thread.join(timeout=3.0)
+            self._thread.join(timeout=1.0)
         logger.info("Fall Detector thread stopped.")
 
     @property
@@ -102,7 +102,7 @@ class FallDetector:
                     "Sensor socket retry (%s: %s). Re-listening in %.1f s...",
                     type(exc).__name__, exc, RECONNECT_DELAY_SEC,
                 )
-                time.sleep(RECONNECT_DELAY_SEC)
+                self._stop_event.wait(RECONNECT_DELAY_SEC)
 
     def _connect_and_read(self):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:

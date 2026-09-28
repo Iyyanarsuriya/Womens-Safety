@@ -28,13 +28,13 @@ class GPSBridge:
             try:
                 self._connect_and_read()
             except Exception as exc:
-                print(f"🛰️ [GPS Bridge] Stream error ({exc}). Retrying in {RECONNECT_DELAY_SEC}s...")
-                time.sleep(RECONNECT_DELAY_SEC)
+                if not self._stop_event.is_set():
+                    print(f"🛰️ [GPS Bridge] Stream notice ({exc}). Retrying in {RECONNECT_DELAY_SEC}s...")
+                self._stop_event.wait(RECONNECT_DELAY_SEC)
 
     def _connect_and_read(self):
-        print(f"🛰️ [GPS Bridge] Connecting to {HOST}:{PORT} ...")
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-            sock.settimeout(10.0)
+            sock.settimeout(2.0)
             sock.connect((HOST, PORT))
             sock.settimeout(None)
             print("🛰️ [GPS Bridge] Connected. Listening for location data...")

@@ -374,6 +374,186 @@
       "synced": true,
       "retry_count": 0,
       "synced_at": "2026-09-28T18:40:50.424964"
+    },
+    {
+      "event_id": "TEST_SOS_1790601108783",
+      "timestamp": "2026-09-28 18:41:48",
+      "threat_type": "HARDWARE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.48896,79.75388",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:CALL_INITIATED_SUCCESS",
+      "sms_status": "SENT",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-28T18:41:48.853202"
+    },
+    {
+      "event_id": "EV_1790601110756",
+      "timestamp": "2026-09-28T18:41:50.756841",
+      "threat_type": "FALL_CONFIRMED_TIMEOUT",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.4833,79.7466",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:FAILED_NO_ADB_CONNECTION, P2:NOT_ATTEMPTED",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-28T18:41:50.792976"
+    },
+    {
+      "event_id": "TEST_SOS_1790601126686",
+      "timestamp": "2026-09-28 18:42:06",
+      "threat_type": "HARDWARE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.48896,79.75388",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:CALL_INITIATED_SUCCESS",
+      "sms_status": "SENT",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-28T18:42:06.738681"
+    },
+    {
+      "event_id": "EV_1790601128636",
+      "timestamp": "2026-09-28T18:42:08.636211",
+      "threat_type": "FALL_CONFIRMED_TIMEOUT",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.4833,79.7466",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:FAILED_NO_ADB_CONNECTION, P2:NOT_ATTEMPTED",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-28T18:42:08.673184"
+    },
+    {
+      "event_id": "TEST_SOS_1790601186255",
+      "timestamp": "2026-09-28 18:43:06",
+      "threat_type": "HARDWARE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.48896,79.75388",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:CALL_INITIATED_SUCCESS",
+      "sms_status": "SENT",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-28T18:43:06.301275"
+    },
+    {
+      "event_id": "EV_1790601188319",
+      "timestamp": "2026-09-28T18:43:08.319815",
+      "threat_type": "FALL_CONFIRMED_TIMEOUT",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.4833,79.7466",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:FAILED_NO_ADB_CONNECTION, P2:NOT_ATTEMPTED",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-28T18:43:08.362599"
+    },
+    {
+      "event_id": "TEST_SOS_1790601208235",
+      "timestamp": "2026-09-28 18:43:28",
+      "threat_type": "HARDWARE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.48896,79.75388",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:CALL_INITIATED_SUCCESS",
+      "sms_status": "SENT",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-28T18:43:28.283104"
+    },
+    {
+      "event_id": "EV_1790601210391",
+      "timestamp": "2026-09-28T18:43:30.391903",
+      "threat_type": "FALL_CONFIRMED_TIMEOUT",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.4833,79.7466",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:FAILED_NO_ADB_CONNECTION, P2:NOT_ATTEMPTED",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-28T18:43:30.440547"
+    },
+    {
+      "event_id": "TEST_SOS_1790601437330",
+      "timestamp": "2026-09-28 18:47:17",
+      "threat_type": "HARDWARE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.48896,79.75388",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:CALL_INITIATED_SUCCESS",
+      "sms_status": "SENT",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-28T18:47:17.403732"
+    },
+    {
+      "event_id": "EV_1790601439211",
+      "timestamp": "2026-09-28T18:47:19.211305",
+      "threat_type": "FALL_CONFIRMED_TIMEOUT",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.4833,79.7466",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:FAILED_NO_ADB_CONNECTION, P2:NOT_ATTEMPTED",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-28T18:47:19.251842"
     }
   ],
   "audio_queue": [

@@ -10,22 +10,24 @@ class NetworkMonitor:
         self.gui_app = gui_app
         self.poll_interval = poll_interval
         self.is_running = False
+        self._stop_event = threading.Event()
         self.phone_has_signal = True
 
     def start(self):
         self.is_running = True
+        self._stop_event.clear()
         threading.Thread(target=self._poll_loop, daemon=True).start()
         print("📶 [Network Monitor] Active - Hotspot IP Tracking...")
 
     def _poll_loop(self):
-        while self.is_running:
+        while self.is_running and not self._stop_event.is_set():
             status, status_text, color = self._check_phone_network()
             self.phone_has_signal = status
 
             if self.controller:
                 self.controller.phone_has_signal = status
 
-            if self.gui_app and self.is_running:
+            if self.gui_app and self.is_running and not self._stop_event.is_set():
                 try:
                     if hasattr(self.gui_app, "root") and self.gui_app.root.winfo_exists():
                         if hasattr(self.gui_app, "signal_status_str"):
@@ -39,7 +41,7 @@ class NetworkMonitor:
                 except Exception:
                     pass
 
-            time.sleep(self.poll_interval)
+            self._stop_event.wait(self.poll_interval)
 
     def _get_default_gateway(self):
         try:
@@ -90,3 +92,4 @@ class NetworkMonitor:
 
     def stop(self):
         self.is_running = False
+        self._stop_event.set()

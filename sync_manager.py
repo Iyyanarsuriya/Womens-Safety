@@ -169,7 +169,7 @@ class SyncManager:
     def _run_loop(self):
         while not self._stop_event.is_set():
             self._sync_pass()
-            time.sleep(SYNC_INTERVAL_SEC)
+            self._stop_event.wait(SYNC_INTERVAL_SEC)
 
     def _sync_pass(self):
         if not self._check_backend_alive():
