@@ -103,6 +103,9 @@ class MainSafetyController:
         self.demo_lon = None
         self.demo_speed = 0.0
 
+        # Display Only Mode (Show tracking & map visually only, no automated emergency actions)
+        self.display_only_mode = True
+
         # Automated Call Escalation State
         self.call_escalation_timeout_sec = 60  # Configurable 60 - 120s
         self.call_escalation_thread = None
@@ -648,11 +651,17 @@ class MainSafetyController:
 
         diag = self.sensor_diagnostics.run_full_diagnostics()
 
+        is_display_only = getattr(self, "display_only_mode", False) or (self.gui_app and getattr(self.gui_app, "display_only_mode", False))
         if is_threat:
-            if self.gui_app:
-                self.gui_app.root.after(0, lambda: self.gui_app.trigger_threat(f"⚠️ {threat_type}"))
+            if is_display_only:
+                print(f"👁️ [DISPLAY ONLY] Threat evaluated: '{threat_type}'. Emergency actions suppressed (Show Only active).")
+                if self.gui_app and hasattr(self.gui_app, "_tele_threat"):
+                    self.gui_app._tele_threat.set("👁️ SHOW ONLY")
             else:
-                self.execute_emergency_sequence(threat_type, current_loc)
+                if self.gui_app:
+                    self.gui_app.root.after(0, lambda: self.gui_app.trigger_threat(f"⚠️ {threat_type}"))
+                else:
+                    self.execute_emergency_sequence(threat_type, current_loc)
 
         if self.gui_app and hasattr(self.gui_app, "update_map_canvas"):
             self.gui_app.root.after(

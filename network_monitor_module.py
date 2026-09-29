@@ -14,8 +14,11 @@ class NetworkMonitor:
         self.is_running = False
         self._stop_event = threading.Event()
         self.phone_has_signal = True
-        self.was_connected = True
+        self.was_connected = None  # None indicates initial probe pending
         self.alarm_active = False
+        self._consecutive_failures = 0
+        self._consecutive_successes = 0
+        self._last_alert_time = 0.0
 
     @property
     def is_connected(self):
@@ -32,6 +35,11 @@ class NetworkMonitor:
         Prevents repeated alarms when already disconnected.
         Returns event dict or None.
         """
+        if self.was_connected is None:
+            self.was_connected = now_connected
+            self.phone_has_signal = now_connected
+            return None
+
         if not now_connected and self.was_connected:
             self.was_connected = False
             self.phone_has_signal = False
@@ -58,33 +66,76 @@ class NetworkMonitor:
         print("📶 [Network Monitor] Active - Hotspot IP & Connectivity Tracking...")
 
     def _poll_loop(self):
+        # Initial check to establish baseline without triggering alert
+        try:
+            init_status, init_text, init_color = self._check_phone_network()
+            self.phone_has_signal = init_status
+            self.was_connected = init_status
+            if self.controller:
+                self.controller.phone_has_signal = init_status
+        except Exception:
+            self.was_connected = False
+            self.phone_has_signal = False
+
         while self.is_running and not self._stop_event.is_set():
-            status, status_text, color = self._check_phone_network()
-            self.phone_has_signal = status
+            raw_status, status_text, color = self._check_phone_network()
+
+            # Debounce filter: require 3 consecutive failures to trigger disconnect,
+            # and 2 consecutive successes to trigger reconnect.
+            # This completely prevents transient Wi-Fi drops from triggering alert loops.
+            if raw_status:
+                self._consecutive_successes += 1
+                self._consecutive_failures = 0
+            else:
+                self._consecutive_failures += 1
+                self._consecutive_successes = 0
+
+            # Determine debounced status
+            if self.was_connected:
+                # Need at least 3 consecutive failures to confirm disconnection
+                if self._consecutive_failures >= 3:
+                    now = time.time()
+                    if (now - self._last_alert_time) > 15.0:
+                        self._last_alert_time = now
+                        self._handle_connection_transition(False)
+                    else:
+                        self.was_connected = False
+                        self.phone_has_signal = False
+            else:
+                # Need at least 2 consecutive successes to confirm reconnection
+                if self._consecutive_successes >= 2:
+                    now = time.time()
+                    if (now - self._last_alert_time) > 15.0:
+                        self._last_alert_time = now
+                        self._handle_connection_transition(True)
+                    else:
+                        self.was_connected = True
+                        self.phone_has_signal = True
 
             if self.controller:
-                self.controller.phone_has_signal = status
-
-            # Handle state transitions
-            if not status and self.was_connected:
-                # TRANSITION: CONNECTED -> DISCONNECTED
-                self._handle_disconnection()
-            elif status and not self.was_connected:
-                # TRANSITION: DISCONNECTED -> CONNECTED (RECONNECTION)
-                self._handle_reconnection()
-
-            self.was_connected = status
+                self.controller.phone_has_signal = self.phone_has_signal
 
             if self.gui_app and self.is_running and not self._stop_event.is_set():
                 try:
                     if hasattr(self.gui_app, "root") and self.gui_app.root.winfo_exists():
-                        if hasattr(self.gui_app, "signal_status_str"):
+                        # Only update signal status if not overridden by phone ADB connection
+                        p_adb = False
+                        if self.controller and hasattr(self.controller, "telephony_manager"):
+                            try:
+                                dev_conn = getattr(self.controller.telephony_manager, "is_device_connected", False)
+                                p_adb = bool(dev_conn)
+                            except Exception:
+                                pass
+                        if not p_adb and hasattr(self.gui_app, "signal_status_str"):
+                            curr_text = "📶 Signal: Connected" if self.phone_has_signal else "🚫 Signal: Disconnected"
                             self.gui_app.root.after(
-                                0, lambda s=status_text: self.gui_app.signal_status_str.set(s)
+                                0, lambda s=curr_text: self.gui_app.signal_status_str.set(s)
                             )
                         if hasattr(self.gui_app, "update_signal_label"):
+                            curr_col = "#10b981" if self.phone_has_signal else "#ef4444"
+                            curr_text = "📶 Signal: Connected" if self.phone_has_signal else "🚫 Signal: Disconnected"
                             self.gui_app.root.after(
-                                0, lambda s=status_text, c=color: self.gui_app.update_signal_label(s, c)
+                                0, lambda s=curr_text, c=curr_col: self.gui_app.update_signal_label(s, c)
                             )
                 except Exception:
                     pass
@@ -195,7 +246,7 @@ class NetworkMonitor:
             gateway_ip = self._get_default_gateway()
 
             ping_res = subprocess.run(
-                ["ping", "-n", "1", "-w", "500", gateway_ip],
+                ["ping", "-n", "1", "-w", "1000", gateway_ip],
                 capture_output=True,
                 text=True,
                 startupinfo=startupinfo,

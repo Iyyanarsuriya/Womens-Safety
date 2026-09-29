@@ -32,6 +32,24 @@ try:
 except ImportError:
     PSUTIL_AVAILABLE = False
 
+try:
+    import cv2
+    CV2_AVAILABLE = True
+except ImportError:
+    CV2_AVAILABLE = False
+
+try:
+    from PIL import Image, ImageTk
+    PIL_AVAILABLE = True
+except ImportError:
+    PIL_AVAILABLE = False
+
+try:
+    import winsound
+    WINSOUND_AVAILABLE = True
+except ImportError:
+    WINSOUND_AVAILABLE = False
+
 
 # ── Colour palette (single source of truth) ────────────────────────────────────
 _P = {
@@ -142,6 +160,11 @@ class ModernSafetyApp:
         self._last_move_time        = time.time()
         self._map_base_drawn        = False
         self.demo_coords            = []
+
+        # ── Display Only Mode (Show Only: Map & Telemetry visually without executing actions) ──
+        self.display_only_mode      = False
+        if self.controller:
+            self.controller.display_only_mode = self.display_only_mode
 
         # ── MacroDroid contact entries (set by settings dialog) ───────────────
         # p1_entry / p2_entry are populated once the dashboard is built.
@@ -435,6 +458,14 @@ class ModernSafetyApp:
             try:
                 if self.is_protection_active and self.contacts:
                     self.start_safety_monitoring_loop()
+                    try:
+                        if self.controller and hasattr(self.controller, "acoustic_engine"):
+                            self.controller.acoustic_engine.trigger_callback = self.handle_voice_event
+                            self.controller.acoustic_engine.start_listening()
+                            self.controller.acoustic_engine.set_setup_complete(True)
+                            self.acoustic_engine = self.controller.acoustic_engine
+                    except Exception as e:
+                        print(f"Acoustic startup notice: {e}")
                     self.root.after(0, lambda: self.build_modern_dashboard(pending_notification="✅ System Armed (Restored from Profile)"))
                 else:
                     self.root.after(0, self.build_setup_screen)
@@ -669,7 +700,11 @@ class ModernSafetyApp:
                             model = p_info.get("device_model", "Phone")
                             self.signal_status_str.set(f"📱 Phone: {model}")
                         else:
-                            self.signal_status_str.set("📱 Phone: Disconnected")
+                            net_ok = hasattr(self.controller, "network_monitor") and self.controller.network_monitor.is_connected
+                            if net_ok:
+                                self.signal_status_str.set("📶 Signal: Connected")
+                            else:
+                                self.signal_status_str.set("📱 Phone: Disconnected")
                     except Exception:
                         pass
             time.sleep(10)
@@ -750,6 +785,11 @@ class ModernSafetyApp:
                                 impact_alert=None):
         self.clear_container()
         self.map_trail_points = []
+
+        # Entering user dashboard defaults map to Display Only mode (Show Only — no actions taken)
+        self.display_only_mode = True
+        if self.controller:
+            self.controller.display_only_mode = True
 
         # ── Top navigation bar ────────────────────────────────────────────────
         topbar = tk.Frame(self.main_container, bg=_P["bg_panel"],
@@ -1045,6 +1085,23 @@ class ModernSafetyApp:
         tk.Label(mhdr, text="LIVE ROUTE MAP",
                  font=("Segoe UI", 8, "bold"),
                  fg=_P["green"], bg=_P["bg_card"]).pack(side="left")
+
+        def _toggle_display_only():
+            self.display_only_mode = not getattr(self, "display_only_mode", True)
+            if self.controller:
+                self.controller.display_only_mode = self.display_only_mode
+            self._update_display_only_btn()
+            mode_desc = "Display Only (Show Only — No Actions Taken)" if self.display_only_mode else "Action Mode (Emergency Actions Armed)"
+            self.send_desktop_popup("👁️ Display Mode", f"Mode: {mode_desc}")
+
+        self.btn_display_only = tk.Button(
+            mhdr, font=("Segoe UI", 7, "bold"),
+            bd=0, cursor="hand2", padx=8, pady=2,
+            command=_toggle_display_only
+        )
+        self.btn_display_only.pack(side="left", padx=(10, 0))
+        self._update_display_only_btn()
+
         tk.Label(mhdr, textvariable=self.speed_indicator_str,
                  font=("Segoe UI", 8, "bold"),
                  fg=_P["amber"], bg=_P["bg_card"]).pack(side="right")
@@ -1397,6 +1454,33 @@ class ModernSafetyApp:
             lb.selection_clear(0, tk.END)
             _update_selection_status()
 
+        if "Video" in title:
+            def _rec_test_vid():
+                def _bg():
+                    if self.controller and hasattr(self.controller, "acoustic_engine"):
+                        self.controller.acoustic_engine.record_emergency_video(duration_seconds=5)
+                    time.sleep(5.5)
+                    dlg.after(0, reload_list)
+                threading.Thread(target=_bg, daemon=True).start()
+                self.send_desktop_popup("📹 Video Recording", "Recording 5s test evidence video...")
+
+            tk.Button(toolbar, text="🎥 Record 5s Video", font=("Segoe UI", 7, "bold"),
+                      bg=_P["purple"], fg="#ffffff", bd=0, cursor="hand2",
+                      command=_rec_test_vid, padx=6, pady=2).pack(side="left", padx=(4, 0))
+        elif "Audio" in title:
+            def _rec_test_aud():
+                def _bg():
+                    if self.controller and hasattr(self.controller, "acoustic_engine"):
+                        self.controller.acoustic_engine.record_emergency_audio(duration_seconds=5)
+                    time.sleep(5.5)
+                    dlg.after(0, reload_list)
+                threading.Thread(target=_bg, daemon=True).start()
+                self.send_desktop_popup("🎙️ Audio Recording", "Recording 5s test evidence audio...")
+
+            tk.Button(toolbar, text="🎙️ Record 5s Audio", font=("Segoe UI", 7, "bold"),
+                      bg=_P["accent"], fg=_P["bg_root"], bd=0, cursor="hand2",
+                      command=_rec_test_aud, padx=6, pady=2).pack(side="left", padx=(4, 0))
+
         tk.Button(toolbar, text="Select All", font=("Segoe UI", 7, "bold"),
                   bg=_P["bg_card2"], fg=_P["text_bright"], bd=0, cursor="hand2",
                   command=_select_all, padx=6, pady=2).pack(side="right", padx=(4, 0))
@@ -1461,12 +1545,19 @@ class ModernSafetyApp:
                 messagebox.showerror("File Missing", f"'{fname}' no longer exists.")
                 reload_list()
                 return
-            try:
-                if platform.system() == "Windows":   os.startfile(fpath)
-                elif platform.system() == "Darwin": subprocess.Popen(["open", fpath])
-                else:                               subprocess.Popen(["xdg-open", fpath])
-            except Exception as e:
-                messagebox.showerror("Playback Error", str(e))
+
+            lower = fname.lower()
+            if lower.endswith((".avi", ".wmv", ".mp4", ".mov", ".mkv")):
+                self.open_inapp_video_player(fpath, fname)
+            elif lower.endswith((".wav", ".mp3", ".ogg")):
+                self.open_inapp_audio_player(fpath, fname)
+            else:
+                try:
+                    if platform.system() == "Windows":   os.startfile(fpath)
+                    elif platform.system() == "Darwin": subprocess.Popen(["open", fpath])
+                    else:                               subprocess.Popen(["xdg-open", fpath])
+                except Exception as e:
+                    messagebox.showerror("Playback Error", str(e))
 
         def delete_selected():
             sel = lb.curselection()
@@ -1589,6 +1680,247 @@ class ModernSafetyApp:
         tk.Button(bf, text="🗑 Delete Selected", font=("Segoe UI", 8, "bold"),
                   bg=_P["red"], fg="#fff", cursor="hand2",
                   bd=0, command=delete_selected, width=14, padx=4, pady=3).pack(side="right", padx=3)
+
+    def open_inapp_video_player(self, fpath, fname):
+        """Interactive in-app Evidence Video Player using OpenCV and Tkinter Canvas."""
+        if not os.path.exists(fpath):
+            messagebox.showerror("File Missing", f"'{fname}' no longer exists.")
+            return
+
+        v_dlg = tk.Toplevel(self.root)
+        v_dlg.title(f"📹 Evidence Video Player — {fname}")
+        v_dlg.geometry("680x560")
+        v_dlg.minsize(500, 420)
+        v_dlg.configure(bg=_P["bg_root"])
+        v_dlg.transient(self.root)
+
+        hdr = tk.Frame(v_dlg, bg=_P["bg_panel"], padx=12, pady=8)
+        hdr.pack(fill="x")
+        tk.Label(hdr, text=f"📹 {fname}", font=("Segoe UI", 10, "bold"),
+                 fg=_P["accent"], bg=_P["bg_panel"]).pack(side="left")
+
+        def _open_ext():
+            try:
+                if platform.system() == "Windows": os.startfile(fpath)
+                elif platform.system() == "Darwin": subprocess.Popen(["open", fpath])
+                else: subprocess.Popen(["xdg-open", fpath])
+            except Exception as e:
+                messagebox.showerror("External Player Error", str(e))
+
+        tk.Button(hdr, text="↗️ Open in Windows Player", font=("Segoe UI", 8),
+                  bg=_P["bg_card2"], fg=_P["text_bright"], bd=0, cursor="hand2", padx=6,
+                  command=_open_ext).pack(side="right")
+
+        canvas_w, canvas_h = 640, 400
+        canvas = tk.Canvas(v_dlg, width=canvas_w, height=canvas_h, bg="#000000", highlightthickness=0)
+        canvas.pack(fill="both", expand=True, padx=12, pady=8)
+
+        ctrl_frame = tk.Frame(v_dlg, bg=_P["bg_panel"], padx=12, pady=8)
+        ctrl_frame.pack(fill="x")
+
+        time_lbl = tk.Label(ctrl_frame, text="00:00 / 00:00", font=("Consolas", 9),
+                            fg=_P["text_dim"], bg=_P["bg_panel"])
+        time_lbl.pack(side="right", padx=(8, 0))
+
+        cap = cv2.VideoCapture(fpath) if CV2_AVAILABLE else None
+        fps = (cap.get(cv2.CAP_PROP_FPS) if cap else 20.0) or 20.0
+        total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT) if cap else 1) or 1
+        total_sec = total_frames / fps
+
+        is_playing = [True]
+        curr_frame_idx = [0]
+        timer_id = [None]
+
+        def _fmt_t(s):
+            m = int(s // 60)
+            sec = int(s % 60)
+            return f"{m:02d}:{sec:02d}"
+
+        def _render_frame(frame_img):
+            if frame_img is None:
+                return
+            h, w = frame_img.shape[:2]
+            c_w = canvas.winfo_width() or canvas_w
+            c_h = canvas.winfo_height() or canvas_h
+            if c_w < 50 or c_h < 50:
+                c_w, c_h = canvas_w, canvas_h
+            scale = min(c_w / w, c_h / h)
+            nw, nh = max(1, int(w * scale)), max(1, int(h * scale))
+            resized = cv2.resize(frame_img, (nw, nh))
+            rgb = cv2.cvtColor(resized, cv2.COLOR_BGR2RGB)
+            if PIL_AVAILABLE:
+                pi = ImageTk.PhotoImage(Image.fromarray(rgb))
+                canvas.image = pi
+                canvas.delete("all")
+                canvas.create_image(c_w // 2, c_h // 2, image=pi, anchor="center")
+
+        def _step():
+            if not v_dlg.winfo_exists() or cap is None:
+                return
+            if is_playing[0]:
+                ret, frame = cap.read()
+                if ret:
+                    curr_frame_idx[0] += 1
+                    _render_frame(frame)
+                    cur_sec = curr_frame_idx[0] / fps
+                    time_lbl.config(text=f"{_fmt_t(cur_sec)} / {_fmt_t(total_sec)}")
+                    timer_id[0] = v_dlg.after(int(1000 / fps), _step)
+                else:
+                    is_playing[0] = False
+                    play_btn.config(text="🔄 Replay")
+
+        def _toggle_play():
+            if cap is None:
+                return
+            if curr_frame_idx[0] >= total_frames:
+                cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
+                curr_frame_idx[0] = 0
+                is_playing[0] = True
+                play_btn.config(text="⏸ Pause")
+                _step()
+            elif is_playing[0]:
+                is_playing[0] = False
+                play_btn.config(text="▶ Play")
+                if timer_id[0]:
+                    v_dlg.after_cancel(timer_id[0])
+            else:
+                is_playing[0] = True
+                play_btn.config(text="⏸ Pause")
+                _step()
+
+        play_btn = tk.Button(ctrl_frame, text="⏸ Pause", font=("Segoe UI", 9, "bold"),
+                             bg=_P["purple"], fg="#ffffff", bd=0, cursor="hand2", padx=12, pady=4,
+                             command=_toggle_play)
+        play_btn.pack(side="left", padx=(0, 8))
+
+        def _on_close():
+            is_playing[0] = False
+            if timer_id[0]:
+                try: v_dlg.after_cancel(timer_id[0])
+                except: pass
+            if cap:
+                try: cap.release()
+                except: pass
+            v_dlg.destroy()
+
+        v_dlg.protocol("WM_DELETE_WINDOW", _on_close)
+        _step()
+
+    def open_inapp_audio_player(self, fpath, fname):
+        """Interactive in-app Evidence Audio Player with waveform visualizer."""
+        if not os.path.exists(fpath):
+            messagebox.showerror("File Missing", f"'{fname}' no longer exists.")
+            return
+
+        a_dlg = tk.Toplevel(self.root)
+        a_dlg.title(f"🎙️ Evidence Audio Player — {fname}")
+        a_dlg.geometry("520x360")
+        a_dlg.minsize(440, 300)
+        a_dlg.configure(bg=_P["bg_root"])
+        a_dlg.transient(self.root)
+
+        hdr = tk.Frame(a_dlg, bg=_P["bg_panel"], padx=12, pady=10)
+        hdr.pack(fill="x")
+        tk.Label(hdr, text=f"🎙️ {fname}", font=("Segoe UI", 10, "bold"),
+                 fg=_P["accent"], bg=_P["bg_panel"]).pack(side="left")
+
+        def _open_ext():
+            try:
+                if platform.system() == "Windows": os.startfile(fpath)
+                elif platform.system() == "Darwin": subprocess.Popen(["open", fpath])
+                else: subprocess.Popen(["xdg-open", fpath])
+            except Exception as e:
+                messagebox.showerror("External Player Error", str(e))
+
+        tk.Button(hdr, text="↗️ Open in Windows Player", font=("Segoe UI", 8),
+                  bg=_P["bg_card2"], fg=_P["text_bright"], bd=0, cursor="hand2", padx=6,
+                  command=_open_ext).pack(side="right")
+
+        vis_canvas = tk.Canvas(a_dlg, bg="#070c14", height=140, highlightthickness=0)
+        vis_canvas.pack(fill="x", padx=16, pady=16)
+
+        status_lbl = tk.Label(a_dlg, text="▶ Playing evidence audio...", font=("Segoe UI", 9, "bold"),
+                              fg=_P["accent"], bg=_P["bg_root"])
+        status_lbl.pack(pady=4)
+
+        ctrl_frame = tk.Frame(a_dlg, bg=_P["bg_panel"], padx=12, pady=10)
+        ctrl_frame.pack(fill="x", side="bottom")
+
+        is_playing = [True]
+        vis_active = [True]
+
+        def _animate_vis():
+            if not vis_active[0] or not a_dlg.winfo_exists():
+                return
+            vis_canvas.delete("all")
+            cw = vis_canvas.winfo_width() or 480
+            ch = vis_canvas.winfo_height() or 140
+            bars = 36
+            bw = cw / (bars * 1.5)
+            import random
+            for b in range(bars):
+                bx = b * (bw * 1.5) + bw / 2
+                if is_playing[0]:
+                    bh = random.randint(12, max(13, ch - 20))
+                else:
+                    bh = 4
+                by1 = (ch - bh) / 2
+                by2 = by1 + bh
+                col = _P["accent"] if b % 2 == 0 else _P["accent2"]
+                vis_canvas.create_rectangle(bx, by1, bx + bw, by2, fill=col, outline="")
+            a_dlg.after(80, _animate_vis)
+
+        def _start_audio():
+            if platform.system() == "Windows" and WINSOUND_AVAILABLE:
+                try:
+                    winsound.PlaySound(fpath, winsound.SND_FILENAME | winsound.SND_ASYNC)
+                except Exception as e:
+                    print(f"Winsound error: {e}")
+            elif PYGAME_AVAILABLE:
+                try:
+                    pygame.mixer.music.load(fpath)
+                    pygame.mixer.music.play()
+                except Exception as e:
+                    print(f"Pygame audio error: {e}")
+
+        def _stop_audio():
+            if platform.system() == "Windows" and WINSOUND_AVAILABLE:
+                try:
+                    winsound.PlaySound(None, winsound.SND_PURGE)
+                except Exception:
+                    pass
+            elif PYGAME_AVAILABLE:
+                try:
+                    pygame.mixer.music.stop()
+                except Exception:
+                    pass
+
+        def _toggle_audio():
+            if is_playing[0]:
+                is_playing[0] = False
+                _stop_audio()
+                btn_play.config(text="▶ Play")
+                status_lbl.config(text="⏸ Paused", fg=_P["text_dim"])
+            else:
+                is_playing[0] = True
+                _start_audio()
+                btn_play.config(text="⏹ Stop")
+                status_lbl.config(text="▶ Playing evidence audio...", fg=_P["accent"])
+
+        btn_play = tk.Button(ctrl_frame, text="⏹ Stop", font=("Segoe UI", 9, "bold"),
+                             bg=_P["accent"], fg=_P["bg_root"], bd=0, cursor="hand2", padx=14, pady=4,
+                             command=_toggle_audio)
+        btn_play.pack(side="left")
+
+        def _on_close():
+            is_playing[0] = False
+            vis_active[0] = False
+            _stop_audio()
+            a_dlg.destroy()
+
+        a_dlg.protocol("WM_DELETE_WINDOW", _on_close)
+        _start_audio()
+        _animate_vis()
 
     def open_purge_vaults_dialog(self):
         """Dedicated Evidence Vault Management and Bulk Deletion dialog."""
@@ -2017,10 +2349,19 @@ class ModernSafetyApp:
             self.controller.update_demo_position(target_lat, target_lon, speed_kmh=calc_speed)
             # Evaluate anomaly only when threat screen is not already active
             if not getattr(self, "is_threat_active", False):
-                cycle_res = self.controller.run_live_safety_cycle()
-                if isinstance(cycle_res, dict):
-                    is_threat = cycle_res.get("anomaly_check", {}).get("is_threat", False)
-                    threat_type = cycle_res.get("anomaly_check", {}).get("threat_type", "NORMAL")
+                if getattr(self, "display_only_mode", False):
+                    # In Display Only mode, evaluate deviation purely for visual display without taking actions
+                    if hasattr(self.controller, "anomaly_engine"):
+                        anomaly_check = self.controller.anomaly_engine.check_for_threats(
+                            calc_speed, target_lat, target_lon
+                        )
+                        if isinstance(anomaly_check, tuple):
+                            is_threat, threat_type = anomaly_check[0], anomaly_check[1]
+                else:
+                    cycle_res = self.controller.run_live_safety_cycle()
+                    if isinstance(cycle_res, dict):
+                        is_threat = cycle_res.get("anomaly_check", {}).get("is_threat", False)
+                        threat_type = cycle_res.get("anomaly_check", {}).get("threat_type", "NORMAL")
 
         nearest_st = self.get_nearest_street_name(target_lat, target_lon)
         self.demo_status_str.set(f"📍 {nearest_st} • ({target_lat:.5f}, {target_lon:.5f})")
@@ -2102,6 +2443,20 @@ class ModernSafetyApp:
 
     def _on_map_release(self, event):
         self.is_dragging_user = False
+
+    def _update_display_only_btn(self):
+        if not hasattr(self, "btn_display_only") or not self.btn_display_only.winfo_exists():
+            return
+        if getattr(self, "display_only_mode", False):
+            self.btn_display_only.config(
+                text="👁️ DISPLAY ONLY (SHOW ONLY)",
+                bg="#0284c7", fg="#ffffff", activebackground="#0369a1", activeforeground="#ffffff"
+            )
+        else:
+            self.btn_display_only.config(
+                text="🛡️ ACTION MODE: ARMED",
+                bg="#991b1b", fg="#ffffff", activebackground="#b91c1c", activeforeground="#ffffff"
+            )
 
     # ═══════════════════════════════════════════════════════════════════════════
     # AUTOMATED CALL ESCALATION UI
@@ -3129,10 +3484,23 @@ class ModernSafetyApp:
 
         # Live HUD Callout Pill Tag
         st_name = self.get_nearest_street_name(lat, lon)
-        hud_text = f"📍 YOU • {speed_kmh:.0f} km/h • {st_name}"
-        hud_bg = "#7f1d1d" if is_threat else "#0f172a"
-        hud_fg = "#fecaca" if is_threat else "#38bdf8"
-        hud_border = "#ef4444" if is_threat else "#0284c7"
+        is_disp_only = getattr(self, "display_only_mode", True)
+        if is_threat:
+            if is_disp_only:
+                hud_text = f"📍 YOU • {speed_kmh:.0f} km/h • {st_name} (SHOW ONLY)"
+                hud_bg = "#0f172a"
+                hud_fg = "#38bdf8"
+                hud_border = "#0284c7"
+            else:
+                hud_text = f"📍 YOU • {speed_kmh:.0f} km/h • {st_name}"
+                hud_bg = "#7f1d1d"
+                hud_fg = "#fecaca"
+                hud_border = "#ef4444"
+        else:
+            hud_text = f"📍 YOU • {speed_kmh:.0f} km/h • {st_name}"
+            hud_bg = "#0f172a"
+            hud_fg = "#38bdf8"
+            hud_border = "#0284c7"
 
         tag_y = py - 24 if py > 45 else py + 26
         box_w = max(len(hud_text) * 3.6 + 10, 50)
@@ -3164,9 +3532,9 @@ class ModernSafetyApp:
                 pass
 
         if is_threat:
-            self._tele_threat.set("● THREAT ⚠️")
+            self._tele_threat.set("👁️ DEVIATION (SHOW ONLY)" if is_disp_only else "● THREAT ⚠️")
         else:
-            self._tele_threat.set("● MONITORING")
+            self._tele_threat.set("👁️ SHOW ONLY" if is_disp_only else "● MONITORING")
 
         if self.controller and hasattr(self.controller, "phone_has_signal"):
             sig = self.controller.phone_has_signal
