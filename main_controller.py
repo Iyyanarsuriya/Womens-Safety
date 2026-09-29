@@ -104,7 +104,7 @@ class MainSafetyController:
         self.demo_speed = 0.0
 
         # Display Only Mode (Show tracking & map visually only, no automated emergency actions)
-        self.display_only_mode = True
+        self.display_only_mode = False
 
         # Automated Call Escalation State
         self.call_escalation_timeout_sec = 60  # Configurable 60 - 120s
