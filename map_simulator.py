@@ -444,7 +444,7 @@ class MapSimulatorWindow:
     def _update_network_status(self):
         if self.controller and hasattr(self.controller, "phone_has_signal"):
             has_sig = self.controller.phone_has_signal
-            self._tele_vars["network"].set("Online ✅" if has_sig else "Offline ⚠️")
+            self._tele_vars["network"].set("Connected ✅" if has_sig else "Offline ⚠️")
 
     # ── Custom-route click ────────────────────────────────────────────────────
 

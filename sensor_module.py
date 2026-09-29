@@ -19,9 +19,8 @@ class SystemSensorDiagnostics:
         }
 
         # Video Recording Directory Setup
-        self.recordings_dir = "recordings"
-        if not os.path.exists(self.recordings_dir):
-            os.makedirs(self.recordings_dir)
+        self.recordings_dir = os.path.join("recordings", "video")
+        os.makedirs(self.recordings_dir, exist_ok=True)
 
     def get_system_battery(self):
         """ Checks Laptop/Host System Battery Status """

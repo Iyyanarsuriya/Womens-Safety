@@ -139,6 +139,1443 @@
       "synced": true,
       "retry_count": 0,
       "synced_at": "2026-09-29T12:57:49.705084"
+    },
+    {
+      "event_id": "TEST_SOS_1790667014629",
+      "timestamp": "2026-09-29 13:00:14",
+      "threat_type": "HARDWARE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.48896,79.75388",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:CALL_INITIATED_SUCCESS",
+      "sms_status": "SENT",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T13:00:14.660828"
+    },
+    {
+      "event_id": "EV_1790667016545",
+      "timestamp": "2026-09-29T13:00:16.545168",
+      "threat_type": "FALL_CONFIRMED_TIMEOUT",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9123456780', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T13:00:16.586675"
+    },
+    {
+      "event_id": "EV_1790667017776",
+      "timestamp": "2026-09-29T13:00:17.776123",
+      "threat_type": "PHONE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.488960,79.753880",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.488960,79.753880'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T13:00:17.820505"
+    },
+    {
+      "event_id": "EV_1790667027012",
+      "timestamp": "2026-09-29T13:00:27.012043",
+      "threat_type": "DURESS_FAKE_PIN_TRIGGER",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T13:00:27.064746"
+    },
+    {
+      "event_id": "TEST_SOS_1790667090685",
+      "timestamp": "2026-09-29 13:01:30",
+      "threat_type": "HARDWARE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.48896,79.75388",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:CALL_INITIATED_SUCCESS",
+      "sms_status": "SENT",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T13:01:30.767736"
+    },
+    {
+      "event_id": "EV_1790667092662",
+      "timestamp": "2026-09-29T13:01:32.662604",
+      "threat_type": "FALL_CONFIRMED_TIMEOUT",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9123456780', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T13:01:32.707630"
+    },
+    {
+      "event_id": "EV_1790667095073",
+      "timestamp": "2026-09-29T13:01:35.073967",
+      "threat_type": "PHONE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.488960,79.753880",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.488960,79.753880'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T13:01:35.116528"
+    },
+    {
+      "event_id": "EV_1790667102855",
+      "timestamp": "2026-09-29T13:01:42.855692",
+      "threat_type": "DURESS_FAKE_PIN_TRIGGER",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T13:01:42.900440"
+    },
+    {
+      "event_id": "TEST_SOS_1790683140982",
+      "timestamp": "2026-09-29 17:29:00",
+      "threat_type": "HARDWARE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.48896,79.75388",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:CALL_INITIATED_SUCCESS",
+      "sms_status": "SENT",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T17:29:01.112615"
+    },
+    {
+      "event_id": "EV_1790683143074",
+      "timestamp": "2026-09-29T17:29:03.074045",
+      "threat_type": "FALL_CONFIRMED_TIMEOUT",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9123456780', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T17:29:03.112222"
+    },
+    {
+      "event_id": "EV_1790683145490",
+      "timestamp": "2026-09-29T17:29:05.490805",
+      "threat_type": "PHONE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.488960,79.753880",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.488960,79.753880'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T17:29:05.531705"
+    },
+    {
+      "event_id": "EV_1790683155797",
+      "timestamp": "2026-09-29T17:29:15.797810",
+      "threat_type": "DURESS_FAKE_PIN_TRIGGER",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T17:29:15.834509"
+    },
+    {
+      "event_id": "TEST_SOS_1790683522597",
+      "timestamp": "2026-09-29 17:35:22",
+      "threat_type": "HARDWARE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.48896,79.75388",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:CALL_INITIATED_SUCCESS",
+      "sms_status": "SENT",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T17:35:22.714346"
+    },
+    {
+      "event_id": "EV_1790683524794",
+      "timestamp": "2026-09-29T17:35:24.794968",
+      "threat_type": "FALL_CONFIRMED_TIMEOUT",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9123456780', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T17:35:24.831032"
+    },
+    {
+      "event_id": "EV_1790683526125",
+      "timestamp": "2026-09-29T17:35:26.125373",
+      "threat_type": "PHONE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.488960,79.753880",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.488960,79.753880'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T17:35:26.183705"
+    },
+    {
+      "event_id": "EV_1790683537782",
+      "timestamp": "2026-09-29T17:35:37.782977",
+      "threat_type": "DURESS_FAKE_PIN_TRIGGER",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T17:35:37.829367"
+    },
+    {
+      "event_id": "EV_1790684289835",
+      "timestamp": "2026-09-29T17:48:09.835729",
+      "threat_type": "\ud83d\udea8 MANUAL SOS TRIGGER",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780",
+        "9988776655"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9123456780', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9988776655', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600', 'p3_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T17:48:09.926348"
+    },
+    {
+      "event_id": "TEST_SOS_1790684318965",
+      "timestamp": "2026-09-29 17:48:38",
+      "threat_type": "HARDWARE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.48896,79.75388",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:CALL_INITIATED_SUCCESS",
+      "sms_status": "SENT",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T17:48:39.013612"
+    },
+    {
+      "event_id": "EV_1790684320922",
+      "timestamp": "2026-09-29T17:48:40.922728",
+      "threat_type": "FALL_CONFIRMED_TIMEOUT",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9123456780', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T17:48:40.969682"
+    },
+    {
+      "event_id": "EV_1790684323479",
+      "timestamp": "2026-09-29T17:48:43.479970",
+      "threat_type": "PHONE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.488960,79.753880",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.488960,79.753880'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T17:48:43.510412"
+    },
+    {
+      "event_id": "EV_1790684334017",
+      "timestamp": "2026-09-29T17:48:54.017332",
+      "threat_type": "DURESS_FAKE_PIN_TRIGGER",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T17:48:54.056047"
+    },
+    {
+      "event_id": "EV_1790684339812",
+      "timestamp": "2026-09-29T17:48:59.812418",
+      "threat_type": "\ud83d\udea8 MANUAL SOS TRIGGER",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780",
+        "9988776655"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9123456780', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9988776655', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600', 'p3_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T17:48:59.872780"
+    },
+    {
+      "event_id": "TEST_SOS_1790684421129",
+      "timestamp": "2026-09-29 17:50:21",
+      "threat_type": "HARDWARE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.48896,79.75388",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:CALL_INITIATED_SUCCESS",
+      "sms_status": "SENT",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T17:50:21.207911"
+    },
+    {
+      "event_id": "EV_1790684423062",
+      "timestamp": "2026-09-29T17:50:23.062342",
+      "threat_type": "FALL_CONFIRMED_TIMEOUT",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9123456780', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T17:50:23.099073"
+    },
+    {
+      "event_id": "EV_1790684425573",
+      "timestamp": "2026-09-29T17:50:25.573279",
+      "threat_type": "PHONE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.488960,79.753880",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.488960,79.753880'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T17:50:25.617233"
+    },
+    {
+      "event_id": "EV_1790684435102",
+      "timestamp": "2026-09-29T17:50:35.102407",
+      "threat_type": "DURESS_FAKE_PIN_TRIGGER",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T17:50:35.144058"
+    },
+    {
+      "event_id": "EV_1790684441265",
+      "timestamp": "2026-09-29T17:50:41.265797",
+      "threat_type": "\ud83d\udea8 MANUAL SOS TRIGGER",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780",
+        "9988776655"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9123456780', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9988776655', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600', 'p3_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T17:50:41.306590"
+    },
+    {
+      "event_id": "TEST_SOS_1790684857395",
+      "timestamp": "2026-09-29 17:57:37",
+      "threat_type": "HARDWARE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.48896,79.75388",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:CALL_INITIATED_SUCCESS",
+      "sms_status": "SENT",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T17:57:37.467020"
+    },
+    {
+      "event_id": "EV_1790684859275",
+      "timestamp": "2026-09-29T17:57:39.275203",
+      "threat_type": "FALL_CONFIRMED_TIMEOUT",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9123456780', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T17:57:39.322975"
+    },
+    {
+      "event_id": "EV_1790684861706",
+      "timestamp": "2026-09-29T17:57:41.706741",
+      "threat_type": "PHONE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.488960,79.753880",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.488960,79.753880'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T17:57:41.746188"
+    },
+    {
+      "event_id": "EV_1790684871550",
+      "timestamp": "2026-09-29T17:57:51.550643",
+      "threat_type": "DURESS_FAKE_PIN_TRIGGER",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T17:57:51.585785"
+    },
+    {
+      "event_id": "EV_1790684876675",
+      "timestamp": "2026-09-29T17:57:56.675311",
+      "threat_type": "\ud83d\udea8 MANUAL SOS TRIGGER",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780",
+        "9988776655"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9123456780', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9988776655', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600', 'p3_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T17:57:56.725468"
+    },
+    {
+      "event_id": "TEST_SOS_1790684938008",
+      "timestamp": "2026-09-29 17:58:58",
+      "threat_type": "HARDWARE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.48896,79.75388",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:CALL_INITIATED_SUCCESS",
+      "sms_status": "SENT",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T17:58:58.154819"
+    },
+    {
+      "event_id": "EV_1790684940141",
+      "timestamp": "2026-09-29T17:59:00.141873",
+      "threat_type": "FALL_CONFIRMED_TIMEOUT",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9123456780', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T17:59:00.179417"
+    },
+    {
+      "event_id": "EV_1790684942780",
+      "timestamp": "2026-09-29T17:59:02.780322",
+      "threat_type": "PHONE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.488960,79.753880",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.488960,79.753880'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T17:59:02.850753"
+    },
+    {
+      "event_id": "EV_1790684950874",
+      "timestamp": "2026-09-29T17:59:10.874823",
+      "threat_type": "DURESS_FAKE_PIN_TRIGGER",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T17:59:11.040092"
+    },
+    {
+      "event_id": "EV_1790684955513",
+      "timestamp": "2026-09-29T17:59:15.513827",
+      "threat_type": "\ud83d\udea8 MANUAL SOS TRIGGER",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780",
+        "9988776655"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9123456780', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9988776655', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600', 'p3_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T17:59:15.561832"
+    },
+    {
+      "event_id": "TEST_SOS_1790685056519",
+      "timestamp": "2026-09-29 18:00:56",
+      "threat_type": "HARDWARE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.48896,79.75388",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:CALL_INITIATED_SUCCESS",
+      "sms_status": "SENT",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:00:56.594853"
+    },
+    {
+      "event_id": "EV_1790685058407",
+      "timestamp": "2026-09-29T18:00:58.407930",
+      "threat_type": "FALL_CONFIRMED_TIMEOUT",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9123456780', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:00:58.443396"
+    },
+    {
+      "event_id": "EV_1790685060977",
+      "timestamp": "2026-09-29T18:01:00.977279",
+      "threat_type": "PHONE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.488960,79.753880",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.488960,79.753880'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:01:01.019964"
+    },
+    {
+      "event_id": "EV_1790685071637",
+      "timestamp": "2026-09-29T18:01:11.637404",
+      "threat_type": "DURESS_FAKE_PIN_TRIGGER",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:01:11.910038"
+    },
+    {
+      "event_id": "EV_1790685077089",
+      "timestamp": "2026-09-29T18:01:17.089346",
+      "threat_type": "\ud83d\udea8 MANUAL SOS TRIGGER",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780",
+        "9988776655"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9123456780', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9988776655', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600', 'p3_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:01:17.166243"
+    },
+    {
+      "event_id": "TEST_SOS_1790685128051",
+      "timestamp": "2026-09-29 18:02:08",
+      "threat_type": "HARDWARE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.48896,79.75388",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:CALL_INITIATED_SUCCESS",
+      "sms_status": "SENT",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:02:08.234385"
+    },
+    {
+      "event_id": "EV_1790685130247",
+      "timestamp": "2026-09-29T18:02:10.247657",
+      "threat_type": "FALL_CONFIRMED_TIMEOUT",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9123456780', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:02:10.303259"
+    },
+    {
+      "event_id": "EV_1790685131494",
+      "timestamp": "2026-09-29T18:02:11.494713",
+      "threat_type": "PHONE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.488960,79.753880",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.488960,79.753880'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:02:11.530436"
+    },
+    {
+      "event_id": "EV_1790685140964",
+      "timestamp": "2026-09-29T18:02:20.964485",
+      "threat_type": "DURESS_FAKE_PIN_TRIGGER",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:02:21.026204"
+    },
+    {
+      "event_id": "EV_1790685149056",
+      "timestamp": "2026-09-29T18:02:29.056828",
+      "threat_type": "\ud83d\udea8 MANUAL SOS TRIGGER",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780",
+        "9988776655"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9123456780', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9988776655', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600', 'p3_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:02:29.121442"
+    },
+    {
+      "event_id": "TEST_SOS_1790685201879",
+      "timestamp": "2026-09-29 18:03:21",
+      "threat_type": "HARDWARE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.48896,79.75388",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:CALL_INITIATED_SUCCESS",
+      "sms_status": "SENT",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:03:21.982458"
+    },
+    {
+      "event_id": "EV_1790685204096",
+      "timestamp": "2026-09-29T18:03:24.096460",
+      "threat_type": "FALL_CONFIRMED_TIMEOUT",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9123456780', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:03:24.151692"
+    },
+    {
+      "event_id": "EV_1790685205377",
+      "timestamp": "2026-09-29T18:03:25.378003",
+      "threat_type": "PHONE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.488960,79.753880",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.488960,79.753880'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:03:25.419962"
+    },
+    {
+      "event_id": "EV_1790685215674",
+      "timestamp": "2026-09-29T18:03:35.674983",
+      "threat_type": "DURESS_FAKE_PIN_TRIGGER",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:03:35.729696"
+    },
+    {
+      "event_id": "EV_1790685221923",
+      "timestamp": "2026-09-29T18:03:41.923221",
+      "threat_type": "\ud83d\udea8 MANUAL SOS TRIGGER",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780",
+        "9988776655"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9123456780', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9988776655', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600', 'p3_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:03:41.996188"
+    },
+    {
+      "event_id": "TEST_SOS_1790685251249",
+      "timestamp": "2026-09-29 18:04:11",
+      "threat_type": "HARDWARE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.48896,79.75388",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:CALL_INITIATED_SUCCESS",
+      "sms_status": "SENT",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:04:11.291784"
+    },
+    {
+      "event_id": "EV_1790685253227",
+      "timestamp": "2026-09-29T18:04:13.227118",
+      "threat_type": "FALL_CONFIRMED_TIMEOUT",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9123456780', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:04:13.281322"
+    },
+    {
+      "event_id": "EV_1790685254588",
+      "timestamp": "2026-09-29T18:04:14.588897",
+      "threat_type": "PHONE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.488960,79.753880",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.488960,79.753880'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:04:14.630505"
+    },
+    {
+      "event_id": "EV_1790685266170",
+      "timestamp": "2026-09-29T18:04:26.170219",
+      "threat_type": "DURESS_FAKE_PIN_TRIGGER",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:04:26.218764"
+    },
+    {
+      "event_id": "EV_1790685273790",
+      "timestamp": "2026-09-29T18:04:33.790953",
+      "threat_type": "\ud83d\udea8 MANUAL SOS TRIGGER",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780",
+        "9988776655"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9123456780', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9988776655', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600', 'p3_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:04:33.936208"
+    },
+    {
+      "event_id": "TEST_SOS_1790685797008",
+      "timestamp": "2026-09-29 18:13:17",
+      "threat_type": "HARDWARE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.48896,79.75388",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:CALL_INITIATED_SUCCESS",
+      "sms_status": "SENT",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:13:17.106926"
+    },
+    {
+      "event_id": "EV_1790685798966",
+      "timestamp": "2026-09-29T18:13:18.966224",
+      "threat_type": "FALL_CONFIRMED_TIMEOUT",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9123456780', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:13:19.007725"
+    },
+    {
+      "event_id": "EV_1790685800207",
+      "timestamp": "2026-09-29T18:13:20.207235",
+      "threat_type": "PHONE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.488960,79.753880",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.488960,79.753880'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:13:20.257800"
+    },
+    {
+      "event_id": "EV_1790685818977",
+      "timestamp": "2026-09-29T18:13:38.977649",
+      "threat_type": "DURESS_FAKE_PIN_TRIGGER",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:13:39.226107"
+    },
+    {
+      "event_id": "TEST_SOS_1790685889602",
+      "timestamp": "2026-09-29 18:14:49",
+      "threat_type": "HARDWARE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.48896,79.75388",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:CALL_INITIATED_SUCCESS",
+      "sms_status": "SENT",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:14:49.683685"
+    },
+    {
+      "event_id": "EV_1790685891540",
+      "timestamp": "2026-09-29T18:14:51.540527",
+      "threat_type": "FALL_CONFIRMED_TIMEOUT",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9123456780', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:14:51.580481"
+    },
+    {
+      "event_id": "EV_1790685892818",
+      "timestamp": "2026-09-29T18:14:52.818309",
+      "threat_type": "PHONE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.488960,79.753880",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.488960,79.753880'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:14:52.859464"
+    },
+    {
+      "event_id": "EV_1790685904785",
+      "timestamp": "2026-09-29T18:15:04.785122",
+      "threat_type": "DURESS_FAKE_PIN_TRIGGER",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:15:04.831302"
+    },
+    {
+      "event_id": "EV_1790685910840",
+      "timestamp": "2026-09-29T18:15:10.840794",
+      "threat_type": "\ud83d\udea8 MANUAL SOS TRIGGER",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780",
+        "9988776655"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9123456780', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9988776655', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600', 'p3_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:15:10.909971"
+    },
+    {
+      "event_id": "TEST_SOS_1790685975934",
+      "timestamp": "2026-09-29 18:16:15",
+      "threat_type": "HARDWARE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.48896,79.75388",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:CALL_INITIATED_SUCCESS",
+      "sms_status": "SENT",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:16:16.005944"
+    },
+    {
+      "event_id": "EV_1790685977930",
+      "timestamp": "2026-09-29T18:16:17.930702",
+      "threat_type": "FALL_CONFIRMED_TIMEOUT",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9123456780', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:16:17.975355"
+    },
+    {
+      "event_id": "EV_1790685979188",
+      "timestamp": "2026-09-29T18:16:19.188962",
+      "threat_type": "PHONE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.488960,79.753880",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.488960,79.753880'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:16:19.243282"
+    },
+    {
+      "event_id": "EV_1790685990640",
+      "timestamp": "2026-09-29T18:16:30.640681",
+      "threat_type": "DURESS_FAKE_PIN_TRIGGER",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:16:30.685792"
+    },
+    {
+      "event_id": "EV_1790685996789",
+      "timestamp": "2026-09-29T18:16:36.789343",
+      "threat_type": "\ud83d\udea8 MANUAL SOS TRIGGER",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780",
+        "9988776655"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9123456780', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9988776655', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600', 'p3_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:16:36.846347"
+    },
+    {
+      "event_id": "TEST_SOS_1790686329562",
+      "timestamp": "2026-09-29 18:22:09",
+      "threat_type": "HARDWARE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.48896,79.75388",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:CALL_INITIATED_SUCCESS",
+      "sms_status": "SENT",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:22:09.644328"
+    },
+    {
+      "event_id": "EV_1790686331685",
+      "timestamp": "2026-09-29T18:22:11.685168",
+      "threat_type": "FALL_CONFIRMED_TIMEOUT",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9123456780', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:22:11.735255"
+    },
+    {
+      "event_id": "EV_1790686332965",
+      "timestamp": "2026-09-29T18:22:12.965122",
+      "threat_type": "PHONE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.488960,79.753880",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.488960,79.753880'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:22:13.008891"
+    },
+    {
+      "event_id": "EV_1790686339457",
+      "timestamp": "2026-09-29T18:22:19.457989",
+      "threat_type": "DURESS_FAKE_PIN_TRIGGER",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:22:19.505302"
+    },
+    {
+      "event_id": "EV_1790686345236",
+      "timestamp": "2026-09-29T18:22:25.236322",
+      "threat_type": "\ud83d\udea8 MANUAL SOS TRIGGER",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780",
+        "9988776655"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9123456780', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9988776655', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600', 'p3_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:22:25.339009"
+    },
+    {
+      "event_id": "TEST_SOS_1790686415032",
+      "timestamp": "2026-09-29 18:23:35",
+      "threat_type": "HARDWARE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.48896,79.75388",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "P1:CALL_INITIATED_SUCCESS",
+      "sms_status": "SENT",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:23:35.072720"
+    },
+    {
+      "event_id": "EV_1790686417050",
+      "timestamp": "2026-09-29T18:23:37.050050",
+      "threat_type": "FALL_CONFIRMED_TIMEOUT",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9123456780', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:23:37.108044"
+    },
+    {
+      "event_id": "EV_1790686418360",
+      "timestamp": "2026-09-29T18:23:38.360461",
+      "threat_type": "PHONE_FALL_DETECTED",
+      "latitude": 11.48896,
+      "longitude": 79.75388,
+      "maps_link": "https://maps.google.com/?q=11.488960,79.753880",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.488960,79.753880'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:23:38.407662"
+    },
+    {
+      "event_id": "EV_1790686424741",
+      "timestamp": "2026-09-29T18:23:44.741156",
+      "threat_type": "DURESS_FAKE_PIN_TRIGGER",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'PENDING', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:23:44.802802"
+    },
+    {
+      "event_id": "EV_1790686430484",
+      "timestamp": "2026-09-29T18:23:50.484148",
+      "threat_type": "\ud83d\udea8 MANUAL SOS TRIGGER",
+      "latitude": 11.4833,
+      "longitude": 79.7466,
+      "maps_link": "https://maps.google.com/?q=11.483300,79.746600",
+      "audio_filename": "",
+      "contacts_notified": [
+        "9876543210",
+        "9123456780",
+        "9988776655"
+      ],
+      "call_status": "ESCALATION_PENDING_RESPONSE_TIMEOUT",
+      "sms_status": "{'p1_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'p2_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH', 'macrodroid_webhook': 'DISPATCHED', 'contacts_sent': [{'contact': '9876543210', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9123456780', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}, {'contact': '9988776655', 'status': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}], 'maps_url': 'https://maps.google.com/?q=11.483300,79.746600', 'p3_sms': 'OFFLINE_QUEUED_MACRODROID_DISPATCH'}",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:23:50.590129"
     }
   ],
   "audio_queue": [
@@ -150,6 +1587,33 @@
       "synced": true,
       "retry_count": 0,
       "synced_at": "2026-09-29T12:50:53.770436"
+    },
+    {
+      "file_path": "C:\\Users\\iyyan\\Downloads\\Safety_System\\Safety_System\\recordings\\audio\\TEST_Audio.wav",
+      "filename": "TEST_Audio.wav",
+      "event_id": "TEST_SOS_1790683140982",
+      "queued_at": "2026-09-29T17:29:01.016499",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T17:29:01.144218"
+    },
+    {
+      "file_path": "C:\\Users\\iyyan\\Downloads\\Safety_System\\Safety_System\\recordings\\audio\\SOS_Audio_20260929_182337.wav",
+      "filename": "SOS_Audio_20260929_182337.wav",
+      "event_id": "EV_1790686433",
+      "queued_at": "2026-09-29T18:23:53.048817",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:23:53.118076"
+    },
+    {
+      "file_path": "C:\\Users\\iyyan\\Downloads\\Safety_System\\Safety_System\\recordings\\audio\\SOS_Audio_20260929_182338.wav",
+      "filename": "SOS_Audio_20260929_182338.wav",
+      "event_id": "EV_1790686434",
+      "queued_at": "2026-09-29T18:23:54.358952",
+      "synced": true,
+      "retry_count": 0,
+      "synced_at": "2026-09-29T18:23:54.407765"
     }
   ],
   "geofence_events": []

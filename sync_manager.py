@@ -131,6 +131,31 @@ class SyncManager:
         print(f"🎙️ [SyncManager] Audio evidence queued locally: {record['filename']}")
         self.trigger_sync_now()
 
+    def remove_audio_from_queue(self, audio_file_path: str) -> None:
+        """Removes a deleted audio recording from the pending upload queue."""
+        abs_p = os.path.abspath(audio_file_path)
+        base_n = os.path.basename(audio_file_path)
+        with self._lock:
+            vault = self._load_vault()
+            queue = vault.get("audio_queue", [])
+            initial_len = len(queue)
+            vault["audio_queue"] = [
+                item for item in queue
+                if os.path.abspath(item.get("file_path", "")) != abs_p
+                and item.get("filename") != base_n
+            ]
+            if len(vault["audio_queue"]) != initial_len:
+                self._save_vault(vault)
+                print(f"🗑️ [SyncManager] Removed deleted audio from upload queue: {base_n}")
+
+    def clear_audio_queue(self) -> None:
+        """Clears all audio from the pending upload queue."""
+        with self._lock:
+            vault = self._load_vault()
+            vault["audio_queue"] = []
+            self._save_vault(vault)
+            print("🗑️ [SyncManager] Cleared entire audio upload queue.")
+
     def queue_geofence_event(self, zone_name: str, event_type: str, lat: float, lon: float) -> None:
         """
         Queues a geofence ENTRY or EXIT event locally.

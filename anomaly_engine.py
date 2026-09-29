@@ -53,6 +53,7 @@ class TrajectoryAnomalyEngine:
             self.last_speed_alert_time = now
         if "ROUTE" in threat_type.upper() or "DEVIATION" in threat_type.upper() or threat_type == "ALL":
             self.last_deviation_alert_time = now
+        self._prev_dest_dist = None
 
     def check_for_threats(self, speed_kmh=0.0, current_lat=0.0, current_lon=0.0, predicted_point=None):
         """
@@ -68,12 +69,27 @@ class TrajectoryAnomalyEngine:
             else:
                 return False, "COOLDOWN_ACTIVE"
 
-        # 2. Destination / Route Deviation Check
+        # 2. Planned Route Corridor Check (if corridor is set)
+        if self.planned_route and current_lat and current_lon:
+            min_dist_km = min(
+                self.gps_engine.haversine_distance(current_lat, current_lon, pt[0], pt[1])
+                for pt in self.planned_route
+            )
+            if min_dist_km > self.max_deviation_threshold:
+                if (now - self.last_deviation_alert_time) > self.cooldown_period_sec:
+                    self.last_deviation_alert_time = now
+                    return True, f"⚠️ ARE YOU SAFE? ROUTE DEVIATION: {round(min_dist_km * 1000, 1)}m off planned corridor!"
+                else:
+                    return False, "COOLDOWN_ACTIVE"
+
+        # 3. Destination Retreat Check (moving away from destination)
         if self.destination and current_lat and current_lon:
             d_lat = self.destination["latitude"]
             d_lon = self.destination["longitude"]
             dist_km = self.gps_engine.haversine_distance(current_lat, current_lon, d_lat, d_lon)
-            if dist_km > self.max_deviation_threshold and dist_km > 0.5:
+            prev_d = getattr(self, "_prev_dest_dist", None)
+            self._prev_dest_dist = dist_km
+            if prev_d is not None and (dist_km - prev_d) > self.max_deviation_threshold and dist_km > 0.5:
                 if (now - self.last_deviation_alert_time) > self.cooldown_period_sec:
                     self.last_deviation_alert_time = now
                     return True, f"⚠️ ARE YOU SAFE? ROUTE DEVIATION FROM '{self.destination['name']}' ({dist_km:.2f} km)"
@@ -97,7 +113,7 @@ class TrajectoryAnomalyEngine:
         predicted_lat = round(last_pt["latitude"] + lat_diff, 6)
         predicted_lon = round(last_pt["longitude"] + lon_diff, 6)
 
-        return {"latitude": predicted_lat, "longitude": predicted_lon}
+        return {"latitude": predicted_lat, "longitude": predicted_lon, "confidence": 0.85, "prediction_mode": "LINEAR_EXTRAPOLATION"}
 
     def evaluate_telemetry(self, current_loc, previous_loc, external_predicted_loc=None):
         """
@@ -116,7 +132,20 @@ class TrajectoryAnomalyEngine:
                 self.last_speed_alert_time = now
                 return True, "HIGH_SPEED", f"🚨 Speed Increase Alert! Speed: {speed} km/h (Threshold: {self.max_speed_threshold} km/h)"
 
-        # 2. Evaluate Destination Deviation (if destination is configured)
+        # 2. Evaluate Planned Route corridor deviation (if planned route is set)
+        if self.planned_route and current_loc.get("latitude") and current_loc.get("longitude"):
+            min_dist_km = min(
+                self.gps_engine.haversine_distance(
+                    current_loc["latitude"], current_loc["longitude"], pt[0], pt[1]
+                )
+                for pt in self.planned_route
+            )
+            if min_dist_km > self.max_deviation_threshold:
+                if (now - self.last_deviation_alert_time) > self.cooldown_period_sec:
+                    self.last_deviation_alert_time = now
+                    return True, "ROUTE_DEVIATION", f"⚠️ Route Deviation Alert! Deviated by {round(min_dist_km * 1000, 1)}m from safe corridor!"
+
+        # 3. Evaluate Destination Deviation (if destination is configured)
         if self.destination and previous_loc:
             prev_dist_to_dest = self.gps_engine.haversine_distance(
                 previous_loc["latitude"], previous_loc["longitude"],
@@ -132,22 +161,6 @@ class TrajectoryAnomalyEngine:
                 if (now - self.last_deviation_alert_time) > self.cooldown_period_sec:
                     self.last_deviation_alert_time = now
                     return True, "ROUTE_DEVIATION", f"⚠️ Destination Route Deviation! Moving away from '{self.destination['name']}' ({round(curr_dist_to_dest, 2)} km away)"
-
-        # 3. Evaluate LSTM predicted location deviation
-        pred = external_predicted_loc or self.predict_next_location()
-        if pred:
-            p_lat = pred.get("predicted_latitude") or pred.get("latitude")
-            p_lon = pred.get("predicted_longitude") or pred.get("longitude")
-            if p_lat is not None and p_lon is not None:
-                deviation_dist = self.gps_engine.haversine_distance(
-                    current_loc["latitude"], current_loc["longitude"],
-                    p_lat, p_lon
-                )
-
-                if deviation_dist > self.max_deviation_threshold:
-                    if (now - self.last_deviation_alert_time) > self.cooldown_period_sec:
-                        self.last_deviation_alert_time = now
-                        return True, "ROUTE_DEVIATION", f"⚠️ Route Deviation Alert! Deviated by {round(deviation_dist * 1000, 1)}m from expected course!"
 
         return False, "NORMAL", f"✅ Telemetry Normal. Speed: {speed} km/h"
 

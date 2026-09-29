@@ -271,6 +271,11 @@ class OfflineAcousticEngine:
 
                             for word in self.trigger_keywords:
                                 if word in text:
+                                    now_t = time.time()
+                                    if (now_t - getattr(self, "_last_voice_trigger_time", 0.0)) < 15.0:
+                                        print(f"ℹ️ [Acoustic] Duplicate trigger word '{word}' debounced (<15s).")
+                                        break
+                                    self._last_voice_trigger_time = now_t
                                     print(f"🚨 EMERGENCY TRIGGER: '{word}'")
                                     self.log_event("EMERGENCY TRIGGER", word)
 

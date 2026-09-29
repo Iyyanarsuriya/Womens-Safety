@@ -3,6 +3,7 @@ import glob
 import re
 import json
 import time
+import math
 import platform
 import threading
 import subprocess
@@ -84,6 +85,20 @@ class ModernSafetyApp:
         self.root.bind("<Control-s>", lambda event: self.trigger_threat("🚨 MANUAL EMERGENCY (HOTKEY)"))
         self.root.bind("<Control-S>", lambda event: self.trigger_threat("🚨 MANUAL EMERGENCY (HOTKEY)"))
 
+        # Free Roam map movement keyboard bindings
+        self.root.bind("<Up>", lambda e: self.on_map_keyboard_move(0))
+        self.root.bind("<Right>", lambda e: self.on_map_keyboard_move(90))
+        self.root.bind("<Down>", lambda e: self.on_map_keyboard_move(180))
+        self.root.bind("<Left>", lambda e: self.on_map_keyboard_move(270))
+        self.root.bind("<w>", lambda e: self.on_map_keyboard_move(0))
+        self.root.bind("<W>", lambda e: self.on_map_keyboard_move(0))
+        self.root.bind("<d>", lambda e: self.on_map_keyboard_move(90))
+        self.root.bind("<D>", lambda e: self.on_map_keyboard_move(90))
+        self.root.bind("<s>", lambda e: self.on_map_keyboard_move(180))
+        self.root.bind("<S>", lambda e: self.on_map_keyboard_move(180))
+        self.root.bind("<a>", lambda e: self.on_map_keyboard_move(270))
+        self.root.bind("<A>", lambda e: self.on_map_keyboard_move(270))
+
         os.makedirs(os.path.join("recordings", "audio"), exist_ok=True)
         os.makedirs(os.path.join("recordings", "video"), exist_ok=True)
         os.makedirs("assets", exist_ok=True)
@@ -111,14 +126,21 @@ class ModernSafetyApp:
         self.speed_threshold_var    = tk.IntVar(value=80)   # Configurable km/h threshold
         self.active_threat_reason   = ""
 
-        # ── Predefined Destination & Isolated Demo Mode State ─────────────────
+        # ── Predefined Destination & Free Roam Map Movement State ────────────
         self.destination_status_str = tk.StringVar(value="🏁 Destination: None")
-        self.demo_status_str        = tk.StringVar(value="🎮 Mode: Real GPS")
+        self.demo_status_str        = tk.StringVar(value="🎮 Free Roam: ACTIVE")
         self.escalation_status_str  = tk.StringVar(value="")
-        self.demo_mode_active       = False
+        self.demo_mode_active       = True
         self.demo_loop_job          = None
         self.demo_step_index        = 0
-        self.demo_speed             = 25.0
+        self.demo_speed             = 45.0
+        self.roam_pace_mode         = "Drive"
+        self.current_sim_lat        = map_config.CENTER_LAT
+        self.current_sim_lon        = map_config.CENTER_LON
+        self.user_heading_deg       = 45.0
+        self.is_dragging_user       = False
+        self._last_move_time        = time.time()
+        self._map_base_drawn        = False
         self.demo_coords            = []
 
         # ── MacroDroid contact entries (set by settings dialog) ───────────────
@@ -234,11 +256,13 @@ class ModernSafetyApp:
         threading.Thread(target=_beep, daemon=True).start()
 
         if PLYER_AVAILABLE:
-            try:
-                notification.notify(title=title, message=message,
-                                    app_name="AURA Safety Engine", timeout=5)
-            except Exception as e:
-                print(f"[Notification Notice] {e}")
+            def _toast():
+                try:
+                    notification.notify(title=title, message=message,
+                                        app_name="AURA Safety Engine", timeout=5)
+                except Exception:
+                    pass
+            threading.Thread(target=_toast, daemon=True).start()
 
     def clear_container(self):
         for w in self.main_container.winfo_children():
@@ -408,11 +432,14 @@ class ModernSafetyApp:
         def _launch():
             time.sleep(2.0)
             self._spinner_active = False
-            if self.is_protection_active and self.contacts:
-                self.start_safety_monitoring_loop()
-                self.root.after(0, lambda: self.build_modern_dashboard(pending_notification="✅ System Armed (Restored from Profile)"))
-            else:
-                self.root.after(0, self.build_setup_screen)
+            try:
+                if self.is_protection_active and self.contacts:
+                    self.start_safety_monitoring_loop()
+                    self.root.after(0, lambda: self.build_modern_dashboard(pending_notification="✅ System Armed (Restored from Profile)"))
+                else:
+                    self.root.after(0, self.build_setup_screen)
+            except Exception:
+                pass
 
         threading.Thread(target=_launch, daemon=True).start()
 
@@ -593,11 +620,16 @@ class ModernSafetyApp:
     def start_safety_monitoring_loop(self):
         def cycle():
             if self.is_protection_active and self.controller:
-                try:
-                    self.controller.run_live_safety_cycle()
-                except Exception as e:
-                    print(f"[Safety Cycle Error] {e}")
-            self.root.after(3000, cycle)
+                # Do not run background inspection if an emergency threat is currently active on screen
+                if not getattr(self, "is_threat_active", False):
+                    try:
+                        self.controller.run_live_safety_cycle()
+                    except Exception as e:
+                        print(f"[Safety Cycle Error] {e}")
+            try:
+                self.root.after(3000, cycle)
+            except Exception:
+                pass
         cycle()
 
     # ── Battery monitoring ────────────────────────────────────────────────────
@@ -628,6 +660,18 @@ class ModernSafetyApp:
                     elif pct > 20 or power_plugged:
                         # Reset warning state when recharged or plugged in
                         self.low_battery_alert_sent = False
+
+                # Update mobile phone connection state
+                if self.controller and hasattr(self.controller, "telephony_manager"):
+                    try:
+                        p_info = self.controller.telephony_manager.check_phone_connection()
+                        if p_info.get("device_connected"):
+                            model = p_info.get("device_model", "Phone")
+                            self.signal_status_str.set(f"📱 Phone: {model}")
+                        else:
+                            self.signal_status_str.set("📱 Phone: Disconnected")
+                    except Exception:
+                        pass
             time.sleep(10)
 
     def trigger_low_battery_alert(self, percent):
@@ -879,7 +923,10 @@ class ModernSafetyApp:
         # Evidence vault card
         ev = self._card(parent, accent_color="#7c2d12")
         ev.pack(fill="x", pady=(0, 4))
-        self._section_header(ev.content, "📁", "EVIDENCE VAULT", "#f97316")
+        ev_hdr = self._section_header(ev.content, "📁", "EVIDENCE VAULT", "#f97316")
+        tk.Button(ev_hdr, text="🗑️ Manage / Purge", font=("Segoe UI", 7, "bold"),
+                  bg=_P["bg_card2"], fg=_P["red"], bd=0, cursor="hand2", padx=6, pady=1,
+                  command=self.open_purge_vaults_dialog).pack(side="right")
         vf = tk.Frame(ev.content, bg=_P["bg_card"])
         vf.pack(fill="x", pady=4)
 
@@ -945,21 +992,44 @@ class ModernSafetyApp:
         tk.Label(dest_bar, textvariable=self.destination_status_str, font=("Segoe UI", 8, "bold"),
                  fg=_P["purple"], bg=_P["bg_card"]).pack(side="left")
 
-        # Movement Demo control bar (isolated from real GPS)
-        demo_bar = tk.Frame(parent, bg=_P["bg_card"], padx=6, pady=4)
-        demo_bar.pack(fill="x", pady=(0, 6))
-        self.demo_toggle_btn = tk.Button(demo_bar, text="🎮 Start Movement Demo", font=("Segoe UI", 8, "bold"),
-                                         bg=_P["accent2"], fg=_P["bg_root"], bd=0, cursor="hand2", padx=6, pady=2,
-                                         command=self.toggle_live_movement_demo)
+        # Interactive Free Roam / Live Movement Navigation Bar
+        roam_bar = tk.Frame(parent, bg=_P["bg_card"], padx=6, pady=4)
+        roam_bar.pack(fill="x", pady=(0, 6))
+
+        self.demo_toggle_btn = tk.Button(
+            roam_bar, text="🎮 Free Roam: ON", font=("Segoe UI", 8, "bold"),
+            bg=_P["accent"], fg=_P["bg_root"], bd=0, cursor="hand2", padx=6, pady=2,
+            command=self.toggle_live_movement_demo
+        )
         self.demo_toggle_btn.pack(side="left", padx=(0, 4))
-        tk.Button(demo_bar, text="⚡ Speed 90km/h", font=("Segoe UI", 7),
-                  bg="#334155", fg=_P["amber"], bd=0, cursor="hand2", padx=4, pady=2,
-                  command=self.test_demo_speed_anomaly).pack(side="left", padx=(0, 4))
-        tk.Button(demo_bar, text="↗ Deviate Test", font=("Segoe UI", 7),
-                  bg="#334155", fg=_P["purple"], bd=0, cursor="hand2", padx=4, pady=2,
-                  command=self.test_demo_route_deviation).pack(side="left", padx=(0, 6))
-        tk.Label(demo_bar, textvariable=self.demo_status_str, font=("Segoe UI", 7),
-                 fg=_P["text_mid"], bg=_P["bg_card"]).pack(side="left")
+
+        tk.Label(roam_bar, text="Pace:", font=("Segoe UI", 8, "bold"),
+                 fg=_P["text_dim"], bg=_P["bg_card"]).pack(side="left", padx=(4, 2))
+
+        self.btn_pace_walk = tk.Button(
+            roam_bar, text="🚶 Walk (5 km/h)", font=("Segoe UI", 7),
+            bg="#1e293b", fg=_P["accent"], bd=0, cursor="hand2", padx=4, pady=2,
+            command=lambda: self.set_movement_pace("Walk", 5.0)
+        )
+        self.btn_pace_walk.pack(side="left", padx=1)
+
+        self.btn_pace_drive = tk.Button(
+            roam_bar, text="🚗 Drive (45 km/h)", font=("Segoe UI", 7),
+            bg=_P["amber"], fg=_P["bg_root"], bd=0, cursor="hand2", padx=4, pady=2,
+            command=lambda: self.set_movement_pace("Drive", 45.0)
+        )
+        self.btn_pace_drive.pack(side="left", padx=1)
+
+        tk.Button(
+            roam_bar, text="🎯 Recenter", font=("Segoe UI", 7, "bold"),
+            bg="#334155", fg=_P["text_hi"], bd=0, cursor="hand2", padx=5, pady=2,
+            command=self.recenter_map_on_user
+        ).pack(side="right", padx=(2, 0))
+
+        tk.Label(
+            roam_bar, textvariable=self.demo_status_str, font=("Segoe UI", 7),
+            fg=_P["text_mid"], bg=_P["bg_card"]
+        ).pack(side="left", padx=(6, 0))
 
         # Map card
         mc = self._card(parent, accent_color=_P["green"])
@@ -979,13 +1049,28 @@ class ModernSafetyApp:
                  font=("Segoe UI", 8, "bold"),
                  fg=_P["amber"], bg=_P["bg_card"]).pack(side="right")
 
-        # Map canvas with gradient background
+        # Realistic Map canvas
         self.map_canvas = tk.Canvas(
-            mc.content, bg="#0a1628",
+            mc.content, bg="#0c1322",
             highlightthickness=1, highlightbackground=_P["border"],
-            height=240,
+            height=280,
         )
         self.map_canvas.pack(fill="both", expand=True)
+
+        # Mouse & gesture bindings for free movement
+        self.map_canvas.bind("<Button-1>", self._on_map_click)
+        self.map_canvas.bind("<B1-Motion>", self._on_map_drag)
+        self.map_canvas.bind("<ButtonRelease-1>", self._on_map_release)
+
+        # Interactive guidance strip underneath map
+        hint_row = tk.Frame(mc.content, bg=_P["bg_card"])
+        hint_row.pack(fill="x", pady=(3, 0))
+        tk.Label(
+            hint_row,
+            text="🖱️ Click anywhere or drag to roam freely  •  ⌨️ Arrow keys (↑ ↓ ← →) or D-Pad to move live",
+            font=("Segoe UI", 7), fg=_P["text_dim"], bg=_P["bg_card"]
+        ).pack(side="left")
+
         self._draw_map_grid()
 
         # SOS button (full-width, glowing red)
@@ -1074,13 +1159,165 @@ class ModernSafetyApp:
         # Hardware telemetry
         hw_card = self._card(parent, accent_color=_P["accent"])
         hw_card.pack(fill="x", pady=(4, 0))
-        self._section_header(hw_card.content, "📱", "HARDWARE", _P["accent"])
+        hw_hdr = self._section_header(hw_card.content, "📱", "HARDWARE", _P["accent"])
+        tk.Button(hw_hdr, text="📱 Link Phone", font=("Segoe UI", 7, "bold"),
+                  bg=_P["bg_card2"], fg=_P["accent"], bd=0, cursor="hand2", padx=5, pady=1,
+                  command=self.open_phone_connection_dialog).pack(side="right")
         tk.Label(hw_card.content, textvariable=self.signal_status_str,
                  font=("Segoe UI", 8), fg=_P["green"],
                  bg=_P["bg_card"]).pack(anchor="w")
         tk.Label(hw_card.content, textvariable=self.battery_status_str,
                  font=("Segoe UI", 8), fg=_P["amber"],
                  bg=_P["bg_card"]).pack(anchor="w")
+
+    def open_phone_connection_dialog(self):
+        """Dedicated Mobile Phone Connection & Offline Telephony Management dialog."""
+        dlg = tk.Toplevel(self.root)
+        dlg.title("📱 Mobile Phone Connection & Offline Dispatch")
+        dlg.geometry("540x530")
+        dlg.minsize(480, 420)
+        dlg.configure(bg=_P["bg_panel"])
+        dlg.transient(self.root)
+        dlg.grab_set()
+
+        # Header
+        tk.Label(dlg, text="📱 MOBILE PHONE CONNECTION",
+                 font=("Segoe UI", 12, "bold"),
+                 fg=_P["accent"], bg=_P["bg_panel"]).pack(pady=(16, 4))
+        tk.Label(dlg, text="Connect Android phone via USB or Wi-Fi to send offline emergency SMS with location.",
+                 font=("Segoe UI", 8), fg=_P["text_dim"], bg=_P["bg_panel"]).pack(pady=(0, 12))
+
+        # Status Card
+        stat_card = tk.Frame(dlg, bg=_P["bg_card"], padx=16, pady=12,
+                             highlightbackground=_P["border"], highlightthickness=1)
+        stat_card.pack(fill="x", padx=20, pady=(0, 10))
+
+        lbl_dev = tk.Label(stat_card, text="Checking connection...", font=("Segoe UI", 9, "bold"),
+                           fg=_P["text_hi"], bg=_P["bg_card"], anchor="w")
+        lbl_dev.pack(fill="x", pady=2)
+
+        lbl_sim = tk.Label(stat_card, text="", font=("Segoe UI", 8),
+                           fg=_P["text_mid"], bg=_P["bg_card"], anchor="w")
+        lbl_sim.pack(fill="x", pady=2)
+
+        lbl_ports = tk.Label(stat_card, text="", font=("Segoe UI", 8),
+                             fg=_P["text_dim"], bg=_P["bg_card"], anchor="w")
+        lbl_ports.pack(fill="x", pady=2)
+
+        def _refresh_phone_status():
+            info = {"adb_installed": False, "device_connected": False}
+            if self.controller and hasattr(self.controller, "get_phone_status"):
+                info = self.controller.get_phone_status()
+            elif self.controller and hasattr(self.controller, "telephony_manager"):
+                info = self.controller.telephony_manager.check_phone_connection()
+
+            if not info.get("adb_installed"):
+                lbl_dev.config(text="❌ ADB Tool Not Found in System PATH", fg=_P["red"])
+                lbl_sim.config(text="Please install Android Platform Tools (ADB) to enable phone control.")
+                lbl_ports.config(text="")
+            elif info.get("device_connected"):
+                model = info.get("device_model", "Android Device")
+                dev_id = info.get("device_id", "")
+                sim = info.get("sim_state", "UNKNOWN")
+                lbl_dev.config(text=f"✅ Connected: {model} ({dev_id})", fg=_P["green"])
+                lbl_sim.config(text=f"📶 SIM State: {sim} | Ready for Offline SMS & Priority Calls", fg=_P["text_hi"])
+                lbl_ports.config(text="🔄 Telemetry & GPS Bridge Forwarding Active (8080, 8082)")
+                self.signal_status_str.set(f"📱 Phone: {model}")
+            else:
+                lbl_dev.config(text="⚠️ No Android Phone Detected", fg=_P["amber"])
+                lbl_sim.config(text="Connect phone via USB (with USB Debugging) or Wi-Fi below.", fg=_P["text_mid"])
+                lbl_ports.config(text="Offline SMS will fallback to queuing until phone is linked.")
+                self.signal_status_str.set("📱 Phone: Disconnected")
+
+        _refresh_phone_status()
+
+        # USB Action Card
+        usb_card = tk.Frame(dlg, bg=_P["bg_card"], padx=14, pady=10,
+                            highlightbackground=_P["border"], highlightthickness=1)
+        usb_card.pack(fill="x", padx=20, pady=(0, 10))
+        tk.Label(usb_card, text="🔌 USB CONNECTION", font=("Segoe UI", 8, "bold"),
+                 fg=_P["accent2"], bg=_P["bg_card"]).pack(anchor="w", pady=(0, 4))
+        tk.Label(usb_card, text="Plug phone into PC via USB cable. Ensure 'USB Debugging' is enabled.",
+                 font=("Segoe UI", 8), fg=_P["text_dim"], bg=_P["bg_card"]).pack(anchor="w", pady=(0, 6))
+
+        def _do_usb_connect():
+            if self.controller and hasattr(self.controller, "connect_mobile_phone"):
+                info = self.controller.connect_mobile_phone()
+            else:
+                info = {}
+            _refresh_phone_status()
+            if info.get("device_connected"):
+                messagebox.showinfo("Phone Connected", f"Successfully linked phone:\n{info.get('device_model')} ({info.get('device_id')})\nSIM: {info.get('sim_state')}")
+            else:
+                messagebox.showwarning("Phone Not Found", "No authorized phone detected over USB.\n\nPlease check:\n1. USB cable is firmly connected\n2. 'USB Debugging' is enabled in Android Developer Options\n3. Tap 'Allow USB Debugging' popup on phone screen.")
+
+        tk.Button(usb_card, text="🔄 Auto-Detect & Link USB Phone", font=("Segoe UI", 8, "bold"),
+                  bg=_P["bg_card2"], fg=_P["accent"], bd=0, cursor="hand2", padx=8, pady=4,
+                  command=_do_usb_connect).pack(anchor="w")
+
+        # Wi-Fi Action Card
+        wifi_card = tk.Frame(dlg, bg=_P["bg_card"], padx=14, pady=10,
+                             highlightbackground=_P["border"], highlightthickness=1)
+        wifi_card.pack(fill="x", padx=20, pady=(0, 10))
+        tk.Label(wifi_card, text="📶 WI-FI WIRELESS CONNECTION", font=("Segoe UI", 8, "bold"),
+                 fg=_P["purple"], bg=_P["bg_card"]).pack(anchor="w", pady=(0, 4))
+
+        wifi_row = tk.Frame(wifi_card, bg=_P["bg_card"])
+        wifi_row.pack(fill="x", pady=4)
+        tk.Label(wifi_row, text="Phone IP:Port:", font=("Segoe UI", 8), fg=_P["text_mid"], bg=_P["bg_card"]).pack(side="left")
+        e_ip = tk.Entry(wifi_row, font=("Segoe UI", 9), bg=_P["bg_input"], fg=_P["text_hi"], bd=0)
+        e_ip.insert(0, "192.168.1.5:5555")
+        e_ip.pack(side="left", fill="x", expand=True, padx=6, ipady=3)
+
+        def _do_wifi_connect():
+            ip_val = e_ip.get().strip()
+            if self.controller and hasattr(self.controller, "connect_mobile_phone"):
+                res = self.controller.connect_mobile_phone(ip_val)
+            else:
+                res = {}
+            _refresh_phone_status()
+            if res.get("device_connected") or res.get("connected"):
+                messagebox.showinfo("Wi-Fi Connected", f"Successfully connected wirelessly to phone at {ip_val}!")
+            else:
+                messagebox.showerror("Wi-Fi Connection Failed", f"Could not connect to {ip_val}.\nMake sure Wireless Debugging / ADB over TCP is enabled on phone.")
+
+        tk.Button(wifi_row, text="Connect Wi-Fi", font=("Segoe UI", 8, "bold"),
+                  bg=_P["purple"], fg="#ffffff", bd=0, cursor="hand2", padx=8, pady=3,
+                  command=_do_wifi_connect).pack(side="right")
+
+        # Test Offline Alert Button
+        test_row = tk.Frame(dlg, bg=_P["bg_panel"], padx=20)
+        test_row.pack(fill="x", pady=(2, 8))
+
+        def _test_offline_alert():
+            saved_numbers = [c.get("phone", "") for c in self.contacts if c.get("phone")]
+            if not saved_numbers:
+                messagebox.showwarning("No Contacts", "Please add emergency contacts in Settings first.")
+                return
+            loc = self.controller.location_engine.get_current_location() if self.controller else {"latitude": 11.48896, "longitude": 79.75388}
+            lat = loc.get("latitude", 11.48896)
+            lon = loc.get("longitude", 79.75388)
+            maps_link = f"https://maps.google.com/?q={lat:.6f},{lon:.6f}"
+            msg = f"TEST OFFLINE ALERT from AURA Women Safety. Current Location: Lat {lat:.6f}, Lon {lon:.6f}. Map: {maps_link}"
+
+            if self.controller and hasattr(self.controller, "telephony_manager"):
+                res = self.controller.telephony_manager.dispatch_emergency_sms(
+                    saved_numbers, message=msg, lat=lat, lon=lon
+                )
+                messagebox.showinfo(
+                    "Test Alert Dispatched",
+                    f"Test offline alert dispatched to {len(saved_numbers)} contact(s):\n\nNumbers: {', '.join(saved_numbers)}\nLocation Link: {maps_link}\nStatus: {res.get('p1_sms', 'DISPATCHED')}"
+                )
+            else:
+                messagebox.showinfo("Test Alert", f"Alert formatted with location link:\n{maps_link}\nReady to dispatch.")
+
+        tk.Button(test_row, text="🧪 Send Test Offline Alert with Location Link", font=("Segoe UI", 8, "bold"),
+                  bg=_P["bg_card2"], fg=_P["text_bright"], bd=0, cursor="hand2", padx=8, pady=5,
+                  command=_test_offline_alert).pack(fill="x")
+
+        tk.Button(dlg, text="Close", font=("Segoe UI", 8),
+                  bg=_P["bg_panel"], fg=_P["text_dim"], bd=0, cursor="hand2",
+                  command=dlg.destroy).pack(side="bottom", pady=8)
 
     # ═══════════════════════════════════════════════════════════════════════════
     # 5 – VAULT DIALOG
@@ -1089,15 +1326,16 @@ class ModernSafetyApp:
     def open_folder_contents(self, folder_path, title):
         os.makedirs(folder_path, exist_ok=True)
         dlg = tk.Toplevel(self.root)
-        dlg.title(f"📁 {title}")
-        dlg.geometry("560x430")
+        dlg.title(f"📁 {title} — Evidence Manager")
+        dlg.geometry("640x500")
+        dlg.minsize(540, 400)
         dlg.configure(bg=_P["bg_panel"])
         dlg.transient(self.root)
         dlg.lift()
         dlg.focus_force()
 
         header_frame = tk.Frame(dlg, bg=_P["bg_panel"])
-        header_frame.pack(fill="x", padx=15, pady=(12, 6))
+        header_frame.pack(fill="x", padx=15, pady=(12, 4))
 
         tk.Label(header_frame, text=f"📁 {title.upper()}",
                  font=("Segoe UI", 11, "bold"),
@@ -1107,26 +1345,102 @@ class ModernSafetyApp:
                               fg=_P["text_dim"], bg=_P["bg_panel"])
         status_lbl.pack(side="right")
 
+        # Toolbar Frame (Search + Select Controls)
+        toolbar = tk.Frame(dlg, bg=_P["bg_panel"])
+        toolbar.pack(fill="x", padx=15, pady=(2, 6))
+
+        tk.Label(toolbar, text="🔍", font=("Segoe UI", 9), fg=_P["text_dim"], bg=_P["bg_panel"]).pack(side="left")
+        search_var = tk.StringVar()
+        search_entry = tk.Entry(toolbar, textvariable=search_var, font=("Segoe UI", 9),
+                                bg=_P["bg_card"], fg=_P["text_hi"], bd=0, insertbackground=_P["accent"])
+        search_entry.pack(side="left", fill="x", expand=True, padx=(4, 8), ipady=3)
+
         list_frame = tk.Frame(dlg, bg="#161b22")
         list_frame.pack(fill="both", expand=True, padx=15, pady=4)
 
         scrollbar = tk.Scrollbar(list_frame, orient="vertical")
-        lb = tk.Listbox(list_frame, font=("Segoe UI", 9),
+        lb = tk.Listbox(list_frame, font=("Consolas", 9),
                         bg="#161b22", fg="#f8fafc",
+                        selectmode=tk.EXTENDED,
                         selectbackground=_P["accent"], selectforeground=_P["bg_root"],
                         yscrollcommand=scrollbar.set, bd=0, highlightthickness=0)
         scrollbar.config(command=lb.yview)
         scrollbar.pack(side="right", fill="y")
         lb.pack(side="left", fill="both", expand=True, padx=4, pady=4)
 
-        def reload_list():
+        current_records = []
+
+        def _fmt_size(num_bytes):
+            if num_bytes < 1024:
+                return f"{num_bytes} B"
+            elif num_bytes < 1024 * 1024:
+                return f"{num_bytes / 1024:.1f} KB"
+            else:
+                return f"{num_bytes / (1024 * 1024):.1f} MB"
+
+        def _update_selection_status():
+            selected_indices = lb.curselection()
+            total_items = len(current_records)
+            if selected_indices:
+                sel_count = len(selected_indices)
+                sel_bytes = sum(current_records[i]["size_bytes"] for i in selected_indices if i < len(current_records))
+                status_lbl.config(text=f"{sel_count}/{total_items} selected ({_fmt_size(sel_bytes)})")
+            else:
+                total_bytes = sum(r["size_bytes"] for r in current_records)
+                status_lbl.config(text=f"{total_items} file(s) ({_fmt_size(total_bytes)}) | Double-click to play")
+
+        def _select_all():
+            lb.select_set(0, tk.END)
+            _update_selection_status()
+
+        def _deselect_all():
+            lb.selection_clear(0, tk.END)
+            _update_selection_status()
+
+        tk.Button(toolbar, text="Select All", font=("Segoe UI", 7, "bold"),
+                  bg=_P["bg_card2"], fg=_P["text_bright"], bd=0, cursor="hand2",
+                  command=_select_all, padx=6, pady=2).pack(side="right", padx=(4, 0))
+        tk.Button(toolbar, text="Deselect", font=("Segoe UI", 7),
+                  bg=_P["bg_card2"], fg=_P["text_dim"], bd=0, cursor="hand2",
+                  command=_deselect_all, padx=6, pady=2).pack(side="right")
+
+        def reload_list(*args):
+            nonlocal current_records
             lb.delete(0, tk.END)
-            files = sorted(glob.glob(os.path.join(folder_path, "*.*")), reverse=True)
-            for f in files:
-                lb.insert(tk.END, os.path.basename(f))
-            status_lbl.config(text=f"{len(files)} file(s) | Double-click to play")
+            current_records = []
+            filter_text = search_var.get().strip().lower()
+            all_files = sorted(glob.glob(os.path.join(folder_path, "*.*")), reverse=True)
+
+            for fpath in all_files:
+                fname = os.path.basename(fpath)
+                if filter_text and filter_text not in fname.lower():
+                    continue
+                try:
+                    stat = os.stat(fpath)
+                    size_b = stat.st_size
+                    mtime_str = datetime.fromtimestamp(stat.st_mtime).strftime("%Y-%m-%d %H:%M")
+                except Exception:
+                    size_b = 0
+                    mtime_str = "Unknown"
+
+                current_records.append({
+                    "path": fpath,
+                    "name": fname,
+                    "size_bytes": size_b,
+                    "size_str": _fmt_size(size_b),
+                    "mtime": mtime_str
+                })
+
+            for r in current_records:
+                entry_line = f" {r['name']:<34}  {r['size_str']:>9}   {r['mtime']}"
+                lb.insert(tk.END, entry_line)
+
+            _update_selection_status()
             if hasattr(self, "refresh_media_lists"):
                 threading.Thread(target=self.refresh_media_lists, daemon=True).start()
+
+        search_var.trace_add("write", reload_list)
+        lb.bind("<<ListboxSelect>>", lambda e: _update_selection_status())
 
         reload_list()
 
@@ -1138,8 +1452,11 @@ class ModernSafetyApp:
             if not sel:
                 messagebox.showinfo("Select File", "Please select a recording from the list to play, or double-click it.")
                 return
-            fname = lb.get(sel[0])
-            fpath = os.path.abspath(os.path.join(folder_path, fname))
+            idx = sel[0]
+            if idx >= len(current_records):
+                return
+            fpath = current_records[idx]["path"]
+            fname = current_records[idx]["name"]
             if not os.path.exists(fpath):
                 messagebox.showerror("File Missing", f"'{fname}' no longer exists.")
                 reload_list()
@@ -1151,20 +1468,68 @@ class ModernSafetyApp:
             except Exception as e:
                 messagebox.showerror("Playback Error", str(e))
 
-        def delete():
+        def delete_selected():
             sel = lb.curselection()
             if not sel:
-                messagebox.showinfo("Select File", "Please select a recording from the list to delete.")
+                messagebox.showinfo("Select Files", "Please select one or more recordings from the list to delete.")
                 return
-            fname = lb.get(sel[0])
-            if messagebox.askyesno("Delete", f"Permanently delete '{fname}'?"):
-                try:
-                    fpath = os.path.join(folder_path, fname)
-                    if os.path.exists(fpath):
-                        os.remove(fpath)
-                    reload_list()
-                except Exception as e:
-                    messagebox.showerror("Delete Error", str(e))
+
+            selected_items = [current_records[i] for i in sel if i < len(current_records)]
+            count = len(selected_items)
+
+            if count == 1:
+                prompt = f"Permanently delete recording '{selected_items[0]['name']}'?"
+            else:
+                prompt = f"Permanently delete {count} selected recordings?\n\nThis cannot be undone."
+
+            if messagebox.askyesno("🗑️ Delete Confirmation", prompt, icon="warning"):
+                deleted_count = 0
+                for item in selected_items:
+                    fp = item["path"]
+                    try:
+                        if self.controller and hasattr(self.controller, "delete_recording"):
+                            self.controller.delete_recording(fp)
+                        else:
+                            if os.path.exists(fp):
+                                os.remove(fp)
+                            if hasattr(self, "controller") and self.controller and hasattr(self.controller, "sync_manager"):
+                                self.controller.sync_manager.remove_audio_from_queue(fp)
+                        deleted_count += 1
+                    except Exception as e:
+                        print(f"[Delete Error] {e}")
+
+                reload_list()
+                self.send_desktop_popup("🗑️ Recording Deleted", f"Successfully removed {deleted_count} recording(s).")
+
+        def delete_all():
+            total = len(current_records)
+            if total == 0:
+                messagebox.showinfo("Empty Vault", f"There are no recordings to delete in {title}.")
+                return
+
+            if messagebox.askyesno(
+                "⚠️ Delete All Evidence",
+                f"Are you sure you want to permanently delete ALL {total} recordings in {title}?\n\nThis action cannot be undone!",
+                icon="warning"
+            ):
+                deleted_count = 0
+                for item in current_records:
+                    fp = item["path"]
+                    try:
+                        if self.controller and hasattr(self.controller, "delete_recording"):
+                            self.controller.delete_recording(fp)
+                        else:
+                            if os.path.exists(fp):
+                                os.remove(fp)
+                        deleted_count += 1
+                    except Exception as e:
+                        print(f"[Delete Error] {e}")
+
+                if "Audio" in title and hasattr(self, "controller") and self.controller and hasattr(self.controller, "sync_manager"):
+                    self.controller.sync_manager.clear_audio_queue()
+
+                reload_list()
+                self.send_desktop_popup("🗑️ Vault Cleared", f"Deleted all {deleted_count} recordings from {title}.")
 
         def open_folder():
             try:
@@ -1176,30 +1541,203 @@ class ModernSafetyApp:
             except Exception as e:
                 messagebox.showerror("Folder Error", f"Unable to open directory:\n{e}")
 
-        lb.bind("<Double-Button-1>", lambda e: play())
+        # Right-Click Context Menu
+        menu = tk.Menu(dlg, tearoff=0, bg=_P["bg_panel"], fg=_P["text_bright"],
+                       activebackground=_P["accent"], activeforeground=_P["bg_root"])
+        menu.add_command(label="▶  Play Recording", command=play)
+        menu.add_separator()
+        menu.add_command(label="🗑  Delete Selected", command=delete_selected)
+        menu.add_command(label="⚠️  Delete All Recordings", command=delete_all)
+        menu.add_separator()
+        def _copy_path():
+            sel = lb.curselection()
+            if sel and sel[0] < len(current_records):
+                self.root.clipboard_clear()
+                self.root.clipboard_append(current_records[sel[0]]["path"])
+        menu.add_command(label="📋  Copy File Path", command=_copy_path)
+        menu.add_command(label="📂  Reveal in File Explorer", command=open_folder)
 
+        def _popup_menu(event):
+            clicked_idx = lb.nearest(event.y)
+            if clicked_idx not in lb.curselection():
+                lb.selection_clear(0, tk.END)
+                lb.selection_set(clicked_idx)
+                _update_selection_status()
+            menu.tk_popup(event.x_root, event.y_root)
+
+        lb.bind("<Button-3>", _popup_menu)
+        lb.bind("<Double-Button-1>", lambda e: play())
+        lb.bind("<Return>", lambda e: play())
+        lb.bind("<Delete>", lambda e: delete_selected())
+        lb.bind("<Control-a>", lambda e: (_select_all(), "break")[1])
+        lb.bind("<Control-A>", lambda e: (_select_all(), "break")[1])
+
+        # Bottom buttons
         tk.Button(bf, text="▶ Play", font=("Segoe UI", 9, "bold"),
                   bg=_P["accent"], fg=_P["bg_root"], cursor="hand2",
-                  bd=0, command=play, width=10, padx=4, pady=2).pack(side="left", padx=3)
+                  bd=0, command=play, width=9, padx=4, pady=3).pack(side="left", padx=3)
         tk.Button(bf, text="📂 Open Folder", font=("Segoe UI", 8, "bold"),
                   bg=_P["bg_card2"], fg=_P["text_bright"], cursor="hand2",
-                  bd=0, command=open_folder, width=13, padx=4, pady=2).pack(side="left", padx=3)
+                  bd=0, command=open_folder, width=12, padx=4, pady=3).pack(side="left", padx=3)
         tk.Button(bf, text="🔄 Refresh", font=("Segoe UI", 8, "bold"),
                   bg=_P["bg_card2"], fg=_P["text_bright"], cursor="hand2",
-                  bd=0, command=reload_list, width=10, padx=4, pady=2).pack(side="left", padx=3)
-        tk.Button(bf, text="🗑 Delete", font=("Segoe UI", 8, "bold"),
+                  bd=0, command=reload_list, width=9, padx=4, pady=3).pack(side="left", padx=3)
+
+        tk.Button(bf, text="⚠️ Delete All", font=("Segoe UI", 8, "bold"),
+                  bg="#7f1d1d", fg="#fca5a5", cursor="hand2",
+                  bd=0, command=delete_all, width=11, padx=4, pady=3).pack(side="right", padx=3)
+        tk.Button(bf, text="🗑 Delete Selected", font=("Segoe UI", 8, "bold"),
                   bg=_P["red"], fg="#fff", cursor="hand2",
-                  bd=0, command=delete, width=10, padx=4, pady=2).pack(side="right", padx=3)
+                  bd=0, command=delete_selected, width=14, padx=4, pady=3).pack(side="right", padx=3)
+
+    def open_purge_vaults_dialog(self):
+        """Dedicated Evidence Vault Management and Bulk Deletion dialog."""
+        dlg = tk.Toplevel(self.root)
+        dlg.title("🗑️ Evidence Vault Purge & Storage Management")
+        dlg.geometry("480x400")
+        dlg.resizable(False, False)
+        dlg.configure(bg=_P["bg_panel"])
+        dlg.transient(self.root)
+        dlg.grab_set()
+
+        def _fmt(n):
+            if n < 1024: return f"{n} B"
+            if n < 1024 * 1024: return f"{n/1024:.1f} KB"
+            return f"{n/(1024*1024):.1f} MB"
+
+        tk.Label(dlg, text="🗑️ EVIDENCE VAULT MANAGEMENT",
+                 font=("Segoe UI", 12, "bold"),
+                 fg=_P["red"], bg=_P["bg_panel"]).pack(pady=(16, 4))
+
+        tk.Label(dlg, text="Manage, delete, or bulk-purge recorded emergency evidence.",
+                 font=("Segoe UI", 8), fg=_P["text_dim"], bg=_P["bg_panel"]).pack(pady=(0, 12))
+
+        stat_card = tk.Frame(dlg, bg=_P["bg_card"], padx=16, pady=12,
+                             highlightbackground=_P["border"], highlightthickness=1)
+        stat_card.pack(fill="x", padx=20, pady=(0, 14))
+
+        lbl_audio = tk.Label(stat_card, text="", font=("Segoe UI", 9),
+                             fg=_P["accent"], bg=_P["bg_card"], anchor="w")
+        lbl_audio.pack(fill="x", pady=2)
+
+        lbl_video = tk.Label(stat_card, text="", font=("Segoe UI", 9),
+                             fg=_P["purple"], bg=_P["bg_card"], anchor="w")
+        lbl_video.pack(fill="x", pady=2)
+
+        lbl_total = tk.Label(stat_card, text="", font=("Segoe UI", 9, "bold"),
+                             fg=_P["text_hi"], bg=_P["bg_card"], anchor="w")
+        lbl_total.pack(fill="x", pady=(6, 2))
+
+        def _refresh_stats():
+            a_files = glob.glob(os.path.join("recordings", "audio", "*.*"))
+            v_files = glob.glob(os.path.join("recordings", "video", "*.*"))
+            a_sz = sum(os.path.getsize(f) for f in a_files if os.path.isfile(f))
+            v_sz = sum(os.path.getsize(f) for f in v_files if os.path.isfile(f))
+            lbl_audio.config(text=f"🎙️ Audio Vault: {len(a_files)} recordings ({_fmt(a_sz)})")
+            lbl_video.config(text=f"📹 Video Vault: {len(v_files)} recordings ({_fmt(v_sz)})")
+            lbl_total.config(text=f"📦 Total Evidence: {len(a_files) + len(v_files)} files ({_fmt(a_sz + v_sz)})")
+            if hasattr(self, "refresh_media_lists"):
+                threading.Thread(target=self.refresh_media_lists, daemon=True).start()
+
+        _refresh_stats()
+
+        btn_box = tk.Frame(dlg, bg=_P["bg_panel"], padx=20)
+        btn_box.pack(fill="both", expand=True)
+
+        def _delete_audio_all():
+            a_files = glob.glob(os.path.join("recordings", "audio", "*.*"))
+            if not a_files:
+                messagebox.showinfo("Audio Vault", "No audio recordings found to delete.")
+                return
+            if messagebox.askyesno("Delete Audio", f"Permanently delete all {len(a_files)} audio recordings?", icon="warning"):
+                cnt = self.controller.delete_all_recordings("audio") if self.controller else 0
+                if not cnt:
+                    for f in a_files:
+                        try: os.remove(f); cnt += 1
+                        except Exception: pass
+                    if hasattr(self, "controller") and self.controller and hasattr(self.controller, "sync_manager"):
+                        self.controller.sync_manager.clear_audio_queue()
+                _refresh_stats()
+                self.send_desktop_popup("🗑️ Audio Vault Cleared", f"Deleted {cnt} audio file(s).")
+
+        def _delete_video_all():
+            v_files = glob.glob(os.path.join("recordings", "video", "*.*"))
+            if not v_files:
+                messagebox.showinfo("Video Vault", "No video recordings found to delete.")
+                return
+            if messagebox.askyesno("Delete Video", f"Permanently delete all {len(v_files)} video recordings?", icon="warning"):
+                cnt = self.controller.delete_all_recordings("video") if self.controller else 0
+                if not cnt:
+                    for f in v_files:
+                        try: os.remove(f); cnt += 1
+                        except Exception: pass
+                _refresh_stats()
+                self.send_desktop_popup("🗑️ Video Vault Cleared", f"Deleted {cnt} video file(s).")
+
+        def _delete_everything():
+            a_files = glob.glob(os.path.join("recordings", "audio", "*.*"))
+            v_files = glob.glob(os.path.join("recordings", "video", "*.*"))
+            total = len(a_files) + len(v_files)
+            if total == 0:
+                messagebox.showinfo("Evidence Vault", "No recordings found to delete.")
+                return
+            if messagebox.askyesno("⚠️ Purge All Evidence",
+                                   f"Are you sure you want to permanently DELETE ALL {total} audio and video recordings?\n\nThis cannot be undone!",
+                                   icon="warning"):
+                cnt = self.controller.delete_all_recordings("all") if self.controller else 0
+                if not cnt:
+                    for pat in [os.path.join("recordings", "audio", "*.*"), os.path.join("recordings", "video", "*.*")]:
+                        for f in glob.glob(pat):
+                            try: os.remove(f); cnt += 1
+                            except Exception: pass
+                    if hasattr(self, "controller") and self.controller and hasattr(self.controller, "sync_manager"):
+                        self.controller.sync_manager.clear_audio_queue()
+                _refresh_stats()
+                self.send_desktop_popup("⚠️ Evidence Purged", f"Deleted all {cnt} audio and video recordings.")
+
+        tk.Button(btn_box, text="🎙️ Delete All Audio Recordings", font=("Segoe UI", 9, "bold"),
+                  bg=_P["bg_card2"], fg=_P["accent"], bd=0, cursor="hand2",
+                  command=_delete_audio_all).pack(fill="x", pady=3, ipady=5)
+
+        tk.Button(btn_box, text="📹 Delete All Video Recordings", font=("Segoe UI", 9, "bold"),
+                  bg=_P["bg_card2"], fg=_P["purple"], bd=0, cursor="hand2",
+                  command=_delete_video_all).pack(fill="x", pady=3, ipady=5)
+
+        tk.Button(btn_box, text="⚠️ Purge All Evidence (Audio & Video)", font=("Segoe UI", 9, "bold"),
+                  bg=_P["red"], fg="#fff", bd=0, cursor="hand2",
+                  command=_delete_everything).pack(fill="x", pady=(8, 3), ipady=6)
+
+        tk.Button(btn_box, text="Close", font=("Segoe UI", 8),
+                  bg=_P["bg_panel"], fg=_P["text_dim"], bd=0, cursor="hand2",
+                  command=dlg.destroy).pack(side="bottom", pady=6)
 
     def refresh_media_lists(self):
-        a = len(glob.glob(os.path.join("recordings", "audio", "*.*")))
-        v = len(glob.glob(os.path.join("recordings", "video", "*.*")))
+        a_files = glob.glob(os.path.join("recordings", "audio", "*.*"))
+        v_files = glob.glob(os.path.join("recordings", "video", "*.*"))
+        a_cnt = len(a_files)
+        v_cnt = len(v_files)
+
+        def _fmt(n):
+            if n < 1024: return f"{n} B"
+            if n < 1024 * 1024: return f"{n/1024:.1f} KB"
+            return f"{n/(1024*1024):.1f} MB"
+
+        a_sz = sum(os.path.getsize(f) for f in a_files if os.path.isfile(f))
+        v_sz = sum(os.path.getsize(f) for f in v_files if os.path.isfile(f))
+
         def _upd():
-            if hasattr(self, "a_count_lbl") and self.a_count_lbl.winfo_exists():
-                self.a_count_lbl.config(text=f"{a} recorded")
-            if hasattr(self, "v_count_lbl") and self.v_count_lbl.winfo_exists():
-                self.v_count_lbl.config(text=f"{v} recorded")
-        self.root.after(0, _upd)
+            try:
+                if hasattr(self, "a_count_lbl") and self.a_count_lbl.winfo_exists():
+                    self.a_count_lbl.config(text=f"{a_cnt} files ({_fmt(a_sz)})" if a_cnt else "0 files")
+                if hasattr(self, "v_count_lbl") and self.v_count_lbl.winfo_exists():
+                    self.v_count_lbl.config(text=f"{v_cnt} files ({_fmt(v_sz)})" if v_cnt else "0 files")
+            except Exception:
+                pass
+        try:
+            self.root.after(0, _upd)
+        except Exception:
+            pass
+
 
     # ═══════════════════════════════════════════════════════════════════════════
     # PREDEFINED DESTINATION MANAGEMENT
@@ -1274,7 +1812,7 @@ class ModernSafetyApp:
                     self.send_desktop_popup("📍 Place Found", f"Loaded coordinates for '{p_name}'")
                     return
 
-            # Online OpenStreetMap Nominatim Search
+            # OpenStreetMap Nominatim Search
             def _async_geo():
                 try:
                     import urllib.parse
@@ -1296,7 +1834,7 @@ class ModernSafetyApp:
 
                 dlg.after(0, lambda: messagebox.showinfo(
                     "Place Search",
-                    f"Could not find coordinates online for '{query}'.\nYou can enter the Latitude and Longitude manually or pick a preset."
+                    f"Could not find coordinates for '{query}'.\nYou can enter the Latitude and Longitude manually or pick a preset."
                 ))
 
             threading.Thread(target=_async_geo, daemon=True).start()
@@ -1353,7 +1891,7 @@ class ModernSafetyApp:
         self.send_desktop_popup("Destination Cleared", "Trip destination has been removed.")
 
     # ═══════════════════════════════════════════════════════════════════════════
-    # MANUAL LIVE MAP MOVEMENT DEMO (CONTINUOUS SIMULATION WITHOUT REPEATED CLICKS)
+    # FREE ROAM & REAL-TIME INTERACTIVE MAP MOVEMENT
     # ═══════════════════════════════════════════════════════════════════════════
 
     def toggle_live_movement_demo(self):
@@ -1361,77 +1899,209 @@ class ModernSafetyApp:
             self.demo_mode_active = True
             if self.controller:
                 self.controller.set_demo_mode(True)
-            self.demo_status_str.set("🎮 Demo: ACTIVE (Simulated Movement)")
+            self.demo_status_str.set("🎮 Free Roam: ACTIVE")
             if hasattr(self, "demo_toggle_btn") and self.demo_toggle_btn.winfo_exists():
-                self.demo_toggle_btn.config(text="⏹ Stop Movement Demo", bg=_P["red"])
-
-            c_lat = map_config.CENTER_LAT
-            c_lon = map_config.CENTER_LON
-            self.demo_coords = [
-                (c_lat, c_lon),
-                (c_lat + 0.0008, c_lon + 0.0006),
-                (c_lat + 0.0016, c_lon + 0.0012),
-                (c_lat + 0.0024, c_lon + 0.0019),
-                (c_lat + 0.0033, c_lon + 0.0027),
-                (c_lat + 0.0041, c_lon + 0.0035),
-                (c_lat + 0.0050, c_lon + 0.0042),
-                (c_lat + 0.0058, c_lon + 0.0050),
-            ]
-            self.demo_step_index = 0
-            self.demo_speed = 28.0
-            self._run_demo_movement_step()
-            self.send_desktop_popup("🎮 Movement Demo Active", "Simulated movement updating live on map continuously.")
+                self.demo_toggle_btn.config(text="🎮 Free Roam: ON", bg=_P["accent"])
+            self.send_desktop_popup("🎮 Free Roam Active", "Click or drag anywhere on map to move freely.")
         else:
             self.demo_mode_active = False
             if self.controller:
                 self.controller.set_demo_mode(False)
-            if self.demo_loop_job:
-                self.root.after_cancel(self.demo_loop_job)
-                self.demo_loop_job = None
             self.demo_status_str.set("🎮 Mode: Real GPS")
             if hasattr(self, "demo_toggle_btn") and self.demo_toggle_btn.winfo_exists():
-                self.demo_toggle_btn.config(text="🎮 Start Movement Demo", bg=_P["accent2"])
-            if hasattr(self, "map_canvas") and self.map_canvas.winfo_exists():
-                self.map_canvas.delete("demo_badge")
-            self.send_desktop_popup("Demo Mode Deactivated", "Reverted to Real GPS mode.")
+                self.demo_toggle_btn.config(text="🎮 Free Roam: OFF", bg="#334155")
+            self.send_desktop_popup("Free Roam Paused", "Reverted to Real GPS mode.")
 
-    def _run_demo_movement_step(self):
+    def set_movement_pace(self, mode, speed):
+        """Switches movement pace between Walking and Driving."""
+        self.roam_pace_mode = mode
+        self.demo_speed = speed
+        if hasattr(self, "btn_pace_walk") and hasattr(self, "btn_pace_drive"):
+            if mode == "Walk":
+                self.btn_pace_walk.config(bg=_P["accent"], fg=_P["bg_root"])
+                self.btn_pace_drive.config(bg="#1e293b", fg=_P["amber"])
+            else:
+                self.btn_pace_walk.config(bg="#1e293b", fg=_P["accent"])
+                self.btn_pace_drive.config(bg=_P["amber"], fg=_P["bg_root"])
+        self.demo_status_str.set(f"🎮 Pace: {mode} ({speed:.0f} km/h)")
+        if self.controller:
+            self.controller.demo_speed = speed
+
+    def recenter_map_on_user(self):
+        """Snaps map focus back to current user position."""
+        lat = self.current_sim_lat or map_config.CENTER_LAT
+        lon = self.current_sim_lon or map_config.CENTER_LON
+        map_config.set_map_center(lat, lon)
+        self._map_base_drawn = False
+        self._draw_realistic_map()
+        self.update_map_canvas(lat, lon, None, self.demo_speed, False)
+        self.send_desktop_popup("🎯 Map Recentered", f"Centered on ({lat:.5f}, {lon:.5f})")
+
+    @staticmethod
+    def _haversine_dist(lat1, lon1, lat2, lon2):
+        """Calculates distance in meters between two lat/lon points."""
+        R = 6371000.0
+        dlat = math.radians(lat2 - lat1)
+        dlon = math.radians(lon2 - lon1)
+        a = (math.sin(dlat / 2.0) ** 2 +
+             math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dlon / 2.0) ** 2)
+        return R * 2.0 * math.atan2(math.sqrt(a), math.sqrt(1.0 - a))
+
+    def get_nearest_street_name(self, lat, lon):
+        """Returns the nearest road or sector name for realistic HUD display."""
+        landmarks = [
+            ("NH-45 Express Arterial", 11.458, 79.720),
+            ("Sanctuary Boulevard", 11.462, 79.728),
+            ("Campus Avenue", 11.485, 79.725),
+            ("Metro Transit Corridor", 11.445, 79.708),
+            ("Riverfront Promenade", 11.470, 79.742),
+            ("Botanical Garden Way", 11.492, 79.755),
+            ("Commerce District", 11.450, 79.712),
+            ("Central Square", 11.465, 79.725),
+        ]
+        best_name = "Sanctuary Way"
+        min_d = float("inf")
+        for name, s_lat, s_lon in landmarks:
+            d = self._haversine_dist(lat, lon, s_lat, s_lon)
+            if d < min_d:
+                min_d = d
+                best_name = name
+        return best_name
+
+    def move_user_to_latlon(self, target_lat, target_lon, speed_kmh=None):
+        """
+        Moves user freely to given coordinates.
+        Calculates realistic velocity and heading angle, passes to safety controller,
+        updates breadcrumb trail, and triggers live route/safety anomaly evaluation.
+        """
         if not self.demo_mode_active:
+            self.demo_mode_active = True
+            if self.controller:
+                self.controller.set_demo_mode(True)
+            if hasattr(self, "demo_toggle_btn") and self.demo_toggle_btn.winfo_exists():
+                self.demo_toggle_btn.config(text="🎮 Free Roam: ON", bg=_P["accent"])
+
+        prev_lat = self.current_sim_lat or map_config.CENTER_LAT
+        prev_lon = self.current_sim_lon or map_config.CENTER_LON
+
+        d_m = self._haversine_dist(prev_lat, prev_lon, target_lat, target_lon)
+
+        # Calculate heading angle in degrees (0=North, 90=East, 180=South, 270=West)
+        dy = target_lat - prev_lat
+        dx = (target_lon - prev_lon) * math.cos(math.radians(prev_lat))
+        if abs(dy) > 1e-6 or abs(dx) > 1e-6:
+            self.user_heading_deg = math.degrees(math.atan2(dx, dy)) % 360
+
+        now = time.time()
+        dt = max(now - getattr(self, "_last_move_time", now - 1.0), 0.1)
+        self._last_move_time = now
+
+        if speed_kmh is not None:
+            calc_speed = speed_kmh
+        else:
+            default_pace = getattr(self, "demo_speed", 45.0)
+            if d_m > 300:
+                calc_speed = min(88.0, max(default_pace, (d_m / dt) * 3.6))
+            elif d_m > 50:
+                calc_speed = default_pace
+            else:
+                calc_speed = max(5.0, (d_m / dt) * 3.6 if dt < 2.0 else default_pace)
+
+        self.current_sim_lat = round(target_lat, 6)
+        self.current_sim_lon = round(target_lon, 6)
+        self.demo_speed = round(calc_speed, 1)
+
+        is_threat = False
+        threat_type = "NORMAL"
+        if self.controller:
+            self.controller.update_demo_position(target_lat, target_lon, speed_kmh=calc_speed)
+            # Evaluate anomaly only when threat screen is not already active
+            if not getattr(self, "is_threat_active", False):
+                cycle_res = self.controller.run_live_safety_cycle()
+                if isinstance(cycle_res, dict):
+                    is_threat = cycle_res.get("anomaly_check", {}).get("is_threat", False)
+                    threat_type = cycle_res.get("anomaly_check", {}).get("threat_type", "NORMAL")
+
+        nearest_st = self.get_nearest_street_name(target_lat, target_lon)
+        self.demo_status_str.set(f"📍 {nearest_st} • ({target_lat:.5f}, {target_lon:.5f})")
+        self.update_map_canvas(target_lat, target_lon, None, self.demo_speed, is_threat)
+
+    def step_user_direction(self, heading_deg, step_meters=None):
+        """Moves user by a directional step (North, South, East, West)."""
+        if step_meters is None:
+            step_meters = 20.0 if getattr(self, "roam_pace_mode", "Drive") == "Walk" else 60.0
+
+        cur_lat = self.current_sim_lat or map_config.CENTER_LAT
+        cur_lon = self.current_sim_lon or map_config.CENTER_LON
+
+        rad = math.radians(heading_deg)
+        d_lat = (step_meters * math.cos(rad)) / 111000.0
+        d_lon = (step_meters * math.sin(rad)) / (111000.0 * math.cos(math.radians(cur_lat)))
+
+        new_lat = round(cur_lat + d_lat, 6)
+        new_lon = round(cur_lon + d_lon, 6)
+        self.user_heading_deg = heading_deg
+
+        spd = 5.0 if getattr(self, "roam_pace_mode", "Drive") == "Walk" else 45.0
+        self.move_user_to_latlon(new_lat, new_lon, speed_kmh=spd)
+
+    def on_map_keyboard_move(self, heading_deg):
+        """Handles keyboard arrow navigation, ignoring when focused on inputs."""
+        try:
+            focused = self.root.focus_get()
+            if isinstance(focused, (tk.Entry, tk.Spinbox, tk.Text)):
+                return
+        except Exception:
+            pass
+        self.step_user_direction(heading_deg)
+
+    def _on_map_click(self, event):
+        """Handles click on realistic map canvas or on-screen D-Pad."""
+        if not hasattr(self, "map_canvas") or not self.map_canvas.winfo_exists():
+            return
+        w = self.map_canvas.winfo_width() or 480
+        h = self.map_canvas.winfo_height() or 280
+
+        # Check if click landed on the on-canvas D-Pad in the bottom-right corner
+        cx, cy = w - 46, h - 46
+        dx = event.x - cx
+        dy = event.y - cy
+        dist = math.hypot(dx, dy)
+        if dist <= 38:
+            angle = (math.degrees(math.atan2(dx, -dy))) % 360  # 0=North, 90=East, 180=South, 270=West
+            if 315 <= angle or angle < 45:
+                self.step_user_direction(0)   # North
+            elif 45 <= angle < 135:
+                self.step_user_direction(90)  # East
+            elif 135 <= angle < 225:
+                self.step_user_direction(180) # South
+            else:
+                self.step_user_direction(270) # West
             return
 
-        if self.demo_coords and len(self.demo_coords) > 0:
-            lat, lon = self.demo_coords[self.demo_step_index % len(self.demo_coords)]
-            self.demo_step_index += 1
+        # Regular terrain click: freely move user marker to clicked location
+        self.is_dragging_user = True
+        lat, lon = map_config.pixel_to_latlon(event.x, event.y, (w, h))
+        self.move_user_to_latlon(lat, lon)
 
-            if self.controller:
-                self.controller.update_demo_position(lat, lon, speed_kmh=self.demo_speed)
-                self.controller.run_live_safety_cycle()
+    def _on_map_drag(self, event):
+        """Continuously moves user along mouse drag trajectory with throttling."""
+        if not hasattr(self, "map_canvas") or not self.map_canvas.winfo_exists():
+            return
+        now = time.time()
+        if (now - getattr(self, "_last_drag_time", 0.0)) < 0.05:
+            return
+        self._last_drag_time = now
 
-            self.demo_status_str.set(f"🎮 Demo: ({lat:.5f}, {lon:.5f}) | {self.demo_speed:.0f} km/h")
+        w = self.map_canvas.winfo_width() or 480
+        h = self.map_canvas.winfo_height() or 280
+        if event.x >= w - 85 and event.y >= h - 85:
+            return
+        lat, lon = map_config.pixel_to_latlon(event.x, event.y, (w, h))
+        self.move_user_to_latlon(lat, lon)
 
-        self.demo_loop_job = self.root.after(1500, self._run_demo_movement_step)
-
-    def test_demo_speed_anomaly(self):
-        """Boosts simulated demo speed to test speed increase 'Are you safe?' alert."""
-        if not self.demo_mode_active:
-            self.toggle_live_movement_demo()
-        self.demo_speed = 92.0
-        self.demo_status_str.set("⚡ Demo Speed: 92 km/h (HIGH SPEED TEST)")
-        if self.controller:
-            self.controller.demo_speed = 92.0
-            self.controller.run_live_safety_cycle()
-        self.root.after(4000, lambda: setattr(self, "demo_speed", 28.0))
-
-    def test_demo_route_deviation(self):
-        """Injects a 350m lateral deviation to test route deviation 'Are you safe?' alert."""
-        if not self.demo_mode_active:
-            self.toggle_live_movement_demo()
-        if self.controller and self.controller.demo_lat and self.controller.demo_lon:
-            dev_lat = self.controller.demo_lat + 0.0035
-            dev_lon = self.controller.demo_lon + 0.0035
-            self.controller.update_demo_position(dev_lat, dev_lon, speed_kmh=28.0)
-            self.controller.run_live_safety_cycle()
-            self.demo_status_str.set(f"↗ Deviated: ({dev_lat:.5f}, {dev_lon:.5f})")
+    def _on_map_release(self, event):
+        self.is_dragging_user = False
 
     # ═══════════════════════════════════════════════════════════════════════════
     # AUTOMATED CALL ESCALATION UI
@@ -1858,6 +2528,36 @@ class ModernSafetyApp:
     # ═══════════════════════════════════════════════════════════════════════════
 
     def trigger_threat(self, reason_msg="⚠️ CRITICAL THREAT DETECTED ⚠️"):
+        now = time.time()
+        # Suppress repeated triggers if threat screen is currently open
+        if getattr(self, "is_threat_active", False):
+            print(f"ℹ️ [GUI] Threat trigger '{reason_msg}' debounced (threat screen active).")
+            return
+
+        # Debounce identical duplicate triggers in rapid succession (< 3 seconds)
+        last_t = getattr(self, "_last_threat_trigger_time", 0.0)
+        last_r = getattr(self, "_last_threat_reason", "")
+        if (now - last_t) < 3.0 and last_r == reason_msg:
+            print(f"ℹ️ [GUI] Duplicate threat trigger '{reason_msg}' debounced (<3s since identical trigger).")
+            return
+        self._last_threat_trigger_time = now
+        self._last_threat_reason = reason_msg
+
+        reason_upper = str(reason_msg).upper()
+
+        # The countdown timer should appear ONLY for Fall Detection and Route Deviation.
+        is_fall = any(k in reason_upper for k in ["FALL", "DROP", "IMPACT"])
+        is_route_dev = any(k in reason_upper for k in ["DEVIATION", "ROUTE", "OFF_ROUTE", "WAYPOINT_DEVIATED"])
+
+        should_countdown = is_fall or is_route_dev
+
+        if not should_countdown:
+            # The countdown should not appear when the alert is being dispatched, as it is already identified as an emergency.
+            print(f"🚨 [INSTANT SOS DISPATCH] Confirmed emergency identified ({reason_msg}). Dispatching alert directly without countdown...")
+            self.active_threat_reason = reason_msg
+            self.dispatch_sos()
+            return
+
         if self.is_threat_active:
             return
         if not self.is_protection_active:
@@ -1886,21 +2586,14 @@ class ModernSafetyApp:
         center_box = tk.Frame(threat_frame, bg=_P["threat_bg"])
         center_box.place(relx=0.5, rely=0.5, anchor="center")
 
-        is_fall = "FALL" in reason_msg.upper() or "DROP" in reason_msg.upper()
-        is_safe_check = "ARE YOU SAFE" in reason_msg.upper() or "SPEED" in reason_msg.upper() or "DEVIATION" in reason_msg.upper()
-
         if is_fall:
             hdr_text = "💥 PHONE FALL / DROP DETECTED!"
-            sub_text = "Fall/Drop detected via phone USB telemetry.\nIf uncancelled, emergency SMS and automated calls will trigger."
-            btn_text = "❌ CANCEL (FALSE DROP / ACCIDENT)"
-        elif is_safe_check:
-            hdr_text = "⚠️ ARE YOU SAFE?"
-            sub_text = f"{reason_msg}\nPlease confirm your safety before countdown expires."
-            btn_text = "🛡️ I AM SAFE (CONFIRM SAFE & DISMISS)"
+            sub_text = "Sudden drop / impact detected via mobile phone sensors.\nIf uncancelled, emergency SOS alert will be dispatched to all saved contacts."
+            btn_text = "🛡️ I AM SAFE (CANCEL SOS)"
         else:
-            hdr_text = "⚠️ CRITICAL THREAT DETECTED"
-            sub_text = reason_msg
-            btn_text = "🛡️ I AM SAFE (DISMISS ALARM)"
+            hdr_text = "⚠️ ROUTE DEVIATION DETECTED!"
+            sub_text = f"{reason_msg}\nTrip has deviated from planned safe route corridor.\nPlease confirm your safety before countdown expires."
+            btn_text = "🛡️ I AM SAFE (CANCEL SOS)"
 
         tk.Label(center_box, text=hdr_text,
                  font=("Segoe UI", 18, "bold"),
@@ -1974,15 +2667,20 @@ class ModernSafetyApp:
         if not self.is_protection_active:
             return
         self.is_threat_active = False
+        self._last_threat_reason = ""
+        self._last_threat_trigger_time = 0.0
         if self.timer_job:
             self.root.after_cancel(self.timer_job)
+            self.timer_job = None
 
-        # Cooldown / debounce in anomaly engine to avoid repeated triggers
-        if self.controller and hasattr(self.controller, "anomaly_engine"):
-            self.controller.anomaly_engine.acknowledge_safe(cooldown_seconds=75)
-        # Cancel call escalation if running
-        if self.controller and hasattr(self.controller, "cancel_call_escalation"):
-            self.controller.cancel_call_escalation()
+        # Reset controller status & apply cooldown to prevent unwanted repeated triggers
+        if self.controller:
+            if hasattr(self.controller, "acknowledge_user_safe"):
+                self.controller.acknowledge_user_safe(cooldown_seconds=90.0)
+            elif hasattr(self.controller, "anomaly_engine"):
+                self.controller.anomaly_engine.acknowledge_safe(cooldown_seconds=90.0)
+            if hasattr(self.controller, "cancel_call_escalation"):
+                self.controller.cancel_call_escalation()
 
         self.send_desktop_popup("✅ Alarm Dismissed", "User confirmed safe.")
         self.build_modern_dashboard(
@@ -1990,18 +2688,25 @@ class ModernSafetyApp:
 
     def dispatch_sos(self):
         """
-        Core SOS dispatch. Reads P1 / P2 numbers dynamically.
-        Dispatches emergency SMS via controller.execute_emergency_sequence to prevent duplicate triggers,
-        and initiates automated call escalation.
+        Core SOS dispatch. The countdown does not appear as it is already identified as an emergency.
+        Gathers ALL numbers saved in the UI and dispatches offline alert with current location link.
         """
         if not self.is_protection_active:
             return
 
+        now = time.time()
+        if (now - getattr(self, "_last_sos_dispatch_time", 0.0)) < 20.0:
+            print("ℹ️ [GUI] SOS dispatch debounced (<20s since last dispatch).")
+            return
+        self._last_sos_dispatch_time = now
+
+        # Cancel any active countdown timer immediately
         self.is_threat_active = False
         if self.timer_job:
             self.root.after_cancel(self.timer_job)
+            self.timer_job = None
 
-        # --- Resolve P1 / P2 dynamically from UI entries ---
+        # --- Resolve all numbers saved in the UI ---
         def _read_entry(entry_widget, fallback=""):
             if entry_widget is not None and hasattr(entry_widget, "get"):
                 val = entry_widget.get().strip()
@@ -2009,43 +2714,68 @@ class ModernSafetyApp:
                     return val
             return fallback
 
-        fb_p1 = self.contacts[0]["phone"] if self.contacts else ""
-        fb_p2 = self.contacts[1]["phone"] if len(self.contacts) > 1 else ""
-        p1_val = _read_entry(self.p1_entry, fb_p1)
-        p2_val = _read_entry(self.p2_entry, fb_p2)
-        if p1_val == "Not configured": p1_val = fb_p1
-        if p2_val == "Not configured": p2_val = fb_p2
+        saved_numbers = []
+        for c in self.contacts:
+            if isinstance(c, dict):
+                p = self.clean_phone(c.get("phone", ""))
+            else:
+                p = self.clean_phone(str(c))
+            if p and p not in saved_numbers:
+                saved_numbers.append(p)
 
-        active_contacts = [p for p in [p1_val, p2_val] if p]
-        if self.controller and active_contacts:
-            self.controller.set_emergency_contacts(active_contacts)
+        # Also inspect dashboard P1 / P2 entries if present
+        fb_p1 = saved_numbers[0] if saved_numbers else ""
+        fb_p2 = saved_numbers[1] if len(saved_numbers) > 1 else ""
+        p1_val = _read_entry(getattr(self, "p1_entry", None), fb_p1)
+        p2_val = _read_entry(getattr(self, "p2_entry", None), fb_p2)
+        if p1_val and p1_val != "Not configured":
+            c_p1 = self.clean_phone(p1_val)
+            if c_p1 and c_p1 not in saved_numbers:
+                saved_numbers.insert(0, c_p1)
+        if p2_val and p2_val != "Not configured":
+            c_p2 = self.clean_phone(p2_val)
+            if c_p2 and c_p2 not in saved_numbers:
+                if len(saved_numbers) > 1:
+                    saved_numbers.insert(1, c_p2)
+                else:
+                    saved_numbers.append(c_p2)
 
-        # --- Gather location and execute emergency sequence without duplicate dispatch ---
+        if not saved_numbers:
+            saved_numbers = ["9876543210"]
+
+        if self.controller:
+            self.controller.set_emergency_contacts(saved_numbers)
+
+        # --- Gather verified location and execute emergency sequence ---
         current_loc = {}
         if self.controller:
             try:
                 current_loc = self.controller.location_engine.get_current_location()
-                incident_desc = getattr(self, "active_threat_reason", "MANUAL_SOS_TIMEOUT")
+                incident_desc = getattr(self, "active_threat_reason", "MANUAL_SOS_TRIGGER")
                 self.controller.execute_emergency_sequence(
                     incident_desc, current_loc)
             except Exception as e:
                 print(f"[SOS Dispatch Error] {e}")
         else:
-            # Standalone mode without controller: dispatch trigger_aura_sos once
+            p1_n = saved_numbers[0] if saved_numbers else ""
+            p2_n = saved_numbers[1] if len(saved_numbers) > 1 else ""
             threading.Thread(
                 target=trigger_aura_sos,
-                args=(p1_val, p2_val, 0.0, 0.0),
+                args=(p1_n, p2_n, 0.0, 0.0),
                 daemon=True,
                 name="SOS-Dispatch",
             ).start()
 
-        # --- UI feedback ---
+        # --- UI feedback: show dispatched dashboard directly without countdown ---
         if not getattr(self, "is_fake_shutdown", False):
+            contact_str = ", ".join(saved_numbers[:3])
+            if len(saved_numbers) > 3:
+                contact_str += f" (+{len(saved_numbers)-3} more)"
             self.send_desktop_popup(
                 "🚨 INSTANT SOS DISPATCHED!",
-                f"Alert sent to P1={p1_val or '—'}, P2={p2_val or '—'}")
+                f"Emergency alert with location link dispatched to: {contact_str}")
             self.build_modern_dashboard(
-                pending_notification="🚨 EMERGENCY ALERT DISPATCHED!",
+                pending_notification=f"🚨 EMERGENCY ALERT DISPATCHED TO {len(saved_numbers)} CONTACTS!",
                 is_error=True)
             self.root.after(
                 5000,
@@ -2112,109 +2842,304 @@ class ModernSafetyApp:
             self.root.after(0, lambda: self.dismiss_alarm(f"Voice ('{word}')"))
 
     # ═══════════════════════════════════════════════════════════════════════════
-    # 10 – MAP CANVAS RENDERING
+    # 10 – REALISTIC VECTOR MAP RENDERING & DYNAMIC NAVIGATION HUD
     # ═══════════════════════════════════════════════════════════════════════════
 
     def _draw_map_grid(self):
+        """Builds and paints the full realistic cartographic city map."""
+        self._draw_realistic_map()
+
+    def _draw_realistic_map(self):
+        """Renders a realistic dark-mode cartographic vector city map."""
+        if not hasattr(self, "map_canvas") or not self.map_canvas.winfo_exists():
+            return
         self.map_canvas.update_idletasks()
-        w = self.map_canvas.winfo_width() or 460
-        h = self.map_canvas.winfo_height() or 240
-        step = 40
-        for i in range(0, w, step):
-            self.map_canvas.create_line(i, 0, i, h,
-                                        fill="#0f1d33", tags="grid")
-        for i in range(0, h, step):
-            self.map_canvas.create_line(0, i, w, i,
-                                        fill="#0f1d33", tags="grid")
-        # Landmarks on the mini-map dynamically retrieved from safe zones
-        dynamic_landmarks = map_config.get_dynamic_landmarks(self.controller)
-        for label, (llat, llon) in dynamic_landmarks.items():
-            lx, ly = map_config.latlon_to_pixel(llat, llon, w)
-            self.map_canvas.create_oval(lx - 5, ly - 5, lx + 5, ly + 5,
-                                        fill=_P["green"], outline="",
-                                        tags="grid")
-            self.map_canvas.create_text(lx, ly - 12, text=label,
-                                        fill=_P["text_mid"],
-                                        font=("Segoe UI", 6),
-                                        tags="grid")
+        w = self.map_canvas.winfo_width()
+        h = self.map_canvas.winfo_height()
+        if w <= 1:
+            w = 480
+        if h <= 1:
+            h = 280
+
+        self.map_canvas.delete("map_base")
+        sz = (w, h)
+
+        # ── 1. Base Terrain Background (Deep Dark Slate Asphalt) ──────────────
+        self.map_canvas.create_rectangle(0, 0, w, h, fill="#0c1322", outline="", tags="map_base")
+
+        # ── 2. Natural Features: Waterway (Marina Riverfront Channel) ─────────
+        river_latlons = [
+            (11.515, 79.768),
+            (11.495, 79.756),
+            (11.472, 79.744),
+            (11.450, 79.739),
+            (11.428, 79.733),
+            (11.405, 79.728)
+        ]
+        river_pixels = [map_config.latlon_to_pixel(lat, lon, sz) for lat, lon in river_latlons]
+        flat_river = [coord for pt in river_pixels for coord in pt]
+        if len(flat_river) >= 4:
+            # Shoreline outline bank
+            self.map_canvas.create_line(flat_river, fill="#0284c7", width=34, smooth=True, tags="map_base")
+            # Inner deep marine water body
+            self.map_canvas.create_line(flat_river, fill="#034b75", width=28, smooth=True, tags="map_base")
+            # Waterway name label
+            mid_x, mid_y = river_pixels[len(river_pixels) // 2]
+            self.map_canvas.create_text(
+                mid_x + 18, mid_y - 12, text="≋ Riverfront Marine Channel ≋",
+                fill="#38bdf8", font=("Segoe UI", 7, "italic"), tags="map_base"
+            )
+
+        # ── 3. Ecological Green Reserves & Public Parks ───────────────────────
+        # Sanctuary Nature Reserve (North-West)
+        p1 = map_config.latlon_to_pixel(11.508, 79.675, sz)
+        p2 = map_config.latlon_to_pixel(11.478, 79.715, sz)
+        self.map_canvas.create_rectangle(p1[0], p1[1], p2[0], p2[1], fill="#064e3b", outline="#059669", width=1, tags="map_base")
+        self.map_canvas.create_text((p1[0] + p2[0]) / 2, p1[1] + 14, text="🌲 Sanctuary Nature Reserve", fill="#34d399", font=("Segoe UI", 8, "bold"), tags="map_base")
+
+        # University Botanical Campus Gardens (North-East)
+        bg1 = map_config.latlon_to_pixel(11.502, 79.750, sz)
+        bg2 = map_config.latlon_to_pixel(11.486, 79.775, sz)
+        self.map_canvas.create_rectangle(bg1[0], bg1[1], bg2[0], bg2[1], fill="#064e3b", outline="#059669", width=1, tags="map_base")
+        self.map_canvas.create_text((bg1[0] + bg2[0]) / 2, bg1[1] + 12, text="🌿 Botanical Campus Gardens", fill="#34d399", font=("Segoe UI", 7, "bold"), tags="map_base")
+
+        # ── 4. Urban Parcels & City District Blocks ───────────────────────────
+        city_blocks = [
+            (11.458, 79.702, 11.442, 79.720, "Commerce District"),
+            (11.474, 79.702, 11.464, 79.720, "Tech Sector"),
+            (11.458, 79.728, 11.442, 79.742, "Medical Enclave"),
+            (11.438, 79.702, 11.422, 79.722, "South Residential"),
+            (11.438, 79.742, 11.422, 79.760, "Harbor Quarters"),
+        ]
+        for b_n, b_w, b_s, b_e, b_name in city_blocks:
+            bp1 = map_config.latlon_to_pixel(b_n, b_w, sz)
+            bp2 = map_config.latlon_to_pixel(b_s, b_e, sz)
+            self.map_canvas.create_rectangle(bp1[0], bp1[1], bp2[0], bp2[1], fill="#151f32", outline="#253349", width=1, tags="map_base")
+
+        # ── 5. Multi-Tier Road Network ────────────────────────────────────────
+        # Secondary streets (Local Grid)
+        for s_lat in [11.438, 11.480, 11.498]:
+            sp1 = map_config.latlon_to_pixel(s_lat, 79.670, sz)
+            sp2 = map_config.latlon_to_pixel(s_lat, 79.780, sz)
+            self.map_canvas.create_line(sp1[0], sp1[1], sp2[0], sp2[1], fill="#27364b", width=3, tags="map_base")
+
+        for s_lon in [79.692, 79.750, 79.768]:
+            sp1 = map_config.latlon_to_pixel(11.410, s_lon, sz)
+            sp2 = map_config.latlon_to_pixel(11.515, s_lon, sz)
+            self.map_canvas.create_line(sp1[0], sp1[1], sp2[0], sp2[1], fill="#27364b", width=3, tags="map_base")
+
+        # Primary Avenues: Sanctuary Boulevard (East-West)
+        sb1 = map_config.latlon_to_pixel(11.462, 79.670, sz)
+        sb2 = map_config.latlon_to_pixel(11.462, 79.780, sz)
+        self.map_canvas.create_line(sb1[0], sb1[1], sb2[0], sb2[1], fill="#1e293b", width=8, tags="map_base")
+        self.map_canvas.create_line(sb1[0], sb1[1], sb2[0], sb2[1], fill="#475569", width=5, tags="map_base")
+        self.map_canvas.create_text(w * 0.22, sb1[1] - 8, text="Sanctuary Blvd", fill="#94a3b8", font=("Segoe UI", 7, "bold"), tags="map_base")
+
+        # Primary Avenues: Campus Avenue (North-South)
+        ca1 = map_config.latlon_to_pixel(11.410, 79.725, sz)
+        ca2 = map_config.latlon_to_pixel(11.515, 79.725, sz)
+        self.map_canvas.create_line(ca1[0], ca1[1], ca2[0], ca2[1], fill="#1e293b", width=8, tags="map_base")
+        self.map_canvas.create_line(ca1[0], ca1[1], ca2[0], ca2[1], fill="#475569", width=5, tags="map_base")
+        self.map_canvas.create_text(ca1[0] + 32, h * 0.18, text="Campus Ave", fill="#94a3b8", font=("Segoe UI", 7, "bold"), tags="map_base")
+
+        # Metro Transit Way
+        mw1 = map_config.latlon_to_pixel(11.442, 79.705, sz)
+        mw2 = map_config.latlon_to_pixel(11.462, 79.725, sz)
+        self.map_canvas.create_line(mw1[0], mw1[1], mw2[0], mw2[1], fill="#1e293b", width=7, tags="map_base")
+        self.map_canvas.create_line(mw1[0], mw1[1], mw2[0], mw2[1], fill="#64748b", width=4, tags="map_base")
+        self.map_canvas.create_text((mw1[0] + mw2[0]) / 2 - 10, (mw1[1] + mw2[1]) / 2 + 10, text="Metro Corridor", fill="#94a3b8", font=("Segoe UI", 6), tags="map_base")
+
+        # Major Expressway: NH-45 Express Arterial (Diagonal with center divider)
+        hway_pts = [
+            (11.410, 79.670),
+            (11.435, 79.700),
+            (11.460, 79.728),
+            (11.485, 79.752),
+            (11.515, 79.780)
+        ]
+        hw_pixels = [map_config.latlon_to_pixel(lat, lon, sz) for lat, lon in hway_pts]
+        flat_hw = [coord for pt in hw_pixels for coord in pt]
+        # Highway dark casing
+        self.map_canvas.create_line(flat_hw, fill="#0b101d", width=14, smooth=True, tags="map_base")
+        # Highway amber roadbed
+        self.map_canvas.create_line(flat_hw, fill="#f59e0b", width=9, smooth=True, tags="map_base")
+        # Dashed white center line
+        self.map_canvas.create_line(flat_hw, fill="#ffffff", width=1.5, dash=(6, 4), smooth=True, tags="map_base")
+        # Route Shield Badge
+        hw_x, hw_y = hw_pixels[len(hw_pixels) // 2]
+        self.map_canvas.create_rectangle(hw_x - 32, hw_y - 18, hw_x + 32, hw_y - 4, fill="#1e3a8a", outline="#3b82f6", width=1, tags="map_base")
+        self.map_canvas.create_text(hw_x, hw_y - 11, text="NH-45 EXPRESS", fill="#ffffff", font=("Segoe UI", 6, "bold"), tags="map_base")
+
+        # ── 6. Dynamic Safe Zones ─────────────────────────────────────────────
+        landmarks = map_config.get_dynamic_landmarks(self.controller)
+        for label, (llat, llon) in landmarks.items():
+            lx, ly = map_config.latlon_to_pixel(llat, llon, sz)
+            self.map_canvas.create_oval(lx - 24, ly - 24, lx + 24, ly + 24, outline="#10b981", width=1.5, dash=(4, 3), fill="#064e3b", stipple="gray25", tags="map_base")
+            self.map_canvas.create_oval(lx - 5, ly - 5, lx + 5, ly + 5, fill="#10b981", outline="#ffffff", width=1, tags="map_base")
+            self.map_canvas.create_text(lx, ly - 14, text=label, fill="#6ee7b7", font=("Segoe UI", 7, "bold"), tags="map_base")
+
+        # ── 7. City Key Landmarks ─────────────────────────────────────────────
+        city_pois = [
+            ("🚇 Metro Central", 11.445, 79.708, "#38bdf8"),
+            ("🏥 Apex Hospital", 11.455, 79.738, "#f43f5e"),
+            ("👮 Police Precinct 4", 11.468, 79.712, "#60a5fa"),
+            ("🎓 Annamalai University", 11.4925, 79.758, "#c084fc"),
+        ]
+        for poi_name, p_lat, p_lon, poi_color in city_pois:
+            px, py = map_config.latlon_to_pixel(p_lat, p_lon, sz)
+            self.map_canvas.create_oval(px - 4, py - 4, px + 4, py + 4, fill=poi_color, outline="#ffffff", width=1, tags="map_base")
+            self.map_canvas.create_text(px, py + 11, text=poi_name, fill=poi_color, font=("Segoe UI", 7, "bold"), tags="map_base")
+
+        # ── 8. Draw Planned Safe Corridor Route ───────────────────────────────
+        self._draw_safe_route_corridor(sz)
+
+        # ── 9. On-Canvas Interactive D-Pad ────────────────────────────────────
+        self._draw_canvas_dpad(w, h)
+
+        self._map_base_drawn = True
+
+    def _draw_safe_route_corridor(self, sz):
+        self.map_canvas.delete("route_corridor")
+        dest = getattr(self.controller, "trip_destination", None) if self.controller else None
+        if dest and dest.get("latitude") and dest.get("longitude"):
+            dest_lat = dest["latitude"]
+            dest_lon = dest["longitude"]
+            dest_name = dest.get("name", "Destination")
+        else:
+            dest_lat = 11.49250
+            dest_lon = 79.75800
+            dest_name = "Campus Sanctuary"
+
+        start_lat = 11.45800
+        start_lon = 79.72000
+
+        corridor_pts = [
+            (start_lat, start_lon),
+            (11.46200, 79.72500),
+            (11.47500, 79.73800),
+            (11.48500, 79.75000),
+            (dest_lat, dest_lon)
+        ]
+        corr_pixels = [map_config.latlon_to_pixel(lat, lon, sz) for lat, lon in corridor_pts]
+        flat_corr = [coord for pt in corr_pixels for coord in pt]
+
+        # 1. Translucent Safe Corridor Buffer
+        self.map_canvas.create_line(flat_corr, fill="#065f46", width=26, smooth=True, tags="route_corridor")
+        # 2. Glowing Navigation Line
+        self.map_canvas.create_line(flat_corr, fill="#10b981", width=4, smooth=True, tags="route_corridor")
+
+        # 3. Waypoint heading chevrons along path
+        for i in range(len(corr_pixels) - 1):
+            mx = (corr_pixels[i][0] + corr_pixels[i+1][0]) / 2
+            my = (corr_pixels[i][1] + corr_pixels[i+1][1]) / 2
+            self.map_canvas.create_text(mx, my, text="▶", fill="#ffffff", font=("Segoe UI", 7, "bold"), tags="route_corridor")
+
+        # 4. Destination Flag Marker
+        dx, dy = corr_pixels[-1]
+        self.map_canvas.create_oval(dx - 9, dy - 9, dx + 9, dy + 9, fill="#a855f7", outline="#ffffff", width=2, tags="route_corridor")
+        self.map_canvas.create_text(dx, dy - 16, text=f"🏁 {dest_name}", fill="#e9d5ff", font=("Segoe UI", 8, "bold"), tags="route_corridor")
+
+    def _draw_canvas_dpad(self, w, h):
+        self.map_canvas.delete("dpad")
+        cx, cy = w - 46, h - 46
+        r = 34
+        # Semi-transparent background disc
+        self.map_canvas.create_oval(cx - r, cy - r, cx + r, cy + r, fill="#0f172a", outline="#334155", width=1.5, tags="dpad")
+
+        # Arrow buttons
+        self.map_canvas.create_text(cx, cy - 20, text="▲", fill="#38bdf8", font=("Segoe UI", 10, "bold"), tags="dpad")
+        self.map_canvas.create_text(cx, cy + 20, text="▼", fill="#38bdf8", font=("Segoe UI", 10, "bold"), tags="dpad")
+        self.map_canvas.create_text(cx - 20, cy, text="◀", fill="#38bdf8", font=("Segoe UI", 10, "bold"), tags="dpad")
+        self.map_canvas.create_text(cx + 20, cy, text="▶", fill="#38bdf8", font=("Segoe UI", 10, "bold"), tags="dpad")
+        self.map_canvas.create_oval(cx - 5, cy - 5, cx + 5, cy + 5, fill="#0284c7", outline="", tags="dpad")
 
     def update_map_canvas(self, lat, lon, predicted, speed_kmh, is_threat):
         """
-        Called by main_controller every safety cycle.  Now also pulls
-        Haversine segment distance and LSTM confidence from the predictor
-        and updates the live telemetry sidebar.
+        Called by main_controller every safety cycle and during free roaming.
+        Updates GPS puck, heading arrow, live HUD tag, breadcrumb trail, and telemetry.
         """
         if not hasattr(self, "map_canvas") or not self.map_canvas.winfo_exists():
             return
 
+        w = self.map_canvas.winfo_width()
+        h = self.map_canvas.winfo_height()
+        if w <= 1:
+            w = 480
+        if h <= 1:
+            h = 280
+        if not getattr(self, "_map_base_drawn", False):
+            self._draw_realistic_map()
+
+        sz = (w, h)
         if lat and lon and not (lat == 0.0 and lon == 0.0):
+            self.current_sim_lat = lat
+            self.current_sim_lon = lon
             if abs(lat - map_config.CENTER_LAT) > map_config.ZOOM_SPAN_DEGREES * 0.45 or \
                abs(lon - map_config.CENTER_LON) > map_config.ZOOM_SPAN_DEGREES * 0.45:
                 map_config.set_map_center(lat, lon)
+                self._draw_realistic_map()
 
-        w  = self.map_canvas.winfo_width()  or 460
-        h  = self.map_canvas.winfo_height() or 240
-        sz = min(w, h)
         px, py = map_config.latlon_to_pixel(lat, lon, sz)
 
-        # Trail
+        # ── Breadcrumb trail ──────────────────────────────────────────────────
         if self.map_trail_points:
             lx, ly = self.map_trail_points[-1]
-            self.map_canvas.create_line(
-                lx, ly, px, py,
-                fill=_P["red"], width=2, tags="trail")
+            self.map_canvas.create_line(lx, ly, px, py, fill="#ef4444", width=3, tags="trail")
         self.map_trail_points.append((px, py))
+        if len(self.map_trail_points) > 140:
+            self.map_trail_points.pop(0)
 
-        # Destination marker (Requirement 8)
-        self.map_canvas.delete("dest_marker")
-        if self.controller and getattr(self.controller, "trip_destination", None):
-            dest = self.controller.trip_destination
-            d_lat = dest.get("latitude")
-            d_lon = dest.get("longitude")
-            d_name = dest.get("name", "Destination")
-            if d_lat is not None and d_lon is not None:
-                dx, dy = map_config.latlon_to_pixel(d_lat, d_lon, sz)
-                self.map_canvas.create_oval(
-                    dx - 8, dy - 8, dx + 8, dy + 8,
-                    fill="#a855f7", outline="#ffffff", width=2,
-                    tags="dest_marker")
-                self.map_canvas.create_text(
-                    dx, dy - 14, text=f"🏁 {d_name}",
-                    font=("Segoe UI", 8, "bold"), fill="#c084fc",
-                    tags="dest_marker")
-
-        # Current position marker (Requirement 2: isolated and clearly visible in demo mode)
-        self.map_canvas.delete("current_marker")
-        if getattr(self, "demo_mode_active", False):
-            mc = _P["amber"] if is_threat else "#f97316"
-            self.map_canvas.create_oval(
-                px - 9, py - 9, px + 9, py + 9,
-                fill=mc, outline="#ffffff", width=2,
-                tags="current_marker")
-            self.map_canvas.create_text(
-                px, py + 14, text="[DEMO SIMULATED]",
-                font=("Segoe UI", 7, "bold"), fill="#fb923c",
-                tags="current_marker")
-        else:
-            mc = _P["amber"] if is_threat else _P["red"]
-            self.map_canvas.create_oval(
-                px - 7, py - 7, px + 7, py + 7,
-                fill=mc, outline="#fff", width=1,
-                tags="current_marker")
-
-        # Predicted marker
+        # ── Predicted Marker ──────────────────────────────────────────────────
         self.map_canvas.delete("predicted_marker")
         if predicted:
             p_lat = predicted.get("predicted_latitude") or predicted.get("latitude")
             p_lon = predicted.get("predicted_longitude") or predicted.get("longitude")
             if p_lat is not None and p_lon is not None:
                 ppx, ppy = map_config.latlon_to_pixel(p_lat, p_lon, sz)
-                self.map_canvas.create_oval(
-                    ppx - 9, ppy - 9, ppx + 9, ppy + 9,
-                    outline=_P["predict"], width=2,
-                    tags="predicted_marker")
+                self.map_canvas.create_oval(ppx - 8, ppy - 8, ppx + 8, ppy + 8, outline=_P["predict"], width=2, tags="predicted_marker")
 
-        # Telemetry sidebar
+        # ── Live User GPS Navigation Puck (Realistic Puck with Heading Pointer)
+        self.map_canvas.delete("current_marker", "radar_ping", "hud_marker")
+
+        # Radar ripple rings
+        pulse_color = "#f43f5e" if is_threat else "#38bdf8"
+        for r_off, w_stroke in [(22, 1), (15, 1.5)]:
+            self.map_canvas.create_oval(px - r_off, py - r_off, px + r_off, py + r_off, outline=pulse_color, width=w_stroke, tags="radar_ping")
+
+        # Drop shadow
+        self.map_canvas.create_oval(px - 9, py - 7, px + 9, py + 11, fill="#020617", outline="", tags="current_marker")
+
+        # Outer high-contrast white ring
+        self.map_canvas.create_oval(px - 10, py - 10, px + 10, py + 10, fill="#ffffff", outline="", tags="current_marker")
+
+        # Inner vibrant GPS disc
+        disc_color = _P["red"] if is_threat else "#0284c7"
+        self.map_canvas.create_oval(px - 8, py - 8, px + 8, py + 8, fill=disc_color, outline="", tags="current_marker")
+
+        # Heading Direction Arrowhead
+        heading = getattr(self, "user_heading_deg", 45.0)
+        rad = math.radians(heading)
+        tip_x = px + 7 * math.sin(rad)
+        tip_y = py - 7 * math.cos(rad)
+        base_left_x  = px + 5 * math.sin(rad + 2.5)
+        base_left_y  = py - 5 * math.cos(rad + 2.5)
+        base_right_x = px + 5 * math.sin(rad - 2.5)
+        base_right_y = py - 5 * math.cos(rad - 2.5)
+        self.map_canvas.create_polygon(tip_x, tip_y, base_left_x, base_left_y, px, py, base_right_x, base_right_y, fill="#ffffff", outline="", tags="current_marker")
+
+        # Live HUD Callout Pill Tag
+        st_name = self.get_nearest_street_name(lat, lon)
+        hud_text = f"📍 YOU • {speed_kmh:.0f} km/h • {st_name}"
+        hud_bg = "#7f1d1d" if is_threat else "#0f172a"
+        hud_fg = "#fecaca" if is_threat else "#38bdf8"
+        hud_border = "#ef4444" if is_threat else "#0284c7"
+
+        tag_y = py - 24 if py > 45 else py + 26
+        box_w = max(len(hud_text) * 3.6 + 10, 50)
+        self.map_canvas.create_rectangle(px - box_w, tag_y - 8, px + box_w, tag_y + 8, fill=hud_bg, outline=hud_border, width=1.5, tags="hud_marker")
+        self.map_canvas.create_text(px, tag_y, text=hud_text, fill=hud_fg, font=("Segoe UI", 7, "bold"), tags="hud_marker")
+
+        # ── Telemetry Sidebar Live Update ─────────────────────────────────────
         self.speed_indicator_str.set(f"Speed: {speed_kmh} km/h")
         self._tele_speed.set(f"{speed_kmh} km/h")
 
@@ -2225,39 +3150,31 @@ class ModernSafetyApp:
             else:
                 self._tele_dest.set("None set")
 
-        # Pull extra stats from predictor if available
         if self.controller and hasattr(self.controller, "predictor"):
             try:
                 summary = self.controller.predictor.get_history_summary()
-                self._tele_seg_dist.set(
-                    f"{summary.get('last_segment_m', 0.0):.1f} m")
-                self._tele_cum_dist.set(
-                    f"{summary.get('cumulative_distance_km', 0.0):.3f} km")
+                self._tele_seg_dist.set(f"{summary.get('last_segment_m', 0.0):.1f} m")
+                self._tele_cum_dist.set(f"{summary.get('cumulative_distance_km', 0.0):.3f} km")
                 pred2 = self.controller.predictor.predict_next_coordinate()
                 if pred2:
-                    self._tele_pred_lat.set(
-                        f"{pred2.get('predicted_latitude', '--'):.5f}")
-                    self._tele_pred_lon.set(
-                        f"{pred2.get('predicted_longitude', '--'):.5f}")
-                    self._tele_conf.set(
-                        f"{pred2.get('confidence', 0.0) * 100:.1f}%")
+                    self._tele_pred_lat.set(f"{pred2.get('predicted_latitude', '--'):.5f}")
+                    self._tele_pred_lon.set(f"{pred2.get('predicted_longitude', '--'):.5f}")
+                    self._tele_conf.set(f"{pred2.get('confidence', 0.0) * 100:.1f}%")
             except Exception:
                 pass
 
-        # Threat status badge
         if is_threat:
             self._tele_threat.set("● THREAT ⚠️")
         else:
             self._tele_threat.set("● MONITORING")
 
-        # Network status
         if self.controller and hasattr(self.controller, "phone_has_signal"):
             sig = self.controller.phone_has_signal
-            self._tele_network.set("Online ✅" if sig else "Offline ⚠️")
+            self._tele_network.set("Connected ✅" if sig else "Offline ⚠️")
 
     def clear_map_display(self):
         if hasattr(self, "map_canvas") and self.map_canvas.winfo_exists():
-            self.map_canvas.delete("trail", "current_marker", "predicted_marker", "dest_marker")
+            self.map_canvas.delete("trail", "current_marker", "predicted_marker", "hud_marker", "radar_ping")
         self.map_trail_points = []
         self.speed_indicator_str.set("Speed: -- km/h")
         self._tele_speed.set("-- km/h")

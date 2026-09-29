@@ -69,6 +69,11 @@ class AndroidTelephonyManager:
 
             device_id = connected_devices[0]
 
+            # Query device model
+            model_res = subprocess.run(["adb", "-s", device_id, "shell", "getprop", "ro.product.model"],
+                                       capture_output=True, text=True, timeout=3.0, startupinfo=startupinfo)
+            device_model = model_res.stdout.strip() or "Android Device"
+
             # Check SIM state
             sim_res = subprocess.run(["adb", "-s", device_id, "shell", "getprop", "gsm.sim.state"],
                                      capture_output=True, text=True, timeout=3.0, startupinfo=startupinfo)
@@ -83,19 +88,63 @@ class AndroidTelephonyManager:
                 "adb_installed": True,
                 "device_connected": True,
                 "device_id": device_id,
+                "device_model": device_model,
                 "sim_state": sim_state,
                 "call_permission": has_call_perm,
-                "notes": f"Connected device: {device_id}, SIM: {sim_state}"
+                "notes": f"Connected: {device_model} ({device_id}), SIM: {sim_state}"
             }
         except Exception as exc:
             return {
                 "adb_installed": True,
                 "device_connected": False,
                 "device_id": None,
+                "device_model": "Unknown",
                 "sim_state": "ERROR",
                 "call_permission": False,
                 "notes": f"Error querying ADB: {exc}"
             }
+
+    def connect_wifi_device(self, ip_port: str) -> dict:
+        """Connects to an Android mobile phone over Wi-Fi via ADB."""
+        ip_port = str(ip_port).strip()
+        if not ip_port:
+            return {"status": "error", "message": "IP address is empty"}
+        if ":" not in ip_port:
+            ip_port = f"{ip_port}:5555"
+
+        startupinfo = subprocess.STARTUPINFO()
+        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+
+        try:
+            res = subprocess.run(["adb", "connect", ip_port],
+                                 capture_output=True, text=True, timeout=6.0, startupinfo=startupinfo)
+            output = (res.stdout + " " + res.stderr).strip()
+            success = "connected" in output.lower() and "unable" not in output.lower()
+            if success:
+                print(f"📱 [Telephony] Successfully connected to phone over Wi-Fi: {ip_port}")
+                self.setup_adb_port_forwarding(ip_port)
+            return {"status": "success" if success else "error", "output": output, "connected": success}
+        except Exception as e:
+            return {"status": "error", "message": str(e), "connected": False}
+
+    def setup_adb_port_forwarding(self, device_id: str = None) -> bool:
+        """Sets up TCP port forwarding for Sensor Stream (8080) and GPS Stream (8082)."""
+        startupinfo = subprocess.STARTUPINFO()
+        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+        base_cmd = ["adb"]
+        if device_id:
+            base_cmd.extend(["-s", device_id])
+
+        try:
+            subprocess.run(base_cmd + ["forward", "tcp:8080", "tcp:8080"], capture_output=True, timeout=2.0, startupinfo=startupinfo)
+            subprocess.run(base_cmd + ["reverse", "tcp:8080", "tcp:8080"], capture_output=True, timeout=2.0, startupinfo=startupinfo)
+            subprocess.run(base_cmd + ["forward", "tcp:8082", "tcp:8082"], capture_output=True, timeout=2.0, startupinfo=startupinfo)
+            subprocess.run(base_cmd + ["reverse", "tcp:8082", "tcp:8082"], capture_output=True, timeout=2.0, startupinfo=startupinfo)
+            print("📱 [Telephony] ADB port forwarding active for Sensor (8080) and GPS (8082).")
+            return True
+        except Exception as e:
+            print(f"⚠️ [Telephony] Port forwarding notice: {e}")
+            return False
 
     def place_priority_emergency_call(self, *contacts) -> dict:
         """
@@ -317,15 +366,65 @@ class AndroidTelephonyManager:
         return results
 
     def _send_termux_sms_via_adb(self, device_id: str, phone_number: str, message: str) -> bool:
+        """Alias for send_offline_sms_via_adb."""
+        return self.send_offline_sms_via_adb(device_id, phone_number, message)
+
+    def send_offline_sms_via_adb(self, device_id: str, phone_number: str, message: str) -> bool:
+        """
+        Sends an offline SMS directly through connected Android phone.
+        Uses multi-method fallback:
+          1. Termux API (termux-sms-send)
+          2. Android SENDTO Intent via ADB (am start -a android.intent.action.SENDTO)
+          3. Android MacroDroid offline broadcast
+        """
         startupinfo = subprocess.STARTUPINFO()
         startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
         clean_num = "".join(ch for ch in str(phone_number) if ch.isdigit())
         if not clean_num:
             return False
 
-        cmd = ["adb", "-s", device_id, "shell", "termux-sms-send", "-n", clean_num, message]
+        # Attempt 1: Termux API
         try:
-            res = subprocess.run(cmd, capture_output=True, text=True, timeout=6.0, startupinfo=startupinfo)
-            return res.returncode == 0
+            cmd = ["adb", "-s", device_id, "shell", "termux-sms-send", "-n", clean_num, message]
+            res = subprocess.run(cmd, capture_output=True, text=True, timeout=5.0, startupinfo=startupinfo)
+            if res.returncode == 0:
+                print(f"📱 [Telephony] Offline SMS dispatched via Termux to {clean_num}")
+                return True
         except Exception:
-            return False
+            pass
+
+        # Attempt 2: Native Android Intent (works on all Android phones without Termux)
+        try:
+            cmd_intent = [
+                "adb", "-s", device_id, "shell", "am", "start",
+                "-a", "android.intent.action.SENDTO",
+                "-d", f"sms:{clean_num}",
+                "--es", "sms_body", message
+            ]
+            res_intent = subprocess.run(cmd_intent, capture_output=True, text=True, timeout=5.0, startupinfo=startupinfo)
+            if res_intent.returncode == 0:
+                time.sleep(0.4)
+                subprocess.run(["adb", "-s", device_id, "shell", "input", "keyevent", "22"], capture_output=True, timeout=1.0, startupinfo=startupinfo)
+                subprocess.run(["adb", "-s", device_id, "shell", "input", "keyevent", "66"], capture_output=True, timeout=1.0, startupinfo=startupinfo)
+                print(f"📱 [Telephony] Offline SMS dispatched via Android Messenger intent to {clean_num}")
+                return True
+        except Exception:
+            pass
+
+        # Attempt 3: Local offline MacroDroid broadcast
+        try:
+            cmd_bc = [
+                "adb", "-s", device_id, "shell", "am", "broadcast",
+                "-a", "com.aragarl.macrodroid.trigger",
+                "--es", "aura_sos_offline", "true",
+                "--es", "phone", clean_num,
+                "--es", "message", message
+            ]
+            res_bc = subprocess.run(cmd_bc, capture_output=True, text=True, timeout=4.0, startupinfo=startupinfo)
+            if res_bc.returncode == 0:
+                print(f"📱 [Telephony] Offline SMS broadcast sent to MacroDroid for {clean_num}")
+                return True
+        except Exception:
+            pass
+
+        return False

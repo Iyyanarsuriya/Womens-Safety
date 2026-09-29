@@ -40,6 +40,11 @@ def auto_center_for_points(points: list, margin_ratio: float = 1.3):
 
 def latlon_to_pixel(lat, lon, canvas_size):
     """Converts a (lat, lon) into an (x, y) pixel position on a canvas."""
+    if isinstance(canvas_size, (tuple, list)):
+        w_size, h_size = canvas_size[0], canvas_size[1]
+    else:
+        w_size, h_size = canvas_size, canvas_size
+
     min_lat = CENTER_LAT - ZOOM_SPAN_DEGREES / 2
     max_lat = CENTER_LAT + ZOOM_SPAN_DEGREES / 2
     min_lon = CENTER_LON - ZOOM_SPAN_DEGREES / 2
@@ -54,18 +59,23 @@ def latlon_to_pixel(lat, lon, canvas_size):
 
     frac_x = (lon - min_lon) / span_x
     frac_y = (max_lat - lat) / span_y  # inverted: screen-down = south
-    return frac_x * canvas_size, frac_y * canvas_size
+    return frac_x * w_size, frac_y * h_size
 
 
 def pixel_to_latlon(px, py, canvas_size):
     """Reverse of latlon_to_pixel - converts canvas click position into real (lat, lon)."""
+    if isinstance(canvas_size, (tuple, list)):
+        w_size, h_size = canvas_size[0], canvas_size[1]
+    else:
+        w_size, h_size = canvas_size, canvas_size
+
     min_lat = CENTER_LAT - ZOOM_SPAN_DEGREES / 2
     max_lat = CENTER_LAT + ZOOM_SPAN_DEGREES / 2
     min_lon = CENTER_LON - ZOOM_SPAN_DEGREES / 2
     max_lon = CENTER_LON + ZOOM_SPAN_DEGREES / 2
 
-    frac_x = px / canvas_size
-    frac_y = py / canvas_size
+    frac_x = px / (w_size if w_size > 0 else 1)
+    frac_y = py / (h_size if h_size > 0 else 1)
     lon = min_lon + frac_x * (max_lon - min_lon)
     lat = max_lat - frac_y * (max_lat - min_lat)
     return lat, lon

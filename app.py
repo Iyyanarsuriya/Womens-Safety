@@ -1,10 +1,16 @@
 import os
+import sys
 import sqlite3
 import json
 import math
 import time
 from datetime import datetime
 from flask import Flask, request, jsonify
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 app = Flask(__name__)
 
@@ -514,6 +520,116 @@ def reset_database():
         return jsonify({"status": "success", "message": "All backend database tables have been reset."})
     except Exception as exc:
         return jsonify({"status": "error", "message": str(exc)}), 500
+
+
+# ── Audio & Video Evidence Management Endpoints ──────────────────────────────
+@app.route('/api/recordings', methods=['GET'])
+def list_backend_recordings():
+    """Lists audio and video evidence stored on backend."""
+    try:
+        recordings = []
+        if os.path.exists(BACKEND_AUDIO_DIR):
+            for fname in os.listdir(BACKEND_AUDIO_DIR):
+                fpath = os.path.join(BACKEND_AUDIO_DIR, fname)
+                if os.path.isfile(fpath):
+                    stat = os.stat(fpath)
+                    recordings.append({
+                        "type": "audio",
+                        "filename": fname,
+                        "size_bytes": stat.st_size,
+                        "modified_at": datetime.fromtimestamp(stat.st_mtime).isoformat()
+                    })
+
+        backend_video_dir = os.path.join(BACKEND_STORAGE_DIR, "video")
+        if os.path.exists(backend_video_dir):
+            for fname in os.listdir(backend_video_dir):
+                fpath = os.path.join(backend_video_dir, fname)
+                if os.path.isfile(fpath):
+                    stat = os.stat(fpath)
+                    recordings.append({
+                        "type": "video",
+                        "filename": fname,
+                        "size_bytes": stat.st_size,
+                        "modified_at": datetime.fromtimestamp(stat.st_mtime).isoformat()
+                    })
+
+        return jsonify({"status": "success", "count": len(recordings), "recordings": recordings})
+    except Exception as exc:
+        return jsonify({"status": "error", "message": str(exc)}), 500
+
+
+@app.route('/api/recordings/<media_type>/<filename>', methods=['DELETE'])
+def delete_backend_recording(media_type, filename):
+    """Deletes a specific audio or video evidence file from backend storage."""
+    safe_name = os.path.basename(filename)
+    if media_type == "audio":
+        target_dir = BACKEND_AUDIO_DIR
+    elif media_type == "video":
+        target_dir = os.path.join(BACKEND_STORAGE_DIR, "video")
+    else:
+        return jsonify({"status": "error", "message": f"Unsupported media type '{media_type}'"}), 400
+
+    target_path = os.path.join(target_dir, safe_name)
+    deleted = False
+    if os.path.exists(target_path):
+        try:
+            os.remove(target_path)
+            deleted = True
+        except Exception as exc:
+            return jsonify({"status": "error", "message": f"Could not delete file: {exc}"}), 500
+
+    # Also clean SQLite audio_evidence and clear reference in emergency_events
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM audio_evidence WHERE filename = ?", (safe_name,))
+        cursor.execute("UPDATE emergency_events SET audio_filename = '' WHERE audio_filename = ?", (safe_name,))
+        conn.commit()
+        conn.close()
+    except Exception:
+        pass
+
+    return jsonify({"status": "success", "media_type": media_type, "filename": safe_name, "deleted": deleted})
+
+
+@app.route('/api/recordings/all', methods=['DELETE'])
+def delete_all_backend_recordings():
+    """Deletes all recordings of specified type ('audio', 'video', or 'all') from backend storage."""
+    media_type = request.args.get('type', 'all').lower()
+    deleted_count = 0
+
+    dirs_to_clean = []
+    if media_type in ('audio', 'all') and os.path.exists(BACKEND_AUDIO_DIR):
+        dirs_to_clean.append(BACKEND_AUDIO_DIR)
+    if media_type in ('video', 'all'):
+        video_dir = os.path.join(BACKEND_STORAGE_DIR, 'video')
+        if os.path.exists(video_dir):
+            dirs_to_clean.append(video_dir)
+
+    for d in dirs_to_clean:
+        for fname in os.listdir(d):
+            fp = os.path.join(d, fname)
+            if os.path.isfile(fp):
+                try:
+                    os.remove(fp)
+                    deleted_count += 1
+                except Exception:
+                    pass
+
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        if media_type in ('audio', 'all'):
+            cursor.execute("DELETE FROM audio_evidence")
+            cursor.execute("UPDATE emergency_events SET audio_filename = ''")
+        conn.commit()
+        conn.close()
+    except Exception:
+        pass
+
+    print(f"🗑️ [BACKEND] Deleted {deleted_count} {media_type} recordings.")
+    return jsonify({"status": "success", "deleted_count": deleted_count, "media_type": media_type})
+
 
 
 if __name__ == '__main__':

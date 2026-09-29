@@ -537,11 +537,14 @@ class MainSafetyController:
             print(f"⏱️ [Call Escalation] Started {self.call_escalation_timeout_sec}s response timeout before calling...")
             while self.call_escalation_remaining > 0 and not self.call_escalation_cancel_event.is_set():
                 if self.gui_app and hasattr(self.gui_app, "update_escalation_state"):
-                    self.gui_app.root.after(
-                        0, lambda r=self.call_escalation_remaining: self.gui_app.update_escalation_state(
-                            f"📞 Escalating to calls in {r}s (Waiting for guardian response)"
+                    try:
+                        self.gui_app.root.after(
+                            0, lambda r=self.call_escalation_remaining: self.gui_app.update_escalation_state(
+                                f"📞 Escalating to calls in {r}s (Waiting for guardian response)"
+                            )
                         )
-                    )
+                    except Exception:
+                        pass
                 time.sleep(1.0)
                 self.call_escalation_remaining -= 1
 
@@ -549,14 +552,20 @@ class MainSafetyController:
                 self.call_escalation_status = "CANCELLED"
                 print("✅ [Call Escalation] Cancelled (User confirmed safe or response recorded).")
                 if self.gui_app and hasattr(self.gui_app, "update_escalation_state"):
-                    self.gui_app.root.after(0, lambda: self.gui_app.update_escalation_state("✅ Call Escalation Cancelled"))
+                    try:
+                        self.gui_app.root.after(0, lambda: self.gui_app.update_escalation_state("✅ Call Escalation Cancelled"))
+                    except Exception:
+                        pass
                 return
 
             # Timeout expired! Initiate priority calls
             self.call_escalation_status = "CALLING_IN_PROGRESS"
             print("🚨 [Call Escalation] Response timeout expired! Initiating automated priority calls...")
             if self.gui_app and hasattr(self.gui_app, "update_escalation_state"):
-                self.gui_app.root.after(0, lambda: self.gui_app.update_escalation_state("🚨 Initiating Automated Priority Calls..."))
+                try:
+                    self.gui_app.root.after(0, lambda: self.gui_app.update_escalation_state("🚨 Initiating Automated Priority Calls..."))
+                except Exception:
+                    pass
 
             call_res = self.telephony_manager.place_priority_emergency_call(*contacts)
             self.call_escalation_status = "CALLS_COMPLETED"
@@ -564,7 +573,10 @@ class MainSafetyController:
 
             if self.gui_app and hasattr(self.gui_app, "update_escalation_state"):
                 msg = f"📞 Call Escalation: P1={call_res.get('p1_status', 'N/A')}, P2={call_res.get('p2_status', 'N/A')}"
-                self.gui_app.root.after(0, lambda m=msg: self.gui_app.update_escalation_state(m))
+                try:
+                    self.gui_app.root.after(0, lambda m=msg: self.gui_app.update_escalation_state(m))
+                except Exception:
+                    pass
 
         self.call_escalation_thread = threading.Thread(target=_escalation_worker, daemon=True)
         self.call_escalation_thread.start()
@@ -572,6 +584,17 @@ class MainSafetyController:
     def cancel_call_escalation(self):
         self.call_escalation_cancel_event.set()
         self.call_escalation_status = "CANCELLED"
+
+    def acknowledge_user_safe(self, cooldown_seconds=90.0):
+        """Called when user confirms safety (e.g. dismissing alarm / PIN entry)."""
+        now = time.time()
+        self.system_status = "ACTIVE_MONITORING"
+        self.last_sos_time = now
+        self.cancel_call_escalation()
+        if hasattr(self, "anomaly_engine"):
+            self.anomaly_engine.acknowledge_safe(threat_type="ALL", cooldown_seconds=cooldown_seconds)
+        self.log_blackbox_event(0.0, 0.0, "USER_SAFE_CONFIRMED", details="User confirmed safe; alarms & cooldowns reset.")
+        print("🛡️ [SafetyController] User confirmed safe. Status set to ACTIVE_MONITORING; 90s cooldown active.")
 
     # ── PERIODIC SAFETY INSPECTION CYCLE ─────────────────────────────────────
 
@@ -665,3 +688,91 @@ class MainSafetyController:
                 self.acoustic_engine.stop_listening()
         except Exception as e:
             print(f"[Shutdown Notice]: {e}")
+
+    # ── Mobile Phone Connectivity ───────────────────────────────────────────
+    def connect_mobile_phone(self, ip_port: str = None) -> dict:
+        """Connects or refreshes phone connection over USB ADB or Wi-Fi."""
+        if ip_port:
+            res = self.telephony_manager.connect_wifi_device(ip_port)
+            if not res.get("connected"):
+                return res
+        info = self.telephony_manager.check_phone_connection()
+        if info.get("device_connected"):
+            dev_id = info.get("device_id")
+            self.telephony_manager.setup_adb_port_forwarding(dev_id)
+            self.phone_has_signal = True
+            print(f"📱 [MainController] Mobile Phone linked: {info.get('notes')}")
+        return info
+
+    def get_phone_status(self) -> dict:
+        """Returns current mobile phone connection and SIM status."""
+        return self.telephony_manager.check_phone_connection()
+
+
+    # ── Evidence / Media Deletion & Management ──────────────────────────────
+    def delete_recording(self, file_path: str) -> bool:
+        """Permanently deletes a single audio or video recording file and cleans sync queue."""
+        try:
+            # Clean from sync queue first to prevent concurrent background file access
+            if hasattr(self, "sync_manager") and self.sync_manager:
+                self.sync_manager.remove_audio_from_queue(file_path)
+
+            if os.path.exists(file_path):
+                for attempt in range(5):
+                    try:
+                        os.remove(file_path)
+                        break
+                    except PermissionError:
+                        time.sleep(0.15)
+                else:
+                    os.remove(file_path)
+            return True
+        except Exception as e:
+            print(f"❌ [Recording Deletion Error]: {e}")
+            return False
+
+    def delete_recordings_batch(self, file_paths: list) -> int:
+        """Permanently deletes a list of recordings and cleans sync queue. Returns count deleted."""
+        deleted = 0
+        for fp in file_paths:
+            if self.delete_recording(fp):
+                deleted += 1
+        return deleted
+
+    def delete_all_recordings(self, media_type: str = "all") -> int:
+        """
+        Deletes all recordings matching media_type ('audio', 'video', or 'all').
+        Returns the number of files deleted.
+        """
+        import glob
+        deleted = 0
+        patterns = []
+        if media_type in ("audio", "all"):
+            patterns.append(os.path.join("recordings", "audio", "*.*"))
+            if hasattr(self, "sync_manager") and self.sync_manager:
+                self.sync_manager.clear_audio_queue()
+        if media_type in ("video", "all"):
+            patterns.append(os.path.join("recordings", "video", "*.*"))
+
+        for pat in patterns:
+            for f in glob.glob(pat):
+                try:
+                    os.remove(f)
+                    deleted += 1
+                except Exception as e:
+                    print(f"❌ [Media Deletion Error] Could not delete {f}: {e}")
+        return deleted
+
+    def get_recordings_stats(self) -> dict:
+        """Returns counts and total file sizes in bytes for audio and video vaults."""
+        import glob
+        audio_files = glob.glob(os.path.join("recordings", "audio", "*.*"))
+        video_files = glob.glob(os.path.join("recordings", "video", "*.*"))
+        a_size = sum(os.path.getsize(f) for f in audio_files if os.path.isfile(f))
+        v_size = sum(os.path.getsize(f) for f in video_files if os.path.isfile(f))
+        return {
+            "audio": {"count": len(audio_files), "size_bytes": a_size, "files": audio_files},
+            "video": {"count": len(video_files), "size_bytes": v_size, "files": video_files},
+            "total_count": len(audio_files) + len(video_files),
+            "total_size_bytes": a_size + v_size
+        }

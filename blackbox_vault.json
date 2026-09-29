@@ -218,5 +218,2613 @@
       "notes": "Duress stealth mode initiated"
     },
     "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T13:00:16.513086",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "FALL_CONFIRMED_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: FALL_CONFIRMED_TIMEOUT",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T13:00:16.517941",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T13:00:17.740831",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "PHONE_FALL_DETECTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: PHONE_FALL_DETECTED",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T13:00:17.756772",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T13:00:19.114375",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_ACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "DEMO"
+  },
+  {
+    "timestamp": "2026-09-29T13:00:19.127093",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_DEACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T13:00:22.661801",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "LOW_BATTERY_NOTICE_14PCT",
+    "status": "ACTIVE_MONITORING",
+    "details": "{'contact_1': 'DEVICE_NOT_CONNECTED_SMS_LOGGED'}",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T13:00:25.126476",
+    "latitude": 11.492,
+    "longitude": 79.76,
+    "event": "DESTINATION_SET",
+    "status": "ACTIVE_MONITORING",
+    "details": "Target: University Campus",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T13:00:25.153217",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DESTINATION_CLEARED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T13:00:26.977405",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "DURESS_FAKE_PIN_TRIGGER",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: DURESS_FAKE_PIN_TRIGGER",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T13:00:26.992135",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T13:00:27.021479",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "STEALTH_DURESS_TRIGGERED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": {
+      "notes": "Duress stealth mode initiated"
+    },
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T13:01:32.633930",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "FALL_CONFIRMED_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: FALL_CONFIRMED_TIMEOUT",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T13:01:32.642084",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T13:01:35.037723",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "PHONE_FALL_DETECTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: PHONE_FALL_DETECTED",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T13:01:35.053500",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T13:01:37.759516",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_ACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "DEMO"
+  },
+  {
+    "timestamp": "2026-09-29T13:01:37.777117",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_DEACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T13:01:40.198359",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "LOW_BATTERY_NOTICE_14PCT",
+    "status": "ACTIVE_MONITORING",
+    "details": "{'contact_1': 'DEVICE_NOT_CONNECTED_SMS_LOGGED'}",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T13:01:41.489765",
+    "latitude": 11.492,
+    "longitude": 79.76,
+    "event": "DESTINATION_SET",
+    "status": "ACTIVE_MONITORING",
+    "details": "Target: University Campus",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T13:01:41.511186",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DESTINATION_CLEARED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T13:01:42.817711",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "DURESS_FAKE_PIN_TRIGGER",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: DURESS_FAKE_PIN_TRIGGER",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T13:01:42.832990",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T13:01:42.866820",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "STEALTH_DURESS_TRIGGERED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": {
+      "notes": "Duress stealth mode initiated"
+    },
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:29:03.042883",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "FALL_CONFIRMED_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: FALL_CONFIRMED_TIMEOUT",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:29:03.051170",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:29:05.460926",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "PHONE_FALL_DETECTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: PHONE_FALL_DETECTED",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:29:05.474737",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:29:07.883904",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_ACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "DEMO"
+  },
+  {
+    "timestamp": "2026-09-29T17:29:07.897630",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_DEACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:29:10.852870",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "LOW_BATTERY_NOTICE_14PCT",
+    "status": "ACTIVE_MONITORING",
+    "details": "{'contact_1': 'DEVICE_NOT_CONNECTED_SMS_LOGGED'}",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:29:13.427337",
+    "latitude": 11.492,
+    "longitude": 79.76,
+    "event": "DESTINATION_SET",
+    "status": "ACTIVE_MONITORING",
+    "details": "Target: University Campus",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:29:13.448581",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DESTINATION_CLEARED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:29:15.770000",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "DURESS_FAKE_PIN_TRIGGER",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: DURESS_FAKE_PIN_TRIGGER",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:29:15.783538",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:29:15.807326",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "STEALTH_DURESS_TRIGGERED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": {
+      "notes": "Duress stealth mode initiated"
+    },
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:35:24.771124",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "FALL_CONFIRMED_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: FALL_CONFIRMED_TIMEOUT",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:35:24.777632",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:35:26.087792",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "PHONE_FALL_DETECTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: PHONE_FALL_DETECTED",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:35:26.107426",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:35:28.580127",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_ACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "DEMO"
+  },
+  {
+    "timestamp": "2026-09-29T17:35:28.594266",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_DEACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:35:32.974656",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "LOW_BATTERY_NOTICE_14PCT",
+    "status": "ACTIVE_MONITORING",
+    "details": "{'contact_1': 'DEVICE_NOT_CONNECTED_SMS_LOGGED'}",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:35:35.388586",
+    "latitude": 11.492,
+    "longitude": 79.76,
+    "event": "DESTINATION_SET",
+    "status": "ACTIVE_MONITORING",
+    "details": "Target: University Campus",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:35:35.408228",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DESTINATION_CLEARED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:35:37.752626",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "DURESS_FAKE_PIN_TRIGGER",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: DURESS_FAKE_PIN_TRIGGER",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:35:37.768289",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:35:37.787990",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "STEALTH_DURESS_TRIGGERED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": {
+      "notes": "Duress stealth mode initiated"
+    },
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:48:08.653970",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:48:09.625576",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:48:09.792103",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "\ud83d\udea8 MANUAL SOS TRIGGER",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: \ud83d\udea8 MANUAL SOS TRIGGER",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:48:09.813841",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:48:40.880221",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "FALL_CONFIRMED_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: FALL_CONFIRMED_TIMEOUT",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:48:40.900156",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:48:43.441875",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "PHONE_FALL_DETECTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: PHONE_FALL_DETECTED",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:48:43.459713",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:48:46.046879",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_ACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "DEMO"
+  },
+  {
+    "timestamp": "2026-09-29T17:48:46.059646",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_DEACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:48:50.900068",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "LOW_BATTERY_NOTICE_14PCT",
+    "status": "ACTIVE_MONITORING",
+    "details": "{'contact_1': 'DEVICE_NOT_CONNECTED_SMS_LOGGED'}",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:48:52.705482",
+    "latitude": 11.492,
+    "longitude": 79.76,
+    "event": "DESTINATION_SET",
+    "status": "ACTIVE_MONITORING",
+    "details": "Target: University Campus",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:48:52.749343",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DESTINATION_CLEARED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:48:53.977064",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "DURESS_FAKE_PIN_TRIGGER",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: DURESS_FAKE_PIN_TRIGGER",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:48:53.995801",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:48:54.025170",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "STEALTH_DURESS_TRIGGERED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": {
+      "notes": "Duress stealth mode initiated"
+    },
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:48:58.701854",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:48:59.645818",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:48:59.776057",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "\ud83d\udea8 MANUAL SOS TRIGGER",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: \ud83d\udea8 MANUAL SOS TRIGGER",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:48:59.791158",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:50:23.023556",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "FALL_CONFIRMED_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: FALL_CONFIRMED_TIMEOUT",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:50:23.040865",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:50:25.525415",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "PHONE_FALL_DETECTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: PHONE_FALL_DETECTED",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:50:25.552563",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:50:27.928558",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_ACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "DEMO"
+  },
+  {
+    "timestamp": "2026-09-29T17:50:27.942964",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_DEACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:50:31.136308",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "LOW_BATTERY_NOTICE_14PCT",
+    "status": "ACTIVE_MONITORING",
+    "details": "{'contact_1': 'DEVICE_NOT_CONNECTED_SMS_LOGGED'}",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:50:32.585088",
+    "latitude": 11.492,
+    "longitude": 79.76,
+    "event": "DESTINATION_SET",
+    "status": "ACTIVE_MONITORING",
+    "details": "Target: University Campus",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:50:32.609941",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DESTINATION_CLEARED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:50:35.060421",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "DURESS_FAKE_PIN_TRIGGER",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: DURESS_FAKE_PIN_TRIGGER",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:50:35.079196",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:50:35.113058",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "STEALTH_DURESS_TRIGGERED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": {
+      "notes": "Duress stealth mode initiated"
+    },
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:50:40.270800",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:50:41.111149",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:50:41.238358",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "\ud83d\udea8 MANUAL SOS TRIGGER",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: \ud83d\udea8 MANUAL SOS TRIGGER",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:50:41.252088",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:57:39.244651",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "FALL_CONFIRMED_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: FALL_CONFIRMED_TIMEOUT",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:57:39.253961",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:57:41.673048",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "PHONE_FALL_DETECTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: PHONE_FALL_DETECTED",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:57:41.691009",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:57:44.056387",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_ACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "DEMO"
+  },
+  {
+    "timestamp": "2026-09-29T17:57:44.070975",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_DEACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:57:46.592217",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "LOW_BATTERY_NOTICE_14PCT",
+    "status": "ACTIVE_MONITORING",
+    "details": "{'contact_1': 'DEVICE_NOT_CONNECTED_SMS_LOGGED'}",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:57:49.090584",
+    "latitude": 11.492,
+    "longitude": 79.76,
+    "event": "DESTINATION_SET",
+    "status": "ACTIVE_MONITORING",
+    "details": "Target: University Campus",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:57:49.123558",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DESTINATION_CLEARED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:57:51.513744",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "DURESS_FAKE_PIN_TRIGGER",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: DURESS_FAKE_PIN_TRIGGER",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:57:51.530571",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:57:51.559086",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "STEALTH_DURESS_TRIGGERED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": {
+      "notes": "Duress stealth mode initiated"
+    },
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:57:55.501488",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:57:56.519819",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:57:56.644689",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "\ud83d\udea8 MANUAL SOS TRIGGER",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: \ud83d\udea8 MANUAL SOS TRIGGER",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:57:56.658242",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:59:00.091321",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "FALL_CONFIRMED_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: FALL_CONFIRMED_TIMEOUT",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:59:00.119306",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:59:02.720172",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "PHONE_FALL_DETECTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: PHONE_FALL_DETECTED",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:59:02.757401",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:59:05.247298",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_ACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "DEMO"
+  },
+  {
+    "timestamp": "2026-09-29T17:59:05.267602",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_DEACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:59:08.076911",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "LOW_BATTERY_NOTICE_14PCT",
+    "status": "ACTIVE_MONITORING",
+    "details": "{'contact_1': 'DEVICE_NOT_CONNECTED_SMS_LOGGED'}",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:59:09.456295",
+    "latitude": 11.492,
+    "longitude": 79.76,
+    "event": "DESTINATION_SET",
+    "status": "ACTIVE_MONITORING",
+    "details": "Target: University Campus",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:59:09.488224",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DESTINATION_CLEARED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:59:10.832258",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "DURESS_FAKE_PIN_TRIGGER",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: DURESS_FAKE_PIN_TRIGGER",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:59:10.851278",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:59:10.885900",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "STEALTH_DURESS_TRIGGERED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": {
+      "notes": "Duress stealth mode initiated"
+    },
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:59:14.317563",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:59:15.307202",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:59:15.471950",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "\ud83d\udea8 MANUAL SOS TRIGGER",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: \ud83d\udea8 MANUAL SOS TRIGGER",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T17:59:15.490325",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:00:58.368787",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "FALL_CONFIRMED_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: FALL_CONFIRMED_TIMEOUT",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:00:58.388695",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:01:00.938900",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "PHONE_FALL_DETECTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: PHONE_FALL_DETECTED",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:01:00.957617",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:01:03.344024",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_ACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "DEMO"
+  },
+  {
+    "timestamp": "2026-09-29T18:01:03.360274",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_DEACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:01:07.372320",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "LOW_BATTERY_NOTICE_14PCT",
+    "status": "ACTIVE_MONITORING",
+    "details": "{'contact_1': 'DEVICE_NOT_CONNECTED_SMS_LOGGED'}",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:01:09.770147",
+    "latitude": 11.492,
+    "longitude": 79.76,
+    "event": "DESTINATION_SET",
+    "status": "ACTIVE_MONITORING",
+    "details": "Target: University Campus",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:01:09.795202",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DESTINATION_CLEARED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:01:11.567527",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "DURESS_FAKE_PIN_TRIGGER",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: DURESS_FAKE_PIN_TRIGGER",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:01:11.602800",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:01:11.683060",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "STEALTH_DURESS_TRIGGERED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": {
+      "notes": "Duress stealth mode initiated"
+    },
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:01:15.253094",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:01:16.809270",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:01:17.040446",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "\ud83d\udea8 MANUAL SOS TRIGGER",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: \ud83d\udea8 MANUAL SOS TRIGGER",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:01:17.061245",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:02:10.195260",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "FALL_CONFIRMED_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: FALL_CONFIRMED_TIMEOUT",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:02:10.219664",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:02:11.457637",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "PHONE_FALL_DETECTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: PHONE_FALL_DETECTED",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:02:11.475441",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:02:13.892211",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_ACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "DEMO"
+  },
+  {
+    "timestamp": "2026-09-29T18:02:13.909667",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_DEACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:02:18.149429",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "LOW_BATTERY_NOTICE_14PCT",
+    "status": "ACTIVE_MONITORING",
+    "details": "{'contact_1': 'DEVICE_NOT_CONNECTED_SMS_LOGGED'}",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:02:19.554434",
+    "latitude": 11.492,
+    "longitude": 79.76,
+    "event": "DESTINATION_SET",
+    "status": "ACTIVE_MONITORING",
+    "details": "Target: University Campus",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:02:19.584778",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DESTINATION_CLEARED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:02:20.920971",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "DURESS_FAKE_PIN_TRIGGER",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: DURESS_FAKE_PIN_TRIGGER",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:02:20.937813",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:02:20.973570",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "STEALTH_DURESS_TRIGGERED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": {
+      "notes": "Duress stealth mode initiated"
+    },
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:02:27.321781",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:02:28.633660",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:02:28.997422",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "\ud83d\udea8 MANUAL SOS TRIGGER",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: \ud83d\udea8 MANUAL SOS TRIGGER",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:02:29.016738",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:03:24.016499",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "FALL_CONFIRMED_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: FALL_CONFIRMED_TIMEOUT",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:03:24.045897",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:03:25.326899",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "PHONE_FALL_DETECTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: PHONE_FALL_DETECTED",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:03:25.353446",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:03:26.567768",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_ACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "DEMO"
+  },
+  {
+    "timestamp": "2026-09-29T18:03:26.588158",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_DEACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:03:31.431296",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "LOW_BATTERY_NOTICE_14PCT",
+    "status": "ACTIVE_MONITORING",
+    "details": "{'contact_1': 'DEVICE_NOT_CONNECTED_SMS_LOGGED'}",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:03:33.096439",
+    "latitude": 11.492,
+    "longitude": 79.76,
+    "event": "DESTINATION_SET",
+    "status": "ACTIVE_MONITORING",
+    "details": "Target: University Campus",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:03:33.119641",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DESTINATION_CLEARED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:03:35.624800",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "DURESS_FAKE_PIN_TRIGGER",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: DURESS_FAKE_PIN_TRIGGER",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:03:35.647033",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:03:35.685984",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "STEALTH_DURESS_TRIGGERED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": {
+      "notes": "Duress stealth mode initiated"
+    },
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:03:40.544215",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:03:41.715698",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:03:41.877412",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "\ud83d\udea8 MANUAL SOS TRIGGER",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: \ud83d\udea8 MANUAL SOS TRIGGER",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:03:41.899815",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:04:13.174161",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "FALL_CONFIRMED_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: FALL_CONFIRMED_TIMEOUT",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:04:13.195837",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:04:14.541787",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "PHONE_FALL_DETECTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: PHONE_FALL_DETECTED",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:04:14.565019",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:04:16.933419",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_ACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "DEMO"
+  },
+  {
+    "timestamp": "2026-09-29T18:04:16.955081",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_DEACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:04:21.082857",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "LOW_BATTERY_NOTICE_14PCT",
+    "status": "ACTIVE_MONITORING",
+    "details": "{'contact_1': 'DEVICE_NOT_CONNECTED_SMS_LOGGED'}",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:04:23.719297",
+    "latitude": 11.492,
+    "longitude": 79.76,
+    "event": "DESTINATION_SET",
+    "status": "ACTIVE_MONITORING",
+    "details": "Target: University Campus",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:04:23.751848",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DESTINATION_CLEARED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:04:26.119485",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "DURESS_FAKE_PIN_TRIGGER",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: DURESS_FAKE_PIN_TRIGGER",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:04:26.146555",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:04:26.179379",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "STEALTH_DURESS_TRIGGERED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": {
+      "notes": "Duress stealth mode initiated"
+    },
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:04:32.160780",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:04:33.503678",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:04:33.734816",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "\ud83d\udea8 MANUAL SOS TRIGGER",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: \ud83d\udea8 MANUAL SOS TRIGGER",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:04:33.766131",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:13:18.920853",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "FALL_CONFIRMED_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: FALL_CONFIRMED_TIMEOUT",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:13:18.940391",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:13:20.164441",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "PHONE_FALL_DETECTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: PHONE_FALL_DETECTED",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:13:20.184338",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:13:24.350596",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_ACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "DEMO"
+  },
+  {
+    "timestamp": "2026-09-29T18:13:24.375828",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_DEACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:13:33.058755",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "LOW_BATTERY_NOTICE_14PCT",
+    "status": "ACTIVE_MONITORING",
+    "details": "{'contact_1': 'DEVICE_NOT_CONNECTED_SMS_LOGGED'}",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:13:36.622151",
+    "latitude": 11.492,
+    "longitude": 79.76,
+    "event": "DESTINATION_SET",
+    "status": "ACTIVE_MONITORING",
+    "details": "Target: University Campus",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:13:36.651738",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DESTINATION_CLEARED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:13:38.622439",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "DURESS_FAKE_PIN_TRIGGER",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: DURESS_FAKE_PIN_TRIGGER",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:13:38.816087",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:13:39.106859",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "STEALTH_DURESS_TRIGGERED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": {
+      "notes": "Duress stealth mode initiated"
+    },
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:13:45.893222",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:13:45.920802",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "USER_SAFE_CONFIRMED",
+    "status": "ACTIVE_MONITORING",
+    "details": "User confirmed safe; alarms & cooldowns reset.",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:13:51.727210",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DESTINATION_CLEARED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:13:52.187829",
+    "latitude": 11.4925,
+    "longitude": 79.758,
+    "event": "DESTINATION_SET",
+    "status": "ACTIVE_MONITORING",
+    "details": "Target: University Campus",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:13:52.542185",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:13:52.563972",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "USER_SAFE_CONFIRMED",
+    "status": "ACTIVE_MONITORING",
+    "details": "User confirmed safe; alarms & cooldowns reset.",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:14:51.491589",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "FALL_CONFIRMED_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: FALL_CONFIRMED_TIMEOUT",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:14:51.513662",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:14:52.771905",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "PHONE_FALL_DETECTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: PHONE_FALL_DETECTED",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:14:52.793027",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:14:55.261453",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_ACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "DEMO"
+  },
+  {
+    "timestamp": "2026-09-29T18:14:55.285948",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_DEACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:14:59.298711",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "LOW_BATTERY_NOTICE_14PCT",
+    "status": "ACTIVE_MONITORING",
+    "details": "{'contact_1': 'DEVICE_NOT_CONNECTED_SMS_LOGGED'}",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:15:01.765564",
+    "latitude": 11.492,
+    "longitude": 79.76,
+    "event": "DESTINATION_SET",
+    "status": "ACTIVE_MONITORING",
+    "details": "Target: University Campus",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:15:01.799292",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DESTINATION_CLEARED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:15:04.737950",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "DURESS_FAKE_PIN_TRIGGER",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: DURESS_FAKE_PIN_TRIGGER",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:15:04.762317",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:15:04.796768",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "STEALTH_DURESS_TRIGGERED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": {
+      "notes": "Duress stealth mode initiated"
+    },
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:15:09.246908",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:15:09.258853",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "USER_SAFE_CONFIRMED",
+    "status": "ACTIVE_MONITORING",
+    "details": "User confirmed safe; alarms & cooldowns reset.",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:15:10.543525",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:15:10.570035",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "USER_SAFE_CONFIRMED",
+    "status": "ACTIVE_MONITORING",
+    "details": "User confirmed safe; alarms & cooldowns reset.",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:15:10.789266",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "\ud83d\udea8 MANUAL SOS TRIGGER",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: \ud83d\udea8 MANUAL SOS TRIGGER",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:15:10.816930",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:15:16.605102",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DESTINATION_CLEARED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:15:17.032465",
+    "latitude": 11.4925,
+    "longitude": 79.758,
+    "event": "DESTINATION_SET",
+    "status": "ACTIVE_MONITORING",
+    "details": "Target: University Campus",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:15:17.291785",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:15:17.317497",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "USER_SAFE_CONFIRMED",
+    "status": "ACTIVE_MONITORING",
+    "details": "User confirmed safe; alarms & cooldowns reset.",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:16:17.877751",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "FALL_CONFIRMED_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: FALL_CONFIRMED_TIMEOUT",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:16:17.900228",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:16:19.140722",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "PHONE_FALL_DETECTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: PHONE_FALL_DETECTED",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:16:19.166286",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:16:21.521054",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_ACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "DEMO"
+  },
+  {
+    "timestamp": "2026-09-29T18:16:21.541335",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_DEACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:16:25.664488",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "LOW_BATTERY_NOTICE_14PCT",
+    "status": "ACTIVE_MONITORING",
+    "details": "{'contact_1': 'DEVICE_NOT_CONNECTED_SMS_LOGGED'}",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:16:28.235981",
+    "latitude": 11.492,
+    "longitude": 79.76,
+    "event": "DESTINATION_SET",
+    "status": "ACTIVE_MONITORING",
+    "details": "Target: University Campus",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:16:28.267124",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DESTINATION_CLEARED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:16:30.595252",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "DURESS_FAKE_PIN_TRIGGER",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: DURESS_FAKE_PIN_TRIGGER",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:16:30.617780",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:16:30.652552",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "STEALTH_DURESS_TRIGGERED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": {
+      "notes": "Duress stealth mode initiated"
+    },
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:16:35.417265",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:16:35.428448",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "USER_SAFE_CONFIRMED",
+    "status": "ACTIVE_MONITORING",
+    "details": "User confirmed safe; alarms & cooldowns reset.",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:16:36.577457",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:16:36.603086",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "USER_SAFE_CONFIRMED",
+    "status": "ACTIVE_MONITORING",
+    "details": "User confirmed safe; alarms & cooldowns reset.",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:16:36.750170",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "\ud83d\udea8 MANUAL SOS TRIGGER",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: \ud83d\udea8 MANUAL SOS TRIGGER",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:16:36.769575",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:16:42.317551",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DESTINATION_CLEARED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:16:42.746824",
+    "latitude": 11.4925,
+    "longitude": 79.758,
+    "event": "DESTINATION_SET",
+    "status": "ACTIVE_MONITORING",
+    "details": "Target: University Campus",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:16:43.017327",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:16:43.043382",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "USER_SAFE_CONFIRMED",
+    "status": "ACTIVE_MONITORING",
+    "details": "User confirmed safe; alarms & cooldowns reset.",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:22:11.628353",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "FALL_CONFIRMED_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: FALL_CONFIRMED_TIMEOUT",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:22:11.652239",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:22:12.912197",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "PHONE_FALL_DETECTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: PHONE_FALL_DETECTED",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:22:12.941779",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:22:14.265871",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_ACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "DEMO"
+  },
+  {
+    "timestamp": "2026-09-29T18:22:14.288322",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_DEACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:22:16.964805",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "LOW_BATTERY_NOTICE_14PCT",
+    "status": "ACTIVE_MONITORING",
+    "details": "{'contact_1': 'DEVICE_NOT_CONNECTED_SMS_LOGGED'}",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:22:18.221452",
+    "latitude": 11.492,
+    "longitude": 79.76,
+    "event": "DESTINATION_SET",
+    "status": "ACTIVE_MONITORING",
+    "details": "Target: University Campus",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:22:18.256498",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DESTINATION_CLEARED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:22:19.408401",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "DURESS_FAKE_PIN_TRIGGER",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: DURESS_FAKE_PIN_TRIGGER",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:22:19.433746",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:22:19.469148",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "STEALTH_DURESS_TRIGGERED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": {
+      "notes": "Duress stealth mode initiated"
+    },
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:22:23.921904",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:22:23.934129",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "USER_SAFE_CONFIRMED",
+    "status": "ACTIVE_MONITORING",
+    "details": "User confirmed safe; alarms & cooldowns reset.",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:22:24.993583",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:22:25.020146",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "USER_SAFE_CONFIRMED",
+    "status": "ACTIVE_MONITORING",
+    "details": "User confirmed safe; alarms & cooldowns reset.",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:22:25.182457",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "\ud83d\udea8 MANUAL SOS TRIGGER",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: \ud83d\udea8 MANUAL SOS TRIGGER",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:22:25.208794",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:22:31.029549",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DESTINATION_CLEARED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:22:31.465023",
+    "latitude": 11.4925,
+    "longitude": 79.758,
+    "event": "DESTINATION_SET",
+    "status": "ACTIVE_MONITORING",
+    "details": "Target: University Campus",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:22:31.748346",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:22:31.795630",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "USER_SAFE_CONFIRMED",
+    "status": "ACTIVE_MONITORING",
+    "details": "User confirmed safe; alarms & cooldowns reset.",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:23:36.987314",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "FALL_CONFIRMED_TIMEOUT",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: FALL_CONFIRMED_TIMEOUT",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:23:37.011056",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:23:38.294341",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "PHONE_FALL_DETECTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: PHONE_FALL_DETECTED",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:23:38.323438",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:23:39.560589",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_ACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "DEMO"
+  },
+  {
+    "timestamp": "2026-09-29T18:23:39.591028",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DEMO_MODE_DEACTIVATED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:23:42.201018",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "LOW_BATTERY_NOTICE_14PCT",
+    "status": "ACTIVE_MONITORING",
+    "details": "{'contact_1': 'DEVICE_NOT_CONNECTED_SMS_LOGGED'}",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:23:43.440564",
+    "latitude": 11.492,
+    "longitude": 79.76,
+    "event": "DESTINATION_SET",
+    "status": "ACTIVE_MONITORING",
+    "details": "Target: University Campus",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:23:43.479187",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DESTINATION_CLEARED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:23:44.682547",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "DURESS_FAKE_PIN_TRIGGER",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: DURESS_FAKE_PIN_TRIGGER",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:23:44.710743",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:23:44.753961",
+    "latitude": 11.48896,
+    "longitude": 79.75388,
+    "event": "STEALTH_DURESS_TRIGGERED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": {
+      "notes": "Duress stealth mode initiated"
+    },
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:23:49.007768",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:23:49.021676",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "USER_SAFE_CONFIRMED",
+    "status": "ACTIVE_MONITORING",
+    "details": "User confirmed safe; alarms & cooldowns reset.",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:23:50.137903",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:23:50.169683",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "USER_SAFE_CONFIRMED",
+    "status": "ACTIVE_MONITORING",
+    "details": "User confirmed safe; alarms & cooldowns reset.",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:23:50.400475",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "\ud83d\udea8 MANUAL SOS TRIGGER",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "Emergency activated: \ud83d\udea8 MANUAL SOS TRIGGER",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:23:50.428588",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "EMERGENCY_TRIGGERED",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:23:56.215990",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "DESTINATION_CLEARED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:23:56.646881",
+    "latitude": 11.4925,
+    "longitude": 79.758,
+    "event": "DESTINATION_SET",
+    "status": "ACTIVE_MONITORING",
+    "details": "Target: University Campus",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:23:56.912795",
+    "latitude": 11.4833,
+    "longitude": 79.7466,
+    "event": "RECORDING_STARTED",
+    "status": "ACTIVE_MONITORING",
+    "details": "",
+    "mode": "PRODUCTION"
+  },
+  {
+    "timestamp": "2026-09-29T18:23:56.943553",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "event": "USER_SAFE_CONFIRMED",
+    "status": "ACTIVE_MONITORING",
+    "details": "User confirmed safe; alarms & cooldowns reset.",
+    "mode": "PRODUCTION"
   }
 ]

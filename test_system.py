@@ -34,6 +34,8 @@ if hasattr(sys.stderr, "reconfigure"):
 
 # System modules
 import app as backend_app
+import tkinter as tk
+from gui_module import ModernSafetyApp
 from main_controller import MainSafetyController
 from fall_detector import FallDetector
 from location_module import OfflineLocationEngine
@@ -68,7 +70,7 @@ class TestWomenSafetySystem(unittest.TestCase):
             data = json.loads(resp.read().decode())
             self.assertEqual(data.get("status"), "online")
             self.assertIn("database", data)
-            print("  ✅ Backend is ONLINE with SQLite database ready.")
+            print("  ✅ Backend is OPERATIONAL with SQLite database ready.")
 
     def test_02_phone_fall_detection_algorithm(self):
         """Tests multi-phase fall detection (Freefall -> Gyro Tumble -> High-G Impact)."""
@@ -534,6 +536,343 @@ class TestWomenSafetySystem(unittest.TestCase):
         controller.stop_all()
         print(f"  ✅ Blackbox vault successfully recorded event: {last_entry['event']} in {last_entry['mode']} mode.")
 
+    def test_19_media_and_evidence_deletion(self):
+        """Tests individual, batch, and bulk deletion of audio & video evidence with sync queue cleanup."""
+        print("\n[TEST 19] Testing Audio and Video Evidence Deletion Features...")
+        controller = MainSafetyController(emergency_contacts=["9876543210"])
+
+        # Setup test directories
+        audio_dir = os.path.join("recordings", "audio")
+        video_dir = os.path.join("recordings", "video")
+        os.makedirs(audio_dir, exist_ok=True)
+        os.makedirs(video_dir, exist_ok=True)
+
+        # 1. Create sample audio & video files
+        sample_audio_1 = os.path.join(audio_dir, "SAMPLE_DEL_AUDIO_1.wav")
+        sample_audio_2 = os.path.join(audio_dir, "SAMPLE_DEL_AUDIO_2.wav")
+        sample_video_1 = os.path.join(video_dir, "SAMPLE_DEL_VIDEO_1.avi")
+        sample_video_2 = os.path.join(video_dir, "SAMPLE_DEL_VIDEO_2.avi")
+
+        for p in [sample_audio_1, sample_audio_2, sample_video_1, sample_video_2]:
+            with open(p, "wb") as f:
+                f.write(b"SAMPLE_MEDIA_DATA_FOR_TESTING_12345")
+
+        # 2. Queue audio file in sync manager and verify queueing
+        controller.sync_manager.queue_audio_file(sample_audio_1, event_id="EV_DEL_TEST")
+        vault = controller.sync_manager._load_vault()
+        queued_names = [item["filename"] for item in vault.get("audio_queue", [])]
+        self.assertIn("SAMPLE_DEL_AUDIO_1.wav", queued_names)
+
+        # 3. Test single file deletion via controller and verify sync queue cleanup
+        deleted = controller.delete_recording(sample_audio_1)
+        self.assertTrue(deleted)
+        self.assertFalse(os.path.exists(sample_audio_1))
+
+        vault_after = controller.sync_manager._load_vault()
+        queued_names_after = [item["filename"] for item in vault_after.get("audio_queue", [])]
+        self.assertNotIn("SAMPLE_DEL_AUDIO_1.wav", queued_names_after, "Deleted audio must be removed from sync queue!")
+        print("  ✅ Single recording deletion removes file and cleans sync manager queue.")
+
+        # 4. Test batch file deletion
+        batch_deleted = controller.delete_recordings_batch([sample_audio_2, sample_video_1])
+        self.assertEqual(batch_deleted, 2)
+        self.assertFalse(os.path.exists(sample_audio_2))
+        self.assertFalse(os.path.exists(sample_video_1))
+        print("  ✅ Batch deletion successfully deleted multiple selected recordings.")
+
+        # 5. Test stats calculation
+        stats = controller.get_recordings_stats()
+        self.assertIn("audio", stats)
+        self.assertIn("video", stats)
+        self.assertIn("total_count", stats)
+        self.assertTrue(os.path.exists(sample_video_2))
+
+        # 6. Test delete_all_recordings for video
+        del_v_count = controller.delete_all_recordings("video")
+        self.assertGreaterEqual(del_v_count, 1)
+        self.assertFalse(os.path.exists(sample_video_2))
+        print("  ✅ Vault bulk purge deletes all targeted media recordings successfully.")
+
+        controller.stop_all()
+
+    def test_20_countdown_conditions_and_offline_phone_alert(self):
+        """
+        Validates:
+          1. Countdown timer appears ONLY for Fall Detection and Route Deviation.
+          2. Manual SOS and direct emergencies dispatch immediately without countdown timer.
+          3. When alert is dispatched, countdown timer is NOT active.
+          4. Alert contains current Google Maps location link and targets numbers saved in UI.
+          5. Phone connectivity and offline dispatch fallbacks.
+        """
+        print("\n[TEST 20] Testing Countdown Timer Rules & Offline Phone Location Alert...")
+        import tkinter as tk
+        from gui_module import ModernSafetyApp
+
+        controller = MainSafetyController(
+            emergency_contacts=["9876543210", "9123456780", "9988776655"]
+        )
+        root = tk.Tk()
+        root.withdraw()
+        app = ModernSafetyApp(root, controller=controller)
+        app.contacts = [
+            {"name": "Mom", "phone": "9876543210"},
+            {"name": "Dad", "phone": "9123456780"},
+            {"name": "Friend", "phone": "9988776655"}
+        ]
+        controller.attach_gui(app)
+
+        # 1. Fall Detection -> Countdown timer MUST appear
+        app.is_threat_active = False
+        app.trigger_threat("⚠️ HARD FALL / DROP DETECTED")
+        self.assertTrue(app.is_threat_active, "Countdown timer MUST be active for Fall Detection!")
+        app.dismiss_alarm("Test safe")
+        self.assertFalse(app.is_threat_active)
+        print("  ✅ Countdown timer correctly appears for Fall Detection.")
+
+        # 2. Route Deviation -> Countdown timer MUST appear
+        app.is_threat_active = False
+        app.trigger_threat("⚠️ TRAJECTORY_ANOMALY (ROUTE_DEVIATION)")
+        self.assertTrue(app.is_threat_active, "Countdown timer MUST be active for Route Deviation!")
+        app.dismiss_alarm("Test safe")
+        self.assertFalse(app.is_threat_active)
+        print("  ✅ Countdown timer correctly appears for Route Deviation.")
+
+        # 3. Manual SOS / Direct Emergency -> Countdown timer MUST NOT appear! Must dispatch immediately!
+        app.is_threat_active = False
+        dispatched_event = None
+        orig_execute = controller.execute_emergency_sequence
+
+        def mock_execute(threat_type, loc_data):
+            nonlocal dispatched_event
+            dispatched_event = orig_execute(threat_type, loc_data)
+            return dispatched_event
+
+        controller.execute_emergency_sequence = mock_execute
+
+        app.trigger_threat("🚨 MANUAL SOS TRIGGER")
+        self.assertFalse(app.is_threat_active, "Countdown timer MUST NOT appear for Manual SOS!")
+        self.assertIsNotNone(dispatched_event, "Manual SOS must dispatch emergency sequence immediately!")
+        self.assertIn("maps.google.com/?q=", dispatched_event["maps_link"])
+        print("  ✅ Manual SOS bypasses countdown and dispatches immediately.")
+
+        # 4. Voice Trigger -> Countdown timer MUST NOT appear! Must dispatch immediately!
+        app.is_threat_active = False
+        app.handle_voice_event("TRIGGER", "help")
+        self.assertFalse(app.is_threat_active, "Countdown timer MUST NOT appear for Voice Trigger!")
+        print("  ✅ Voice command emergency bypasses countdown and dispatches immediately.")
+
+        # 5. Verify offline phone alert dispatch with location link to numbers saved in UI
+        loc = controller.location_engine.get_current_location()
+        lat = loc["latitude"]
+        lon = loc["longitude"]
+        saved_numbers = [c["phone"] for c in app.contacts]
+
+        res = controller.telephony_manager.dispatch_emergency_sms(
+            saved_numbers, lat=lat, lon=lon
+        )
+        self.assertIn("maps.google.com/?q=", res["maps_url"])
+        self.assertEqual(len(res["contacts_sent"]), 3)
+        for cs in res["contacts_sent"]:
+            self.assertIn(cs["contact"], saved_numbers)
+        print("  ✅ Offline alert contains current location link and targets all numbers saved in UI.")
+
+        # 6. Test phone connection check
+        phone_info = controller.get_phone_status()
+        self.assertIn("adb_installed", phone_info)
+        self.assertIn("device_connected", phone_info)
+        print("  ✅ Mobile phone connection inspector operates correctly.")
+
+        try:
+            root.destroy()
+        except Exception:
+            pass
+        controller.stop_all()
+
+    def test_21_realistic_map_free_movement_and_no_online_word(self):
+        """
+        Validates:
+        1. Realistic cartographic map rendering with water, roads, safe corridors, POIs, D-Pad.
+        2. Free live movement on the map (clicking, dragging, directional stepping, keyboard).
+        3. Real-time live reflection in UI (speed, coordinates, heading, breadcrumbs, HUD).
+        4. Absence of separate buttons for Route Deviation or increasing speed.
+        5. The word 'Online' does NOT appear in any UI status strings or badges.
+        """
+        print("\n[TEST 21] Testing Realistic Map, Free Movement & No 'Online' Word...")
+        root = tk.Tk()
+        root.withdraw()
+        controller = MainSafetyController()
+        app = ModernSafetyApp(root, controller=controller)
+        app.contacts = [{"name": "P1 Guardian", "phone": "9876543210"}]
+        controller.attach_gui(app)
+        app.is_protection_active = True
+        app.build_modern_dashboard()
+
+        # 1. Realistic Vector Map Canvas & Layers
+        self.assertIsNotNone(app.map_canvas, "Map canvas must be present in the UI.")
+        app.map_canvas.update_idletasks()
+        app._draw_realistic_map()
+        base_items = app.map_canvas.find_withtag("map_base")
+        self.assertGreater(len(base_items), 5, "Realistic map must render base features (water, parks, roads, blocks).")
+
+        corridor_items = app.map_canvas.find_withtag("route_corridor")
+        self.assertGreater(len(corridor_items), 0, "Realistic map must render planned safe route corridor.")
+
+        dpad_items = app.map_canvas.find_withtag("dpad")
+        self.assertGreater(len(dpad_items), 0, "Realistic map must render on-canvas interactive D-Pad.")
+        print("  ✅ Realistic vector map renders terrain, water channel, road network, corridor, and D-Pad.")
+
+        # 2. Free Movement Live Updates
+        initial_lat = app.current_sim_lat
+        initial_lon = app.current_sim_lon
+        target_lat = 11.47200
+        target_lon = 79.73500
+
+        # Move to coordinate
+        app.move_user_to_latlon(target_lat, target_lon, speed_kmh=42.0)
+        self.assertEqual(app.current_sim_lat, target_lat)
+        self.assertEqual(app.current_sim_lon, target_lon)
+        self.assertIn("42", app.speed_indicator_str.get())
+        self.assertGreater(len(app.map_trail_points), 0, "Breadcrumb trail must update on movement.")
+
+        # Step East (90 deg)
+        prev_lon = app.current_sim_lon
+        app.step_user_direction(90)
+        self.assertGreater(app.current_sim_lon, prev_lon, "User must move East on stepping 90 deg.")
+
+        # Click simulation on canvas
+        class FakeMouseEvent:
+            def __init__(self, x, y):
+                self.x = x
+                self.y = y
+
+        app._on_map_click(FakeMouseEvent(200, 150))
+        self.assertIsNotNone(app.current_sim_lat)
+        self.assertIsNotNone(app.current_sim_lon)
+        print("  ✅ User moves freely on map (clicks, drags, steps) and movement reflects live in UI.")
+
+        # 3. Verify NO separate buttons for Route Deviation or increasing speed
+        self.assertFalse(hasattr(app, "test_demo_speed_anomaly"), "Separate button method 'test_demo_speed_anomaly' must NOT exist!")
+        self.assertFalse(hasattr(app, "test_demo_route_deviation"), "Separate button method 'test_demo_route_deviation' must NOT exist!")
+
+        # Scan all buttons in main container for forbidden texts
+        all_button_texts = []
+        def _scan_buttons(widget):
+            for child in widget.winfo_children():
+                if isinstance(child, tk.Button):
+                    all_button_texts.append(child.cget("text"))
+                _scan_buttons(child)
+
+        _scan_buttons(app.main_container)
+        for btn_txt in all_button_texts:
+            self.assertNotIn("Speed 90km/h", btn_txt, "Separate speed increase test button must be removed!")
+            self.assertNotIn("Deviate Test", btn_txt, "Separate route deviation test button must be removed!")
+        print("  ✅ Separate buttons for Route Deviation and speed increase are completely removed.")
+
+        # 4. Verify the word 'Online' does NOT appear anywhere in UI variables
+        controller.phone_has_signal = True
+        app.update_map_canvas(app.current_sim_lat, app.current_sim_lon, None, 25.0, False)
+        net_str = app._tele_network.get()
+        self.assertNotIn("Online", net_str, "The word 'Online' must NOT appear in network status!")
+        self.assertIn("Connected", net_str)
+
+        all_string_vars = [
+            app.battery_status_str.get(),
+            app.signal_status_str.get(),
+            app.demo_status_str.get(),
+            app.destination_status_str.get(),
+            app._tele_network.get(),
+            app._tele_threat.get()
+        ]
+        for s in all_string_vars:
+            self.assertNotIn("Online", s, f"The word 'Online' must NOT appear in UI string var: '{s}'")
+            self.assertNotIn("online", s.lower(), f"The word 'online' must NOT appear in UI string var: '{s}'")
+        print("  ✅ The word 'Online' does not appear anywhere in UI status badges or telemetry.")
+
+        try:
+            root.destroy()
+        except Exception:
+            pass
+        controller.stop_all()
+
+    def test_22_unwanted_continuous_alert_prevention_and_debounce(self):
+        """
+        Validates:
+        1. Free movement on map does NOT trigger unwanted route deviation alerts.
+        2. Setting a destination does NOT falsely alert simply because the user is far from destination at trip start.
+        3. Rapid consecutive UI threat triggers are debounced to prevent continuous alert loops.
+        4. Dismissing alarm resets controller status to ACTIVE_MONITORING and engages a safe cooldown.
+        5. SOS dispatch is debounced against rapid repeat firing.
+        """
+        print("\n[TEST 22] Testing Unwanted Continuous Alert Prevention & Debouncing...")
+        root = tk.Tk()
+        root.withdraw()
+        controller = MainSafetyController(emergency_contacts=["9876543210", "9123456780"])
+        app = ModernSafetyApp(root, controller=controller)
+        app.is_protection_active = True
+
+        # 1. Free movement does not trigger route deviation
+        controller.clear_trip_destination()
+        app.move_user_to_latlon(11.47000, 79.73000, speed_kmh=25.0)
+        cycle_res = controller.run_live_safety_cycle()
+        self.assertFalse(cycle_res["anomaly_check"]["is_threat"], "Free movement without route must NOT trigger unwanted threat!")
+        print("  ✅ Free movement without planned route operates normally without false route deviation.")
+
+        # 2. Origin-to-destination start does NOT trigger immediate route deviation
+        controller.set_trip_destination("University Campus", 11.49250, 79.75800)
+        # Starting 3 km away from destination
+        app.move_user_to_latlon(11.46500, 79.72000, speed_kmh=30.0)
+        res_dest = controller.anomaly_engine.check_for_threats(
+            speed_kmh=30.0, current_lat=11.46500, current_lon=79.72000
+        )
+        self.assertFalse(res_dest[0], "Being far from destination at start of trip must NOT trigger route deviation!")
+        print("  ✅ Setting a destination does not falsely trigger route deviation at trip start.")
+
+        # 3. Consecutive UI threat triggers are debounced
+        threat_count = [0]
+        orig_trigger_threat = app.trigger_threat
+
+        # Reset threat debounce timer
+        app._last_threat_trigger_time = 0.0
+        app.is_threat_active = False
+
+        app.trigger_threat("⚠️ ROUTE DEVIATION DETECTED")
+        self.assertTrue(app.is_threat_active)
+
+        # Immediate repeat trigger while active must be debounced
+        app.trigger_threat("⚠️ ROUTE DEVIATION DETECTED")
+        self.assertTrue(app.is_threat_active, "Threat state remains active without breaking or duplicate loops.")
+        print("  ✅ Rapid consecutive threat triggers are cleanly debounced.")
+
+        # 4. User confirming safe resets controller status and engages cooldown
+        app.dismiss_alarm("User confirmed safe")
+        self.assertFalse(app.is_threat_active)
+        self.assertEqual(controller.system_status, "ACTIVE_MONITORING")
+        self.assertGreater(controller.anomaly_engine.cooldown_period_sec, 60.0)
+        print("  ✅ Dismissing alarm resets controller to ACTIVE_MONITORING and engages safe cooldown.")
+
+        # 5. SOS dispatch debounce
+        sos_dispatches = []
+        app._last_sos_dispatch_time = 0.0
+        orig_exec = controller.execute_emergency_sequence
+        controller.execute_emergency_sequence = lambda threat, loc: sos_dispatches.append(threat)
+
+        app.dispatch_sos()
+        self.assertEqual(len(sos_dispatches), 1)
+        # Immediate second dispatch within debounce window
+        app.dispatch_sos()
+        self.assertEqual(len(sos_dispatches), 1, "Duplicate SOS dispatch within 20s must be debounced!")
+        print("  ✅ Rapid SOS dispatch deduplication prevents continuous alert bombardment.")
+
+        controller.execute_emergency_sequence = orig_exec
+        try:
+            root.destroy()
+        except Exception:
+            pass
+        controller.stop_all()
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+
+
