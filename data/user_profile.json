@@ -1,0 +1,16 @@
+{
+  "user_name": "Iyyu",
+  "user_phone": "09876543211",
+  "contacts": [
+    {
+      "name": "mk",
+      "phone": "0987865444"
+    }
+  ],
+  "delay_timer": 15,
+  "escalation_timeout": 60,
+  "speed_threshold": 80,
+  "real_pin": "1234",
+  "fake_pin": "9999",
+  "is_protection_active": true
+}
