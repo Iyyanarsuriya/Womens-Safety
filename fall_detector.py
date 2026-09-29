@@ -11,13 +11,14 @@ Algorithm phases:
      a defined window (0.1s - 2.5s) after freefall.
   4. Post-impact settlement check.
 
-Provides socket-based streaming from connected Android device (Termux/ADB),
-HTTP receiver fallback, and programmatic fall simulation for unit & integration testing.
+Provides USB ADB port-forwarding, TCP client & server sensor stream receiver,
+Termux sensor ADB stream fallback, and programmatic fall simulation for unit & integration testing.
 """
 
 import json
 import math
 import socket
+import subprocess
 import threading
 import time
 import logging
@@ -46,28 +47,67 @@ class FallDetector:
             raise TypeError("callback must be a callable (function/method).")
         self._callback       = callback
         self._stop_event     = threading.Event()
-        self._thread         = threading.Thread(
-            target=self._run, name="FallDetectorThread", daemon=True
-        )
+        self._threads        = []
         self._freefall_time  = None
         self._tumble_detected = False
         self._last_trigger_time = 0.0
 
     def start(self):
         self._stop_event.clear()
-        self._thread.start()
-        logger.info("Fall Detector thread started (%s).", self._thread.name)
+        self._setup_adb_port_forwarding()
+
+        # Thread 1: TCP Client connecting to localhost:8080 (ADB forwarded port)
+        t_client = threading.Thread(
+            target=self._run_client, name="FallDetectorClientThread", daemon=True
+        )
+        t_client.start()
+        self._threads.append(t_client)
+
+        # Thread 2: TCP Server listening on 0.0.0.0:8080 (for phone streaming to laptop IP directly)
+        t_server = threading.Thread(
+            target=self._run_server, name="FallDetectorServerThread", daemon=True
+        )
+        t_server.start()
+        self._threads.append(t_server)
+
+        # Thread 3: ADB Termux sensor stream monitor
+        t_adb = threading.Thread(
+            target=self._run_adb_termux_sensor, name="FallDetectorAdbThread", daemon=True
+        )
+        t_adb.start()
+        self._threads.append(t_adb)
+
+        logger.info("Fall Detector threads started (Client, Server & ADB).")
         return self
 
     def stop(self):
         self._stop_event.set()
-        if self._thread.is_alive():
-            self._thread.join(timeout=1.0)
-        logger.info("Fall Detector thread stopped.")
+        for t in self._threads:
+            if t.is_alive():
+                t.join(timeout=0.8)
+        self._threads.clear()
+        logger.info("Fall Detector threads stopped.")
 
     @property
     def is_running(self):
-        return self._thread.is_alive()
+        return any(t.is_alive() for t in self._threads)
+
+    def _setup_adb_port_forwarding(self):
+        """Automatically forward TCP port 8080 over USB via ADB if device is connected."""
+        def _adb_cmd(args):
+            try:
+                startupinfo = subprocess.STARTUPINFO()
+                startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+                subprocess.run(["adb"] + args, capture_output=True, timeout=2.0, startupinfo=startupinfo)
+            except Exception:
+                pass
+
+        threading.Thread(target=lambda: [
+            _adb_cmd(["forward", f"tcp:{PORT}", f"tcp:{PORT}"]),
+            _adb_cmd(["reverse", f"tcp:{PORT}", f"tcp:{PORT}"]),
+            _adb_cmd(["forward", "tcp:8082", "tcp:8082"]),
+            _adb_cmd(["reverse", "tcp:8082", "tcp:8082"])
+        ], daemon=True).start()
 
     def simulate_fall(self, reason="Programmatic Fall Test"):
         """Directly triggers the fall detection callback (used for testing/SOS validation)."""
@@ -91,33 +131,105 @@ class FallDetector:
 
         self._evaluate_fall_pattern(accel_mag, gyro_mag, now)
 
-    def _run(self):
+    def _run_client(self):
+        """TCP Client loop connecting to localhost:8080."""
         while not self._stop_event.is_set():
             try:
-                self._connect_and_read()
-            except Exception as exc:
+                with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+                    sock.settimeout(3.0)
+                    sock.connect((HOST, PORT))
+                    sock.settimeout(None)
+                    logger.info("Connected to phone sensor stream on %s:%d.", HOST, PORT)
+
+                    buffer = ""
+                    while not self._stop_event.is_set():
+                        chunk = sock.recv(RECV_BUFFER_BYTES)
+                        if not chunk:
+                            break
+                        buffer += chunk.decode("utf-8", errors="replace")
+                        buffer = self._process_buffer(buffer)
+            except Exception:
                 if self._stop_event.is_set():
                     break
-                logger.debug(
-                    "Sensor socket retry (%s: %s). Re-listening in %.1f s...",
-                    type(exc).__name__, exc, RECONNECT_DELAY_SEC,
-                )
                 self._stop_event.wait(RECONNECT_DELAY_SEC)
 
-    def _connect_and_read(self):
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-            sock.settimeout(5.0)
-            sock.connect((HOST, PORT))
-            sock.settimeout(None)
-            logger.info("Connected to phone sensor stream on %s:%d.", HOST, PORT)
+    def _run_server(self):
+        """TCP Server loop listening on 0.0.0.0:8080."""
+        server_sock = None
+        try:
+            server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            server_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            server_sock.bind(("0.0.0.0", PORT))
+            server_sock.listen(2)
+            server_sock.settimeout(2.0)
+            logger.info("FallDetector server listening on port %d for incoming sensor streams.", PORT)
 
-            buffer = ""
             while not self._stop_event.is_set():
-                chunk = sock.recv(RECV_BUFFER_BYTES)
-                if not chunk:
-                    break
-                buffer += chunk.decode("utf-8", errors="replace")
-                buffer = self._process_buffer(buffer)
+                try:
+                    conn, addr = server_sock.accept()
+                    logger.info("Phone sensor stream connected from %s", addr)
+                    conn.settimeout(5.0)
+                    buffer = ""
+                    with conn:
+                        while not self._stop_event.is_set():
+                            try:
+                                chunk = conn.recv(RECV_BUFFER_BYTES)
+                                if not chunk:
+                                    break
+                                buffer += chunk.decode("utf-8", errors="replace")
+                                buffer = self._process_buffer(buffer)
+                            except socket.timeout:
+                                continue
+                            except Exception:
+                                break
+                except socket.timeout:
+                    continue
+                except Exception:
+                    if self._stop_event.is_set():
+                        break
+                    self._stop_event.wait(1.0)
+        except Exception as exc:
+            logger.debug("Server socket could not bind: %s", exc)
+        finally:
+            if server_sock:
+                try:
+                    server_sock.close()
+                except Exception:
+                    pass
+
+    def _run_adb_termux_sensor(self):
+        """If Android phone is connected via USB and Termux sensor is available, stream sensor data directly."""
+        while not self._stop_event.is_set():
+            try:
+                startupinfo = subprocess.STARTUPINFO()
+                startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+                # Check for adb device
+                check = subprocess.run(["adb", "devices"], capture_output=True, text=True, timeout=2.0, startupinfo=startupinfo)
+                if check.returncode == 0 and "\tdevice" in check.stdout:
+                    # Attempt termux-sensor stream over ADB
+                    cmd = ["adb", "shell", "termux-sensor", "-s", "accelerometer,gyroscope", "-d", "100"]
+                    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, startupinfo=startupinfo)
+                    
+                    buf = ""
+                    while not self._stop_event.is_set() and proc.poll() is None:
+                        line = proc.stdout.readline()
+                        if not line:
+                            break
+                        buf += line
+                        if line.strip().endswith("}"):
+                            try:
+                                payload = json.loads(buf)
+                                self._handle_payload(payload)
+                            except Exception:
+                                pass
+                            buf = ""
+                    try:
+                        proc.terminate()
+                    except Exception:
+                        pass
+            except Exception:
+                pass
+            self._stop_event.wait(5.0)
 
     def _process_buffer(self, buffer):
         lines = buffer.split("\n")

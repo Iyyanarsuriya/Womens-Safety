@@ -278,6 +278,261 @@ class TestWomenSafetySystem(unittest.TestCase):
             if backup_content is not None:
                 with open(profile_file, "w", encoding="utf-8") as f:
                     f.write(backup_content)
+            else:
+                if os.path.exists(profile_file):
+                    try:
+                        os.remove(profile_file)
+                    except Exception:
+                        pass
+
+    def test_10_phone_usb_fall_detection_debounce_and_no_duplicate_sms(self):
+        """Req 1: Validates fall drop detection, cooldown debouncing and single SMS trigger."""
+        print("\n[TEST 10] Testing Phone Fall Debouncing & Deduplication...")
+        fall_count = [0]
+        detector = FallDetector(callback=lambda: fall_count.__setitem__(0, fall_count[0] + 1))
+        detector.cooldown_period = 2.0
+
+        # Drop 1: Freefall + Impact
+        detector.process_sensor_sample((0.1, 0.1, 1.5), now=100.0)
+        detector.process_sensor_sample((10.0, 10.0, 12.0), now=100.5)
+        self.assertEqual(fall_count[0], 1)
+
+        # Immediate drop 2 within cooldown window (100.8s) -> should be suppressed
+        detector.process_sensor_sample((0.1, 0.1, 1.5), now=100.7)
+        detector.process_sensor_sample((10.0, 10.0, 12.0), now=100.9)
+        self.assertEqual(fall_count[0], 1, "Duplicate drop within cooldown must be suppressed!")
+
+        # Verify controller emergency debouncing avoids duplicate SMS triggers
+        controller = MainSafetyController(emergency_contacts=["9876543210"], real_pin="1234", fake_pin="9999")
+        loc = {"latitude": 11.48896, "longitude": 79.75388, "maps_url": "https://maps.google.com/?q=11.48896,79.75388"}
+        ev1 = controller.execute_emergency_sequence("PHONE_FALL_DETECTED", loc)
+        self.assertIsNotNone(ev1)
+        # Immediate second call within 30s debounce:
+        ev2 = controller.execute_emergency_sequence("PHONE_FALL_DETECTED", loc)
+        self.assertIsNone(ev2, "Duplicate emergency execution for same incident must be debounced/suppressed!")
+        controller.stop_all()
+        print("  ✅ Fall detection cooldown and emergency deduplication verified.")
+
+    def test_11_manual_live_map_movement_demo_isolation(self):
+        """Req 2: Validates isolated live continuous demo movement without modifying real GPS."""
+        print("\n[TEST 11] Testing Manual Live Map Movement Demo Isolation...")
+        controller = MainSafetyController(emergency_contacts=["9876543210"])
+        # Real GPS location before demo
+        real_loc_before = controller.location_engine.get_current_location()
+        real_lat_orig = real_loc_before["latitude"]
+        real_lon_orig = real_loc_before["longitude"]
+
+        # Activate demo mode
+        controller.start_demo_mode(start_lat=12.9716, start_lon=77.5946, speed_kmh=45.0)
+        self.assertTrue(controller.demo_mode_active)
+        self.assertEqual(controller.demo_lat, 12.9716)
+        self.assertEqual(controller.demo_lon, 77.5946)
+
+        # Step simulated movement continuously
+        for _ in range(5):
+            controller.step_demo_movement(d_lat=0.001, d_lon=0.001)
+
+        self.assertAlmostEqual(controller.demo_lat, 12.9766, places=4)
+        self.assertAlmostEqual(controller.demo_lon, 77.5996, places=4)
+
+        # Verify Real GPS engine remains isolated and unaffected
+        real_loc_after = controller.location_engine.get_current_location()
+        self.assertEqual(real_loc_after["latitude"], real_lat_orig)
+        self.assertEqual(real_loc_after["longitude"], real_lon_orig)
+
+        controller.stop_demo_mode()
+        self.assertFalse(controller.demo_mode_active)
+        controller.stop_all()
+        print("  ✅ Live demo movement operates continuously and remains strictly isolated from real GPS.")
+
+    def test_12_speed_and_route_deviation_are_you_safe_alert_with_cooldown(self):
+        """Req 3: Validates speed/deviation 'Are you safe?' trigger and debounce/cooldown logic."""
+        print("\n[TEST 12] Testing Speed / Route Deviation Alerts with Cooldown...")
+        from anomaly_engine import AnomalyEngine
+        engine = AnomalyEngine(speed_threshold_kmh=50.0)
+
+        # Set reference destination
+        engine.set_destination("Office Safe Hub", 11.48896, 79.75388)
+
+        # 1. High speed violation (>50 km/h)
+        threat_spd, reason_spd = engine.check_for_threats(
+            speed_kmh=65.0, current_lat=11.48896, current_lon=79.75388,
+            predicted_point={"latitude": 11.48896, "longitude": 79.75388}
+        )
+        self.assertTrue(threat_spd)
+        self.assertIn("ARE YOU SAFE?", reason_spd)
+        self.assertIn("SPEED", reason_spd)
+
+        # User confirms "I AM SAFE" -> acknowledge_safe cooldown
+        engine.acknowledge_safe(cooldown_seconds=60)
+
+        # Immediate next cycle with same high speed should be suppressed by cooldown
+        threat_cooldown, _ = engine.check_for_threats(
+            speed_kmh=65.0, current_lat=11.48896, current_lon=79.75388,
+            predicted_point={"latitude": 11.48896, "longitude": 79.75388}
+        )
+        self.assertFalse(threat_cooldown, "Repeated alert must be debounced/suppressed during cooldown period!")
+        print("  ✅ 'Are you safe?' popup properly fires for speed/route deviation and honors cooldown.")
+
+    def test_13_emergency_sms_current_location_and_maps_link(self):
+        """Req 4: Validates multi-contact prioritized emergency SMS with current Google Maps link."""
+        print("\n[TEST 13] Testing Emergency SMS Multi-Contact & Maps Link...")
+        telephony = AndroidTelephonyManager()
+        dispatched_payloads = []
+
+        def mock_sms_webhook(p1, p2, lat, lon):
+            dispatched_payloads.append({"p1": p1, "p2": p2, "lat": lat, "lon": lon})
+            return True
+
+        contacts = ["9876543210", "9123456780", "9000011111"]
+        res = telephony.dispatch_emergency_sms(
+            contacts=contacts,
+            emergency_message="EMERGENCY DISTRESS SIGNAL",
+            current_lat=11.48896,
+            current_lon=79.75388,
+            on_sms_dispatch=mock_sms_webhook
+        )
+
+        self.assertEqual(len(dispatched_payloads), 1)
+        self.assertEqual(dispatched_payloads[0]["p1"], "9876543210")
+        self.assertEqual(dispatched_payloads[0]["p2"], "9123456780")
+        self.assertAlmostEqual(dispatched_payloads[0]["lat"], 11.48896)
+        self.assertAlmostEqual(dispatched_payloads[0]["lon"], 79.75388)
+        self.assertTrue(res.get("maps_url", "").startswith(f"https://maps.google.com/?q={11.48896:.6f},{79.75388:.6f}"))
+        print(f"  ✅ Emergency SMS contains accurate Google Maps link: {res.get('maps_url')}")
+
+    def test_14_call_escalation_sequential_priority_and_cancellation(self):
+        """Req 5: Validates configurable 1-2 min response timeout before sequential calling & cancellation."""
+        print("\n[TEST 14] Testing Automated Call Escalation...")
+        controller = MainSafetyController(
+            emergency_contacts=["9876543210", "9123456780"],
+            real_pin="1234",
+            fake_pin="9999"
+        )
+        escalation_mgr = controller.escalation_manager
+        # Configure timeout within 60-120 range
+        escalation_mgr.set_timeout(75)
+        self.assertEqual(escalation_mgr.timeout_s, 75)
+
+        # Start escalation
+        escalation_mgr.start_escalation(
+            contacts=["9876543210", "9123456780"],
+            incident_type="SOS_TEST"
+        )
+        self.assertTrue(escalation_mgr.escalation_active)
+        self.assertEqual(escalation_mgr.escalation_state, "WAITING_RESPONSE")
+
+        # Cancel escalation by user (User confirms safe)
+        escalation_mgr.cancel_escalation("User confirmed safe in UI")
+        self.assertFalse(escalation_mgr.escalation_active)
+        self.assertEqual(escalation_mgr.escalation_state, "RESOLVED_SAFE")
+        controller.stop_all()
+        print("  ✅ Automated Call Escalation configures 60-120s timeout and resolves upon user cancellation.")
+
+    def test_15_low_battery_warning_no_sos(self):
+        """Req 6: Validates low-battery (<=15%) sends dedicated warning SMS with location, does NOT trigger SOS."""
+        print("\n[TEST 15] Testing Low Battery Warning SMS (No SOS)...")
+        controller = MainSafetyController(emergency_contacts=["9876543210"])
+        # Initial battery warning flag is False
+        self.assertFalse(controller.battery_warning_sent)
+
+        # Trigger low battery notice
+        sent_warning = controller.send_low_battery_notice(battery_pct=14)
+        self.assertTrue(sent_warning)
+        self.assertTrue(controller.battery_warning_sent)
+        # Verify SOS was NOT triggered
+        self.assertNotEqual(controller.system_status, "EMERGENCY_TRIGGERED")
+
+        # Second call while still low must not duplicate SMS
+        sent_again = controller.send_low_battery_notice(battery_pct=13)
+        self.assertFalse(sent_again, "Repeated warning SMS must be suppressed while low!")
+
+        # Reset after charging
+        controller.reset_battery_warning_state()
+        self.assertFalse(controller.battery_warning_sent)
+        controller.stop_all()
+        print("  ✅ Low battery warning (<15%) dispatches warning without triggering SOS and resets on recharge.")
+
+    def test_16_hotspot_connectivity_monitoring_alarm_and_recovery(self):
+        """Req 7: Validates hotspot/connectivity monitoring, disconnect alarm and reconnection handling."""
+        print("\n[TEST 16] Testing Hotspot / Connectivity Monitoring...")
+        from network_monitor_module import NetworkConnectivityMonitor
+        monitor = NetworkConnectivityMonitor(target_host="127.0.0.1", ping_interval=1.0)
+
+        # Simulate connection state: online -> offline
+        monitor.is_connected = True
+
+        # Handle disconnect transition
+        event_disc = monitor._handle_connection_transition(now_connected=False)
+        self.assertEqual(event_disc.get("event"), "CONNECTION_LOST")
+        self.assertTrue(monitor.alarm_active)
+
+        # Handle second offline check -> no repeated alarm loop
+        event_disc_again = monitor._handle_connection_transition(now_connected=False)
+        self.assertIsNone(event_disc_again, "Alarm loop must be suppressed when already in alarm state!")
+
+        # Handle reconnection
+        event_reconn = monitor._handle_connection_transition(now_connected=True)
+        self.assertEqual(event_reconn.get("event"), "CONNECTION_RESTORED")
+        self.assertFalse(monitor.alarm_active)
+        print("  ✅ Hotspot/connectivity monitor triggers alarm on drop and recovers on reconnection without looping.")
+
+    def test_17_predefined_destination_trip_persistence(self):
+        """Req 8: Validates setting, persisting in current_trip.json, reloading, and clearing destination."""
+        print("\n[TEST 17] Testing Predefined Destination & Trip Persistence...")
+        controller = MainSafetyController(emergency_contacts=["9876543210"])
+        # Set destination
+        dest = controller.set_trip_destination("University Campus", 11.4920, 79.7600)
+        self.assertEqual(dest["name"], "University Campus")
+
+        # Verify file persistence
+        trip_file = os.path.join("data", "current_trip.json")
+        self.assertTrue(os.path.exists(trip_file))
+        with open(trip_file, "r", encoding="utf-8") as f:
+            persisted = json.load(f)
+        self.assertEqual(persisted["name"], "University Campus")
+        self.assertEqual(persisted["latitude"], 11.4920)
+
+        # Clear destination
+        controller.clear_trip_destination()
+        self.assertIsNone(controller.trip_destination)
+        controller.stop_all()
+        print("  ✅ Predefined destination saves to disk, tracks trip, and clears correctly.")
+
+    def test_18_fake_shutdown_stealth_blackbox_logging(self):
+        """Req 9: Validates duress PIN fake shutdown and local blackbox vault incident logging."""
+        print("\n[TEST 18] Testing Fake Shutdown Duress & Blackbox Vault Logging...")
+        controller = MainSafetyController(
+            emergency_contacts=["9876543210"],
+            real_pin="1234",
+            fake_pin="9999"
+        )
+        # Test Duress PIN
+        res = controller.verify_duress_pin("9999")
+        self.assertEqual(res, "FAKE_DISABLE_ACTIVE")
+        self.assertTrue(controller.stealth_active)
+
+        # Test Blackbox Vault logging
+        loc = {"latitude": 11.48896, "longitude": 79.75388}
+        controller.log_blackbox_event(
+            "STEALTH_DURESS_TRIGGERED",
+            location=loc,
+            details={"notes": "Duress stealth mode initiated"},
+            is_demo=False
+        )
+
+        vault_file = controller.blackbox_file
+        self.assertTrue(os.path.exists(vault_file))
+        with open(vault_file, "r", encoding="utf-8") as f:
+            vault_data = json.load(f)
+
+        self.assertGreater(len(vault_data), 0)
+        last_entry = vault_data[-1]
+        self.assertEqual(last_entry["event"], "STEALTH_DURESS_TRIGGERED")
+        self.assertEqual(last_entry["mode"], "PRODUCTION")
+        self.assertIn("timestamp", last_entry)
+        controller.stop_all()
+        print(f"  ✅ Blackbox vault successfully recorded event: {last_entry['event']} in {last_entry['mode']} mode.")
 
 
 if __name__ == "__main__":

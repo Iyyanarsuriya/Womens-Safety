@@ -73,7 +73,8 @@ Safety_System/
 ├── anomaly_engine.py              # Speed and Route Deviation Detection
 ├── map_simulator.py               # Standalone Interactive Canvas Route Simulator
 ├── map_config.py                  # Geocoordinates, Waypoints & Pixel-to-GPS Projection
-├── test_system.py                 # Automated Test Suite (9 Tests covering all features)
+├── reset_db.py                    # Database & Vault Reset Tool (supports --all and --fresh)
+├── test_system.py                 # Automated Test Suite (18 Tests covering all features)
 ├── requirements.txt               # Python Dependencies
 ├── data/
 │   ├── backend_safety.db          # Backend SQLite Database
@@ -134,14 +135,18 @@ python main.py
 
 ---
 
-## 🧪 Command to Run Automated Verification Tests
+### 🧪 Automated Verification Test Suite
 
 To verify all system features end-to-end without physical hardware:
 
 ```powershell
 python test_system.py
 ```
-> **Runs all 9 automated test suites in ~8.6 seconds**:
+*or using unittest runner:*
+```powershell
+python -m unittest test_system.py
+```
+> **Runs all 18 automated integration tests**:
 > 1. `test_01`: Backend API & SQLite DB initialization
 > 2. `test_02`: Dual-sensor Phone Fall Detection algorithm
 > 3. `test_03`: GPS acquisition & Google Maps link generation
@@ -151,6 +156,42 @@ python test_system.py
 > 7. `test_07`: Offline-first vault queue & backend SQLite sync
 > 8. `test_08`: Master emergency execution sequence
 > 9. `test_09`: Profile persistence across restarts
+> 10. `test_10`: Phone USB fall detection debounce & single SMS constraint
+> 11. `test_11`: Manual live map continuous movement demo
+> 12. `test_12`: Speed increase & route deviation safety alert with cooldown
+> 13. `test_13`: Multi-contact emergency SMS with precise location links
+> 14. `test_14`: Automated call escalation after 60-120s timeout
+> 15. `test_15`: Dedicated low-battery warning SMS (<15%) without false SOS
+> 16. `test_16`: Hotspot & network connectivity loss alarm and recovery
+> 17. `test_17`: Predefined trip destination persistence & clearing
+> 18. `test_18`: Fake shutdown duress PIN (9999) & blackbox vault logging
+
+---
+
+### 🗑️ Database & Media Reset Commands
+
+To wipe test data, clear events, or start completely fresh:
+
+```powershell
+# 1. Reset only SQLite database tables (clears all emergency events, audio metadata, logs)
+python reset_db.py
+
+# 2. Reset SQLite database + cached offline JSON vaults (offline_events_vault.json, location_history.json)
+python reset_db.py --all
+
+# 3. Full Fresh Reset (wipes database, vaults, logs, and deletes all recorded audio & video files)
+python reset_db.py --fresh
+```
+
+---
+
+### 🗺️ Standalone Map Simulator (Optional)
+
+If you want to test route movements and deviations standalone:
+
+```powershell
+python map_simulator.py
+```
 
 ---
 

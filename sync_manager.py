@@ -55,9 +55,15 @@ class SyncManager:
     def _load_vault(self):
         try:
             with open(VAULT_PATH, "r", encoding="utf-8") as f:
-                return json.load(f)
+                data = json.load(f)
+                if isinstance(data, dict):
+                    data.setdefault("emergency_events", [])
+                    data.setdefault("audio_queue", [])
+                    data.setdefault("geofence_events", [])
+                    return data
         except Exception:
-            return {"emergency_events": [], "audio_queue": [], "geofence_events": []}
+            pass
+        return {"emergency_events": [], "audio_queue": [], "geofence_events": []}
 
     def _save_vault(self, data):
         tmp_path = VAULT_PATH + ".tmp"

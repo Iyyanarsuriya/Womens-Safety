@@ -499,6 +499,23 @@ def batch_sync():
         return jsonify({"status": "error", "message": str(exc)}), 500
 
 
+@app.route('/api/db/reset', methods=['POST'])
+def reset_database():
+    """Resets backend database tables."""
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        for tbl in ['emergency_events', 'audio_evidence', 'geofence_events', 'location_history', 'battery_logs']:
+            cursor.execute(f"DELETE FROM {tbl}")
+        conn.commit()
+        cursor.execute("VACUUM")
+        conn.close()
+        print("🗑️ [BACKEND] Database reset requested and executed.")
+        return jsonify({"status": "success", "message": "All backend database tables have been reset."})
+    except Exception as exc:
+        return jsonify({"status": "error", "message": str(exc)}), 500
+
+
 if __name__ == '__main__':
     print("🚀 Safety Backend Engine Running with SQLite Storage on Port 5000...")
     app.run(host='0.0.0.0', port=5000, debug=False)

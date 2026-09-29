@@ -1,9 +1,0 @@
-{
-  "user_name": "",
-  "user_phone": "",
-  "contacts": [],
-  "delay_timer": 15,
-  "real_pin": "1234",
-  "fake_pin": "9999",
-  "is_protection_active": false
-}
