@@ -106,6 +106,7 @@ class MapSimulatorWindow:
         self.user_heading_deg = 45.0
         self.is_dragging     = False
         self._last_drag_time = 0.0
+        self._tele_vars      = {}
 
         # Display-Only Mode: defaults to True for visual simulation without false alarms
         # (user can toggle via the prominent top header button to Armed mode)
@@ -115,10 +116,11 @@ class MapSimulatorWindow:
 
         # ── Window setup ──────────────────────────────────────────────────────
         self.win = tk.Toplevel(parent_root)
-        self.win.title("AURA — Live Map Intelligence & Master Control")
+        self.win.title("AURA — Interactive Map Simulator & Action Control")
         self.win.geometry(f"{WIN_W}x{WIN_H}+40+15")
+        self.win.minsize(WIN_W, 680)
         self.win.configure(bg=C_BG)
-        self.win.resizable(False, False)
+        self.win.resizable(True, True)
         self.win.lift()
         self.win.attributes("-topmost", True)
         self.win.after(250, lambda: self.win.attributes("-topmost", False))
@@ -142,8 +144,8 @@ class MapSimulatorWindow:
         badge.create_oval(2, 2, 26, 26, fill=C_ACCENT, outline="")
         badge.create_text(14, 14, text="🗺", font=("Segoe UI", 12))
 
-        tk.Label(hdr, text="AURA LIVE MAP MISSION CONTROL",
-                 font=("Segoe UI", 11, "bold"), fg=C_ACCENT,
+        tk.Label(hdr, text="AURA LIVE MAP MISSION CONTROL (INTERACTIVE MOVEMENT & ACTIONS)",
+                 font=("Segoe UI", 10, "bold"), fg=C_ACCENT,
                  bg=C_SURFACE).pack(side="left")
 
         # Mode Toggle Button (Display Only vs Armed Mode)
@@ -157,7 +159,7 @@ class MapSimulatorWindow:
 
         self._hotkey_hint = tk.Label(
             hdr,
-            text="↑↓←→ Move  |  D Deviate  |  S Speed  |  R Reset",
+            text="🖱️ Drag Map to Move  |  ↑↓←→ / WASD  |  ⚡ Action Controls",
             font=("Segoe UI", 8), fg=C_TEXT_DIM, bg=C_SURFACE,
         )
         self._hotkey_hint.pack(side="right", padx=12)
@@ -467,13 +469,18 @@ class MapSimulatorWindow:
 
     def _bind_hotkeys(self):
         self.win.bind("<Up>",    lambda e: self._arrow_move(LAT_STEP, 0, 0))
+        self.win.bind("<Up>",    lambda e: self._arrow_move( LAT_STEP, 0, 0))
         self.win.bind("<Down>",  lambda e: self._arrow_move(-LAT_STEP, 0, 180))
         self.win.bind("<Left>",  lambda e: self._arrow_move(0, -LON_STEP, 270))
         self.win.bind("<Right>", lambda e: self._arrow_move(0,  LON_STEP, 90))
+        self.win.bind("<w>",     lambda e: self._arrow_move( LAT_STEP, 0, 0))
+        self.win.bind("<W>",     lambda e: self._arrow_move( LAT_STEP, 0, 0))
+        self.win.bind("<s>",     lambda e: self._arrow_move(-LAT_STEP, 0, 180))
+        self.win.bind("<S>",     lambda e: self._arrow_move(-LAT_STEP, 0, 180))
+        self.win.bind("<a>",     lambda e: self._arrow_move(0, -LON_STEP, 270))
+        self.win.bind("<A>",     lambda e: self._arrow_move(0, -LON_STEP, 270))
         self.win.bind("<d>",     lambda e: self._trigger_deviation())
         self.win.bind("<D>",     lambda e: self._trigger_deviation())
-        self.win.bind("<s>",     lambda e: self._cycle_speed())
-        self.win.bind("<S>",     lambda e: self._cycle_speed())
         self.win.bind("<r>",     lambda e: self._reset_route())
         self.win.bind("<R>",     lambda e: self._reset_route())
         self.win.focus_set()

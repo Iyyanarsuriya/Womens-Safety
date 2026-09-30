@@ -109,7 +109,9 @@ def clear_logs():
 
 if __name__ == "__main__":
     is_fresh = "--fresh" in sys.argv
-    is_all = "--all" in sys.argv or is_fresh
+    is_media = "--media" in sys.argv or is_fresh
+    is_all = "--all" in sys.argv or is_fresh or is_media
+    reset_profile = "--profile" in sys.argv
 
     print("[RESET] Resetting Safety System Database...")
     reset_sqlite_db()
@@ -118,12 +120,12 @@ if __name__ == "__main__":
         print("[RESET] Resetting cached vaults...")
         reset_cached_vaults()
 
-    if is_fresh:
+    if is_media:
         print("[RESET] Removing all sample audios and videos...")
         remove_media_files()
         clear_logs()
 
-    if is_fresh or "--profile" in sys.argv:
+    if reset_profile:
         prof_file = os.path.join(DATA_DIR, "user_profile.json")
         if os.path.exists(prof_file):
             try:

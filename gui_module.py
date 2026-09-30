@@ -103,19 +103,7 @@ class ModernSafetyApp:
         self.root.bind("<Control-s>", lambda event: self.trigger_threat("🚨 MANUAL EMERGENCY (HOTKEY)"))
         self.root.bind("<Control-S>", lambda event: self.trigger_threat("🚨 MANUAL EMERGENCY (HOTKEY)"))
 
-        # Free Roam map movement keyboard bindings
-        self.root.bind("<Up>", lambda e: self.on_map_keyboard_move(0))
-        self.root.bind("<Right>", lambda e: self.on_map_keyboard_move(90))
-        self.root.bind("<Down>", lambda e: self.on_map_keyboard_move(180))
-        self.root.bind("<Left>", lambda e: self.on_map_keyboard_move(270))
-        self.root.bind("<w>", lambda e: self.on_map_keyboard_move(0))
-        self.root.bind("<W>", lambda e: self.on_map_keyboard_move(0))
-        self.root.bind("<d>", lambda e: self.on_map_keyboard_move(90))
-        self.root.bind("<D>", lambda e: self.on_map_keyboard_move(90))
-        self.root.bind("<s>", lambda e: self.on_map_keyboard_move(180))
-        self.root.bind("<S>", lambda e: self.on_map_keyboard_move(180))
-        self.root.bind("<a>", lambda e: self.on_map_keyboard_move(270))
-        self.root.bind("<A>", lambda e: self.on_map_keyboard_move(270))
+
 
         os.makedirs(os.path.join("recordings", "audio"), exist_ok=True)
         os.makedirs(os.path.join("recordings", "video"), exist_ok=True)
@@ -231,8 +219,8 @@ class ModernSafetyApp:
                     self.delay_timer.set(dt if dt in (15, 30) else 15)
                     self.escalation_timeout_var.set(int(p.get("escalation_timeout", 60)))
                     self.speed_threshold_var.set(int(p.get("speed_threshold", 80)))
+                    self.is_protection_active = False
                     if self.contacts and self.user_name:
-                        self.is_protection_active = True
                         if self.controller:
                             self.controller.set_emergency_contacts([c["phone"] for c in self.contacts])
                             self.controller.set_pins(self.real_pin, self.fake_pin)
@@ -269,7 +257,16 @@ class ModernSafetyApp:
     # ═══════════════════════════════════════════════════════════════════════════
 
     def send_desktop_popup(self, title, message):
-        """Dispatches an audible alert and an OS desktop notification toast."""
+        """Dispatches an audible alert and an OS desktop notification toast with rate limiting."""
+        now = time.time()
+        if not hasattr(self, "_popup_history"):
+            self._popup_history = {}
+        last_time = self._popup_history.get(title, 0)
+        # Suppress repeated identical desktop notifications within 10 seconds
+        if now - last_time < 10.0:
+            return
+        self._popup_history[title] = now
+
         def _beep():
             try:
                 import winsound
@@ -456,19 +453,7 @@ class ModernSafetyApp:
             time.sleep(2.0)
             self._spinner_active = False
             try:
-                if self.is_protection_active and self.contacts:
-                    self.start_safety_monitoring_loop()
-                    try:
-                        if self.controller and hasattr(self.controller, "acoustic_engine"):
-                            self.controller.acoustic_engine.trigger_callback = self.handle_voice_event
-                            self.controller.acoustic_engine.start_listening()
-                            self.controller.acoustic_engine.set_setup_complete(True)
-                            self.acoustic_engine = self.controller.acoustic_engine
-                    except Exception as e:
-                        print(f"Acoustic startup notice: {e}")
-                    self.root.after(0, lambda: self.build_modern_dashboard(pending_notification="✅ System Armed (Restored from Profile)"))
-                else:
-                    self.root.after(0, self.build_setup_screen)
+                self.root.after(0, self.build_setup_screen)
             except Exception:
                 pass
 
@@ -493,7 +478,10 @@ class ModernSafetyApp:
         tk.Label(hdr, text="🛡️  AURA SAFETY ENGINE SETUP",
                  font=("Segoe UI", 15, "bold"),
                  fg=_P["accent"], bg=_P["bg_panel"]).pack(anchor="w")
-        tk.Label(hdr, text="AI-Powered Offline Edge Emergency Protection",
+        sub_desc = "AI-Powered Offline Edge Emergency Protection"
+        if self.user_name:
+            sub_desc += "  •  Saved Profile Restored"
+        tk.Label(hdr, text=sub_desc,
                  font=("Segoe UI", 9), fg=_P["text_dim"],
                  bg=_P["bg_panel"]).pack(anchor="w", pady=(2, 10))
 
@@ -516,9 +504,13 @@ class ModernSafetyApp:
 
         _lbl("FULL NAME")
         e_name = _entry()
+        if self.user_name:
+            e_name.insert(0, self.user_name)
 
         _lbl("MOBILE NUMBER  (10 digits)")
         e_phone = _entry()
+        if self.user_phone:
+            e_phone.insert(0, self.user_phone)
 
         # Emergency contacts
         contacts_hdr = tk.Frame(frm, bg=_P["bg_panel"])
@@ -526,11 +518,29 @@ class ModernSafetyApp:
         tk.Label(contacts_hdr, text="EMERGENCY CONTACTS  (P1 = highest priority)",
                  font=("Segoe UI", 8, "bold"),
                  fg=_P["accent2"], bg=_P["bg_panel"]).pack(side="left")
-        tk.Button(contacts_hdr, text="+ Add",
+
+        actions_box = tk.Frame(contacts_hdr, bg=_P["bg_panel"])
+        actions_box.pack(side="right")
+
+        def _clear_all_fields():
+            e_name.delete(0, tk.END)
+            e_phone.delete(0, tk.END)
+            for r in list(self.contact_rows):
+                r["frame"].destroy()
+            self.contact_rows.clear()
+            _add_contact_row()
+
+        tk.Button(actions_box, text="Clear",
+                  font=("Segoe UI", 8),
+                  bg=_P["bg_card"], fg=_P["text_mid"],
+                  bd=0, cursor="hand2", padx=8, pady=2,
+                  command=_clear_all_fields).pack(side="left", padx=(0, 6))
+
+        tk.Button(actions_box, text="+ Add",
                   font=("Segoe UI", 8, "bold"),
                   bg=_P["accent"], fg=_P["bg_root"],
                   bd=0, cursor="hand2", padx=10, pady=2,
-                  command=lambda: _add_contact_row()).pack(side="right")
+                  command=lambda: _add_contact_row()).pack(side="left")
 
         contacts_box = tk.Frame(frm, bg=_P["bg_panel"])
         contacts_box.pack(fill="x")
@@ -580,7 +590,11 @@ class ModernSafetyApp:
                                        "name_entry": e_cn,
                                        "phone_entry": e_cp})
 
-        _add_contact_row()
+        if self.contacts:
+            for c in self.contacts:
+                _add_contact_row(init_name=c.get("name", ""), init_phone=c.get("phone", ""))
+        else:
+            _add_contact_row()
 
         def _do_setup():
             n = e_name.get().strip()
@@ -649,6 +663,10 @@ class ModernSafetyApp:
     # ── Backend monitoring loop ───────────────────────────────────────────────
 
     def start_safety_monitoring_loop(self):
+        if getattr(self, "_monitoring_loop_started", False):
+            return
+        self._monitoring_loop_started = True
+
         def cycle():
             if self.is_protection_active and self.controller:
                 # Do not run background inspection if an emergency threat is currently active on screen
@@ -1032,44 +1050,21 @@ class ModernSafetyApp:
         tk.Label(dest_bar, textvariable=self.destination_status_str, font=("Segoe UI", 8, "bold"),
                  fg=_P["purple"], bg=_P["bg_card"]).pack(side="left")
 
-        # Interactive Free Roam / Live Movement Navigation Bar
-        roam_bar = tk.Frame(parent, bg=_P["bg_card"], padx=6, pady=4)
-        roam_bar.pack(fill="x", pady=(0, 6))
+        # Live View-Only Status Bar
+        view_bar = tk.Frame(parent, bg=_P["bg_card"], padx=8, pady=4)
+        view_bar.pack(fill="x", pady=(0, 6))
 
-        self.demo_toggle_btn = tk.Button(
-            roam_bar, text="🎮 Free Roam: ON", font=("Segoe UI", 8, "bold"),
-            bg=_P["accent"], fg=_P["bg_root"], bd=0, cursor="hand2", padx=6, pady=2,
-            command=self.toggle_live_movement_demo
-        )
-        self.demo_toggle_btn.pack(side="left", padx=(0, 4))
+        tk.Label(view_bar, text="👁️ RADAR MODE: VIEW ONLY", font=("Segoe UI", 8, "bold"),
+                 fg=_P["accent"], bg=_P["bg_card"]).pack(side="left")
 
-        tk.Label(roam_bar, text="Pace:", font=("Segoe UI", 8, "bold"),
-                 fg=_P["text_dim"], bg=_P["bg_card"]).pack(side="left", padx=(4, 2))
-
-        self.btn_pace_walk = tk.Button(
-            roam_bar, text="🚶 Walk (5 km/h)", font=("Segoe UI", 7),
-            bg="#1e293b", fg=_P["accent"], bd=0, cursor="hand2", padx=4, pady=2,
-            command=lambda: self.set_movement_pace("Walk", 5.0)
-        )
-        self.btn_pace_walk.pack(side="left", padx=1)
-
-        self.btn_pace_drive = tk.Button(
-            roam_bar, text="🚗 Drive (45 km/h)", font=("Segoe UI", 7),
-            bg=_P["amber"], fg=_P["bg_root"], bd=0, cursor="hand2", padx=4, pady=2,
-            command=lambda: self.set_movement_pace("Drive", 45.0)
-        )
-        self.btn_pace_drive.pack(side="left", padx=1)
+        tk.Label(view_bar, text="•  Actions & Movement controlled via Simulator", font=("Segoe UI", 7),
+                 fg=_P["text_dim"], bg=_P["bg_card"]).pack(side="left", padx=(6, 0))
 
         tk.Button(
-            roam_bar, text="🎯 Recenter", font=("Segoe UI", 7, "bold"),
-            bg="#334155", fg=_P["text_hi"], bd=0, cursor="hand2", padx=5, pady=2,
+            view_bar, text="🎯 Recenter View", font=("Segoe UI", 7, "bold"),
+            bg="#1e293b", fg=_P["text_hi"], bd=0, cursor="hand2", padx=8, pady=2,
             command=self.recenter_map_on_user
-        ).pack(side="right", padx=(2, 0))
-
-        tk.Label(
-            roam_bar, textvariable=self.demo_status_str, font=("Segoe UI", 7),
-            fg=_P["text_mid"], bg=_P["bg_card"]
-        ).pack(side="left", padx=(6, 0))
+        ).pack(side="right")
 
         # Map card
         mc = self._card(parent, accent_color=_P["green"])
@@ -1086,27 +1081,18 @@ class ModernSafetyApp:
                  font=("Segoe UI", 8, "bold"),
                  fg=_P["green"], bg=_P["bg_card"]).pack(side="left")
 
-        def _toggle_display_only():
-            self.display_only_mode = not getattr(self, "display_only_mode", True)
-            if self.controller:
-                self.controller.display_only_mode = self.display_only_mode
-            self._update_display_only_btn()
-            mode_desc = "Display Only (Show Only — No Actions Taken)" if self.display_only_mode else "Action Mode (Emergency Actions Armed)"
-            self.send_desktop_popup("👁️ Display Mode", f"Mode: {mode_desc}")
-
-        self.btn_display_only = tk.Button(
-            mhdr, font=("Segoe UI", 7, "bold"),
-            bd=0, cursor="hand2", padx=8, pady=2,
-            command=_toggle_display_only
+        view_badge = tk.Label(
+            mhdr, text="👁️ VIEW ONLY (MONITORING)", font=("Segoe UI", 7, "bold"),
+            bg="#0f172a", fg=_P["accent"], padx=6, pady=2,
+            highlightbackground=_P["border"], highlightthickness=1
         )
-        self.btn_display_only.pack(side="left", padx=(10, 0))
-        self._update_display_only_btn()
+        view_badge.pack(side="left", padx=(8, 0))
 
         tk.Label(mhdr, textvariable=self.speed_indicator_str,
                  font=("Segoe UI", 8, "bold"),
                  fg=_P["amber"], bg=_P["bg_card"]).pack(side="right")
 
-        # Realistic Map canvas
+        # Realistic Map canvas (Strictly View-Only)
         self.map_canvas = tk.Canvas(
             mc.content, bg="#0c1322",
             highlightthickness=1, highlightbackground=_P["border"],
@@ -1114,17 +1100,32 @@ class ModernSafetyApp:
         )
         self.map_canvas.pack(fill="both", expand=True)
 
-        # Mouse & gesture bindings for free movement
-        self.map_canvas.bind("<Button-1>", self._on_map_click)
-        self.map_canvas.bind("<B1-Motion>", self._on_map_drag)
-        self.map_canvas.bind("<ButtonRelease-1>", self._on_map_release)
+        # In-canvas notice explaining this canvas is View-Only (no intrusive OS toasts)
+        def _show_view_only_canvas_hint():
+            if not hasattr(self, "map_canvas") or not self.map_canvas.winfo_exists():
+                return
+            self.map_canvas.delete("view_only_hint")
+            cw = self.map_canvas.winfo_width() or 480
+            self.map_canvas.create_rectangle(
+                cw // 2 - 180, 10, cw // 2 + 180, 36,
+                fill="#0f172a", outline=_P["accent"], width=1, tags="view_only_hint"
+            )
+            self.map_canvas.create_text(
+                cw // 2, 23,
+                text="👁️ Live Radar View  •  Use Simulator below to control movement",
+                fill=_P["accent"], font=("Segoe UI", 8, "bold"), tags="view_only_hint"
+            )
+            self.root.after(2500, lambda: self.map_canvas.delete("view_only_hint") if hasattr(self, "map_canvas") and self.map_canvas.winfo_exists() else None)
+
+        self.map_canvas.bind("<Button-1>", lambda e: _show_view_only_canvas_hint())
+        self.map_canvas.bind("<Double-Button-1>", lambda e: self.open_map_simulator())
 
         # Interactive guidance strip underneath map
         hint_row = tk.Frame(mc.content, bg=_P["bg_card"])
         hint_row.pack(fill="x", pady=(3, 0))
         tk.Label(
             hint_row,
-            text="🖱️ Click anywhere or drag to roam freely  •  ⌨️ Arrow keys (↑ ↓ ← →) or D-Pad to move live",
+            text="👁️ Live Satellite Radar (View Only)  •  Open Interactive Map Simulator below to move map & test actions",
             font=("Segoe UI", 7), fg=_P["text_dim"], bg=_P["bg_card"]
         ).pack(side="left")
 
@@ -1148,13 +1149,14 @@ class ModernSafetyApp:
         # Map simulator launcher & clear buttons
         tk.Button(
             parent,
-            text="🗺️  Open Interactive Map Simulator",
+            text="🎮  Open Interactive Map Simulator (Move Map & Action Controls)",
             font=("Segoe UI", 9, "bold"),
-            bg=_P["bg_card"], fg=_P["accent"],
+            bg="#1e3a5f", fg=_P["accent"],
+            activebackground="#2563eb", activeforeground="#ffffff",
             bd=0, cursor="hand2",
-            highlightthickness=1, highlightbackground=_P["border"],
+            highlightthickness=1, highlightbackground=_P["accent"],
             command=self.open_map_simulator,
-        ).pack(fill="x", ipady=8, pady=(0, 4))
+        ).pack(fill="x", ipady=9, pady=(0, 4))
 
         tk.Button(
             parent, text="🔄  Clear Map Path",
