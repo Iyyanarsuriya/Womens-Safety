@@ -3431,15 +3431,21 @@ class ModernSafetyApp:
                abs(lon - map_config.CENTER_LON) > map_config.ZOOM_SPAN_DEGREES * 0.45:
                 map_config.set_map_center(lat, lon)
                 self._draw_realistic_map()
+                self.map_trail_points = []
 
         px, py = map_config.latlon_to_pixel(lat, lon, sz)
 
-        # ── Breadcrumb trail ──────────────────────────────────────────────────
+        # ── Breadcrumb trail (smooth, continuous segments only) ───────────────
         if self.map_trail_points:
             lx, ly = self.map_trail_points[-1]
-            self.map_canvas.create_line(lx, ly, px, py, fill="#ef4444", width=3, tags="trail")
+            dist = math.hypot(px - lx, py - ly)
+            # Only connect points within reasonable movement threshold (< 65px)
+            # Route resets, teleports, or recentering jumps do NOT draw connecting lines
+            if 2.0 <= dist <= 65.0:
+                trail_color = "#f43f5e" if is_threat else "#38bdf8"
+                self.map_canvas.create_line(lx, ly, px, py, fill=trail_color, width=2.5, tags="trail")
         self.map_trail_points.append((px, py))
-        if len(self.map_trail_points) > 140:
+        if len(self.map_trail_points) > 100:
             self.map_trail_points.pop(0)
 
         # ── Predicted Marker ──────────────────────────────────────────────────
@@ -3447,7 +3453,7 @@ class ModernSafetyApp:
         if predicted:
             p_lat = predicted.get("predicted_latitude") or predicted.get("latitude")
             p_lon = predicted.get("predicted_longitude") or predicted.get("longitude")
-            if p_lat is not None and p_lon is not None:
+            if p_lat is not None and p_lon is not None and (p_lat != 0.0 or p_lon != 0.0):
                 ppx, ppy = map_config.latlon_to_pixel(p_lat, p_lon, sz)
                 self.map_canvas.create_oval(ppx - 8, ppy - 8, ppx + 8, ppy + 8, outline=_P["predict"], width=2, tags="predicted_marker")
 
@@ -3512,9 +3518,14 @@ class ModernSafetyApp:
         if hasattr(self, "_tele_dest"):
             if self.controller and getattr(self.controller, "trip_destination", None):
                 d = self.controller.trip_destination
-                self._tele_dest.set(f"{d.get('name', 'Active')}")
+                dest_name = d.get('name', 'Active')
+                self._tele_dest.set(dest_name)
+                if hasattr(self, "destination_status_str"):
+                    self.destination_status_str.set(f"🏁 Target: {dest_name}")
             else:
                 self._tele_dest.set("None set")
+                if hasattr(self, "destination_status_str"):
+                    self.destination_status_str.set("🏁 Destination: None")
 
         if self.controller and hasattr(self.controller, "predictor"):
             try:

@@ -24,12 +24,15 @@ class GPSBridge:
         self._stop_event.set()
 
     def _run(self):
+        last_notice_time = 0.0
         while not self._stop_event.is_set():
             try:
                 self._connect_and_read()
             except Exception as exc:
-                if not self._stop_event.is_set():
-                    print(f"🛰️ [GPS Bridge] Stream notice ({exc}). Retrying in {RECONNECT_DELAY_SEC}s...")
+                now = time.time()
+                if not self._stop_event.is_set() and (now - last_notice_time >= 30.0):
+                    print(f"🛰️ [GPS Bridge] Standby - awaiting phone GPS stream on port {PORT}...")
+                    last_notice_time = now
                 self._stop_event.wait(RECONNECT_DELAY_SEC)
 
     def _connect_and_read(self):

@@ -265,11 +265,21 @@ class LSTMTrajectoryPredictor:
     # ── Persistence helpers ───────────────────────────────────────────────────
 
     def _persist_entry(self, lat: float, lon: float, ts: float) -> None:
+        if lat == 0.0 and lon == 0.0:
+            return
         try:
             existing: list = []
             if os.path.exists(_HISTORY_FILE):
-                with open(_HISTORY_FILE, "r", encoding="utf-8") as fh:
-                    existing = json.load(fh)
+                try:
+                    with open(_HISTORY_FILE, "r", encoding="utf-8") as fh:
+                        raw = fh.read().strip()
+                        if raw and raw != "[]":
+                            existing = json.loads(raw)
+                except Exception:
+                    existing = []
+
+            if not isinstance(existing, list):
+                existing = []
 
             existing.append({
                 "timestamp": datetime.fromtimestamp(ts).isoformat(),
@@ -290,20 +300,33 @@ class LSTMTrajectoryPredictor:
             return
         try:
             with open(_HISTORY_FILE, "r", encoding="utf-8") as fh:
-                entries: list = json.load(fh)
+                raw = fh.read().strip()
+                if not raw or raw == "[]":
+                    return
+                entries: list = json.loads(raw)
+            if not isinstance(entries, list):
+                return
             recent = entries[-self.sequence_length:]
             for e in recent:
                 try:
                     ts = time.mktime(datetime.fromisoformat(e["timestamp"]).timetuple())
                 except Exception:
                     ts = time.time()
-                self._lats.append(float(e["latitude"]))
-                self._lons.append(float(e["longitude"]))
-                self._timestamps.append(float(ts))
-            if recent:
-                print(f"[Predictor] Loaded {len(recent)} historical waypoints from disk.")
+                lat = float(e.get("latitude", 0.0))
+                lon = float(e.get("longitude", 0.0))
+                if lat != 0.0 and lon != 0.0:
+                    self._lats.append(lat)
+                    self._lons.append(lon)
+                    self._timestamps.append(float(ts))
+            if self._lats:
+                print(f"[Predictor] Loaded {len(self._lats)} historical waypoints from disk.")
         except Exception as exc:
-            print(f"[Predictor] History load warning: {exc}")
+            try:
+                with open(_HISTORY_FILE, "w", encoding="utf-8") as fh:
+                    fh.write("[]\n")
+            except Exception:
+                pass
+            print(f"[Predictor] History load notice: {exc}")
 
     def get_history_summary(self) -> dict:
         return {

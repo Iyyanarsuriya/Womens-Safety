@@ -1,11 +1,1 @@
-[
-  {
-    "timestamp": "2026-09-30T12:52:49.400936",
-    "latitude": 0.0,
-    "longitude": 0.0,
-    "event": "CALL_ESCALATION_EXECUTED",
-    "status": "EMERGENCY_TRIGGERED",
-    "details": "{'p1_number': '0987865444', 'p1_status': 'FAILED_NO_ADB_CONNECTION', 'p2_number': '', 'p2_status': 'NOT_ATTEMPTED', 'active_intent': None, 'restrictions_encountered': ['ADB_DEVICE_NOT_CONNECTED'], 'call_history': []}",
-    "mode": "PRODUCTION"
-  }
-]
+[]

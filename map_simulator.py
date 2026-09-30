@@ -963,6 +963,8 @@ class MapSimulatorWindow:
         self.current_index   = 0
         self.simulated_clock = time.time()
         self._deviation_active = False
+        if self.controller and getattr(self.controller, "gui_app", None):
+            self.controller.gui_app.clear_map_display()
         self._draw_map()
         self._update_wp_label()
 

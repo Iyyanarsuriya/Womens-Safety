@@ -127,17 +127,21 @@ class OfflineLocationEngine:
 
     def _recover_last_known_coords(self):
         """Dynamically retrieves the most recent real coordinate from history logs without hardcoding."""
+        import map_config
         hist_file = os.path.join(DATA_DIR, "location_history.json")
         if os.path.exists(hist_file):
             try:
                 with open(hist_file, "r", encoding="utf-8") as f:
                     entries = json.load(f)
-                    if entries:
-                        last = entries[-1]
-                        return float(last["latitude"]), float(last["longitude"])
+                    if isinstance(entries, list):
+                        for last in reversed(entries):
+                            lat = float(last.get("latitude", 0.0))
+                            lon = float(last.get("longitude", 0.0))
+                            if lat != 0.0 and lon != 0.0:
+                                return lat, lon
             except Exception:
                 pass
-        return 0.0, 0.0
+        return map_config.CENTER_LAT, map_config.CENTER_LON
 
     def haversine_distance(self, lat1, lon1, lat2, lon2):
         """Calculates distance in KM using pure Haversine Math."""
