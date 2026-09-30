@@ -468,7 +468,6 @@ class MapSimulatorWindow:
     # ── Hotkeys & Movement ────────────────────────────────────────────────────
 
     def _bind_hotkeys(self):
-        self.win.bind("<Up>",    lambda e: self._arrow_move(LAT_STEP, 0, 0))
         self.win.bind("<Up>",    lambda e: self._arrow_move( LAT_STEP, 0, 0))
         self.win.bind("<Down>",  lambda e: self._arrow_move(-LAT_STEP, 0, 180))
         self.win.bind("<Left>",  lambda e: self._arrow_move(0, -LON_STEP, 270))

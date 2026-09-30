@@ -453,7 +453,11 @@ class ModernSafetyApp:
             time.sleep(2.0)
             self._spinner_active = False
             try:
-                self.root.after(0, self.build_setup_screen)
+                if self.is_protection_active and self.contacts:
+                    self.start_safety_monitoring_loop()
+                    self.root.after(0, lambda: self.build_modern_dashboard(pending_notification="✅ System Armed (Restored from Profile)"))
+                else:
+                    self.root.after(0, self.build_setup_screen)
             except Exception:
                 pass
 
@@ -1080,14 +1084,6 @@ class ModernSafetyApp:
         tk.Label(mhdr, text="LIVE ROUTE MAP",
                  font=("Segoe UI", 8, "bold"),
                  fg=_P["green"], bg=_P["bg_card"]).pack(side="left")
-
-        view_badge = tk.Label(
-            mhdr, text="👁️ VIEW ONLY (MONITORING)", font=("Segoe UI", 7, "bold"),
-            bg="#0f172a", fg=_P["accent"], padx=6, pady=2,
-            highlightbackground=_P["border"], highlightthickness=1
-        )
-        view_badge.pack(side="left", padx=(8, 0))
-
         tk.Label(mhdr, textvariable=self.speed_indicator_str,
                  font=("Segoe UI", 8, "bold"),
                  fg=_P["amber"], bg=_P["bg_card"]).pack(side="right")
